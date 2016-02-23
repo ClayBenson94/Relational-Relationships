@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,8 +28,8 @@ public class PersonTable {
 	 * @throws SQLException
 	 */
 	public static void populatePersonTableFromCSV(Connection conn,
-			                                      String fileName)
-			                                    		  throws SQLException{
+			                                      		String fileName)
+			                                    		  throws SQLException {
 		/**
 		 * Structure to store the data as you read it in
 		 * Will be used later to populate the table
@@ -37,7 +39,9 @@ public class PersonTable {
 		 */
 		ArrayList<Person> people = new ArrayList<Person>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(fileName));
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			InputStream is = classloader.getResourceAsStream(fileName);
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			String line;
 			while((line = br.readLine()) != null){
 				String[] split = line.split(",");
