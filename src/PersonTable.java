@@ -75,7 +75,8 @@ public class PersonTable {
 	 */
 	public static void createPersonTable(Connection conn){
 		try {
-			String query = "CREATE TABLE IF NOT EXISTS person("
+			String query = "DROP TABLE person;"
+						 + "CREATE TABLE person("
 					     + "ID INT PRIMARY KEY,"
 					     + "FIRST_NAME VARCHAR(255),"
 					     + "LAST_NAME VARCHAR(255),"
