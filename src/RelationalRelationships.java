@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author scj
  *
  */
-public class H2DemoMain {
+public class RelationalRelationships {
 
     //The connection to the database
     private Connection conn;
@@ -67,7 +67,7 @@ public class H2DemoMain {
      */
     public static void main(String[] args) {
 
-        H2DemoMain demo = new H2DemoMain();
+        RelationalRelationships demo = new RelationalRelationships();
 
         //Hard drive location of the database
         String location = "~/h2demo/h2demo";
