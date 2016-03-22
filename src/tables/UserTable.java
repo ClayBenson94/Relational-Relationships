@@ -20,6 +20,9 @@ public class UserTable {
         + "gender VARCHAR(50),"
         + "sexuality VARCHAR(50),"
         + "location INT(5),"
+        + "preferred_age_min INT(5),"
+        + "preferred_age_max INT(5),"
+        + "preferred_sexuality VARCHAR(50),"
         + "PRIMARY KEY (username),"
         + "FOREIGN KEY (location) REFERENCES location(zip_code),"
         + "CHECK (gender IN ('Male', 'Female')),"
@@ -47,6 +50,9 @@ public class UserTable {
         + ",gender=" + user.getGender()
         + ",sexuality=" + user.getSexuality()
         + ",location=" + user.getLocation()
+        + ",preferred_age_min=" + user.getUserPreferences().getPreferredAgeMin()
+        + ",preferred_age_max=" + user.getUserPreferences().getPreferredAgeMax()
+        + ",preferred_sexuality=" + user.getUserPreferences().getPreferredSexuality()
         + " WHERE username=" + user.getUsername();
 
       Statement stmt = conn.createStatement();
