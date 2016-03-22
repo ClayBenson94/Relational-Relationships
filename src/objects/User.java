@@ -1,5 +1,11 @@
 package objects;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
+
+import tables.UserTable;
+
 /**
  * @author Clay Benson cmb3602@g.rit.edu
  */
@@ -10,13 +16,13 @@ public class User {
     private String name;
     private String bio;
     private String email;
-    private long dob;
+    private Date dob;
     private RelationshipController.Gender gender;
     private RelationshipController.Sexuality sexuality;
     private int location;
     private UserPreferences userPreferences;
 
-    public User(String username, String password, String name, String bio, String email, long dob,
+    public User(String username, String password, String name, String bio, String email, Date dob,
                 RelationshipController.Gender gender, RelationshipController.Sexuality sexuality, int location) {
         this.username = username;
         this.password = password;
@@ -50,11 +56,11 @@ public class User {
         this.name = name;
     }
 
-    public long getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(long dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
@@ -104,5 +110,13 @@ public class User {
 
     public void setUserPreferences(UserPreferences userPreferences) {
         this.userPreferences = userPreferences;
+    }
+
+    public int getAge() {
+        return Period.between(dob.toLocalDate(), LocalDate.now()).getYears();
+    }
+
+    public void updateUser() {
+        UserTable.updateUser(RelationshipController.getConnection(), this);
     }
 }

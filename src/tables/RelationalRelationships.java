@@ -1,3 +1,5 @@
+package tables;
+
 import java.sql.*;
 import java.util.ArrayList;
 
