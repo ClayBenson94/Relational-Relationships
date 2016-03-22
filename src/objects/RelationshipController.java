@@ -14,7 +14,7 @@ public class RelationshipController {
   private User visitingUser;
 
   public RelationshipController() {
-    createConnection("~/h2demo/h2demo", "scj", "password");
+    createConnection("~/RR/relationships", "scj", "password");
   }
 
   public enum Sexuality {
