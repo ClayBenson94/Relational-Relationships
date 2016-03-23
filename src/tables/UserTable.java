@@ -53,7 +53,7 @@ public class UserTable {
         + ",preferred_age_min=" + user.getUserPreferences().getPreferredAgeMin()
         + ",preferred_age_max=" + user.getUserPreferences().getPreferredAgeMax()
         + ",preferred_sexuality=" + user.getUserPreferences().getPreferredSexuality()
-        + " WHERE username=" + user.getUsername();
+        + " WHERE username=" + user.getUsername() +";";
 
       Statement stmt = conn.createStatement();
       stmt.execute(query);
