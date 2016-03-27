@@ -10,8 +10,8 @@ public class VisitTable {
     try {
       String query = "DROP TABLE visit;"
         + "CREATE TABLE visit("
-        + "visited VARCHAR(255),"
-        + "visitor VARCHAR(255),"
+        + "visited VARCHAR(20),"
+        + "visitor VARCHAR(20),"
         + "timestamp BIGINT UNSIGNED,"
         + "PRIMARY KEY (visited, visitor),"
         + "FOREIGN KEY (visited) REFERENCES user(username),"

@@ -11,7 +11,7 @@ public class UserPhotosTable {
   public static void createUserTable(Connection conn) {
     try {
       String query = "CREATE TABLE user_photos("
-        + "username VARCHAR(255),"
+        + "username VARCHAR(20),"
         + "photo_url VARCHAR(1024),"
         + "PRIMARY KEY (username, photo_url),"
         + "FOREIGN KEY (username) REFERENCES user(username),"
@@ -30,8 +30,8 @@ public class UserPhotosTable {
   public static boolean addUserPhoto(Connection conn, User user, String photoURL) {
     try {
       String query = "INSERT INTO user_photos "
-        + "VALUES (username=" + user.getUsername()
-        + ",photo_url=\'" + photoURL + "\');";
+        + "VALUES (username=\'" + user.getUsername()
+        + "\',photo_url=\'" + photoURL + "\');";
 
       Statement stmt = conn.createStatement();
       return stmt.execute(query);
