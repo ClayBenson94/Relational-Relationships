@@ -11,8 +11,8 @@ public class UserTable {
   public static void createUserTable(Connection conn) {
     try {
       String query = "CREATE TABLE user("
-        + "username VARCHAR(255),"
-        + "password VARCHAR(255),"
+        + "username VARCHAR(20),"
+        + "password VARCHAR(32),"
         + "name VARCHAR(255),"
         + "bio LONGVARCHAR,"
         + "email VARCHAR(255),"
@@ -42,18 +42,18 @@ public class UserTable {
   public static boolean addUser(Connection conn, User user) {
     try {
       String query = "INSERT INTO user "
-        + "VALUES (username=" + user.getUsername()
-        + ",password=" + user.getPassword()
-        + ",name=" + user.getName()
-        + ",bio=" + user.getBio()
-        + ",email=" + user.getEmail()
-        + ",dob=" + user.getDob()
-        + ",gender=" + user.getGender()
-        + ",sexuality=" + user.getSexuality()
-        + ",location=" + user.getLocation()
-        + ",preferred_age_min=" + user.getUserPreferences().getPreferredAgeMin()
-        + ",preferred_age_max=" + user.getUserPreferences().getPreferredAgeMax()
-        + ",preferred_sexuality=" + user.getUserPreferences().getPreferredSexuality() + ");";
+        + "VALUES (username=\'" + user.getUsername()
+        + "\',password=\'" + user.getPassword()
+        + "\',name=\'" + user.getName()
+        + "\',bio=\'" + user.getBio()
+        + "\',email=\'" + user.getEmail()
+        + "\',dob=\'" + user.getDob()
+        + "\',gender=\'" + user.getGender()
+        + "\',sexuality=\'" + user.getSexuality()
+        + "\',location=\'" + user.getLocation()
+        + "\',preferred_age_min=\'" + user.getUserPreferences().getPreferredAgeMin()
+        + "\',preferred_age_max=\'" + user.getUserPreferences().getPreferredAgeMax()
+        + "\',preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality() + "\');";
 
       Statement stmt = conn.createStatement();
       return stmt.execute(query);
@@ -66,18 +66,18 @@ public class UserTable {
   public static void updateUser(Connection conn, User user) {
     try {
       String query = "UPDATE user "
-        + "SET password=" + user.getPassword()
-        + ",name=" + user.getName()
-        + ",bio=" + user.getBio()
-        + ",email=" + user.getEmail()
-        + ",dob=" + user.getDob()
-        + ",gender=" + user.getGender()
-        + ",sexuality=" + user.getSexuality()
-        + ",location=" + user.getLocation()
-        + ",preferred_age_min=" + user.getUserPreferences().getPreferredAgeMin()
-        + ",preferred_age_max=" + user.getUserPreferences().getPreferredAgeMax()
-        + ",preferred_sexuality=" + user.getUserPreferences().getPreferredSexuality()
-        + " WHERE username=" + user.getUsername() +";";
+        + "SET password=\'" + user.getPassword()
+        + "\',name=\'" + user.getName()
+        + "\',bio=\'" + user.getBio()
+        + "\',email=\'" + user.getEmail()
+        + "\',dob=\'" + user.getDob()
+        + "\',gender=\'" + user.getGender()
+        + "\',sexuality=\'" + user.getSexuality()
+        + "\',location=\'" + user.getLocation()
+        + "\',preferred_age_min=\'" + user.getUserPreferences().getPreferredAgeMin()
+        + "\',preferred_age_max=\'" + user.getUserPreferences().getPreferredAgeMax()
+        + "\',preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality()
+        + "\' WHERE username=\'" + user.getUsername() + "\';";
 
       Statement stmt = conn.createStatement();
       stmt.execute(query);

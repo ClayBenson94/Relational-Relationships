@@ -11,8 +11,8 @@ public class LocationTable {
     try {
       String query = "CREATE TABLE location("
         + "zip_code int(5) PRIMARY KEY,"
-        + "city VARCHAR(255),"
-        + "state VARCHAR(100);";
+        + "city VARCHAR(16),"
+        + "state VARCHAR(2);";
 
       Statement stmt = conn.createStatement();
       stmt.execute(query);
@@ -23,7 +23,7 @@ public class LocationTable {
 
   public static void createLocation(Connection conn, int zipCode, String city, String state) {
     try {
-      String query = "INSERT INTO location VALUES (" + zipCode + "," + city + "," + state + ");";
+      String query = "INSERT INTO location VALUES (\'" + zipCode + "\',\'" + city + "\',\'" + state + "\');";
 
       Statement stmt = conn.createStatement();
       stmt.execute(query);
