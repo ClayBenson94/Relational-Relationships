@@ -3,8 +3,10 @@ package tables;
 import objects.User;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class UserPhotosTable {
 
@@ -27,7 +29,7 @@ public class UserPhotosTable {
     }
   }
 
-  public static boolean addUserPhoto(Connection conn, User user, String photoURL) {
+  public static boolean addPhotoToUser(Connection conn, User user, String photoURL) {
     try {
       String query = "INSERT INTO user_photos "
         + "VALUES (username=\'" + user.getUsername()
@@ -51,5 +53,27 @@ public class UserPhotosTable {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  public static ArrayList<String> getUserPhotos(Connection conn, User user) {
+
+    ArrayList<String> userPhotos = new ArrayList<>();
+
+    try {
+      String query = "SELECT * FROM user_photos "
+              + "WHERE username=\'" + user.getUsername() +"\';";
+
+      Statement stmt = conn.createStatement();
+      ResultSet resultSet = stmt.executeQuery(query);
+
+      while (resultSet.next()){
+        // 0 is the username, 1 is the photo url
+        userPhotos.add(resultSet.getString(1));
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  return userPhotos;
   }
 }
