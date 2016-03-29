@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 
+import tables.RelationalRelationships;
 import tables.UserTable;
 
 /**
