@@ -1,12 +1,14 @@
 package tables;
 
 import objects.Location;
+import objects.Visit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -82,4 +84,20 @@ public class LocationTable {
           e.printStackTrace();
       }
   }
+    public static Location getInformationViaZip(Connection conn, Integer zipCode){
+        Location location = null;
+        try {
+            String query = "SELECT * FROM location WHERE zip_code = " + zipCode + ";";
+
+            Statement stmt = conn.createStatement();
+            ResultSet resultSet = stmt.executeQuery(query);
+            if (resultSet.next()) {
+                location = new Location(resultSet.getInt("zip_code"), resultSet.getString("state"),
+                        resultSet.getString("city"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return location;
+    }
 }

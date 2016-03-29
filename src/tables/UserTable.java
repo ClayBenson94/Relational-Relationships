@@ -50,10 +50,10 @@ public class UserTable {
         + "\',dob=\'" + user.getDob()
         + "\',gender=\'" + user.getGender()
         + "\',sexuality=\'" + user.getSexuality()
-        + "\',location=\'" + user.getLocation()
-        + "\',preferred_age_min=\'" + user.getUserPreferences().getPreferredAgeMin()
-        + "\',preferred_age_max=\'" + user.getUserPreferences().getPreferredAgeMax()
-        + "\',preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality() + "\');";
+        + "\',location=" + user.getLocation()
+        + ",preferred_age_min=" + user.getUserPreferences().getPreferredAgeMin()
+        + ",preferred_age_max=" + user.getUserPreferences().getPreferredAgeMax()
+        + ",preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality() + "\');";
 
       Statement stmt = conn.createStatement();
       return stmt.execute(query);
