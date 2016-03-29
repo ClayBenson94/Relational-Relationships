@@ -4,8 +4,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import tables.InterestCategoriesTable;
+import tables.InterestTable;
+import tables.LikesTable;
+import tables.LocationTable;
 import tables.RelationalRelationships;
+import tables.UserPhotosTable;
+import tables.UserTable;
+import tables.VisitTable;
 
 
 public class RelationshipController {
@@ -14,7 +22,7 @@ public class RelationshipController {
   private User activeUser;
   private User visitingUser;
 
-    public static Connection getConnection(){
+  public static Connection getConnection(){
         return conn;
     }
 
@@ -25,6 +33,63 @@ public class RelationshipController {
   public enum Gender {
     Male, Female
   }
+
+  public User getActiveUser() {
+    return activeUser;
+  }
+
+  public User getVisitingUser() {
+    return visitingUser;
+  }
+
+  public void updateUserObject(User user) {
+    UserTable.updateUser(conn, user);
+  }
+
+  public void createUserObject(User user) {
+    UserTable.addUser(conn, user);
+  }
+
+  public ArrayList<User> getLikes(User user) {
+    return LikesTable.getLikesForUser(conn, user);
+  }
+
+  public void createLike(User sender, User receiver) {
+    LikesTable.createLike(conn, sender, receiver);
+  }
+
+  public ArrayList<String> getUserPhotos(User user) {
+    return UserPhotosTable.getUserPhotos(conn, user.getUsername());
+  }
+
+  public void deleteUserPhoto(User user, String photoURL) {
+    UserPhotosTable.deleteUserPhoto(conn, user, photoURL);
+  }
+
+  public ArrayList<String> getInterestCategoryNames() {
+    return InterestCategoriesTable.getInterestCategoryNames(conn);
+  }
+
+  public Location getInformationViaZip(int zip) {
+    return LocationTable.getInformationViaZip(conn, zip);
+  }
+
+  public ArrayList<Interest> getUserInterests(User user) {
+    return InterestTable.getUserInterests(conn, user.getUsername());
+  }
+
+  public void createInterest(Interest interest) {
+    InterestTable.createInterest(conn, interest);
+  }
+
+  public boolean addInterestToUser(User user, Interest interest) {
+    return InterestTable.addInterestToUser(conn, user.getUsername(), interest);
+  }
+
+  public void createVisit(User visitor, User visited) {
+    VisitTable.createVisit(conn, visitor.getUsername(), visited.getUsername());
+  }
+
   //private stack visitedPages
 
   public static void main(String args[]) throws SQLException {
@@ -42,7 +107,7 @@ public class RelationshipController {
                       resultSet.getString("City"));
 
           }
-      }catch(SQLException e){
+      } catch(SQLException e) {
               e.printStackTrace();
       }
     }
