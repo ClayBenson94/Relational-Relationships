@@ -26,7 +26,7 @@ public class InterestTable {
     }
   }
 
-  public static boolean addInterest(Connection conn, String name, String description, String category) {
+  public static boolean createInterest(Connection conn, String name, String description, String category) {
     try {
       String query = "INSERT INTO interests "
         + "VALUES (interest_name=\'" + name + "\',"
