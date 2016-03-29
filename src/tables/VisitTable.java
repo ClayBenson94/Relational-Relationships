@@ -31,9 +31,9 @@ public class VisitTable {
     }
   }
 
-  public void createVisit(Connection conn, String visited, String vistor) {
+  public void createVisit(Connection conn, String visited, String visitor) {
     try {
-      String query = "INSERT INTO visit VALUES (" + visited + ", " + vistor + ", " + System.currentTimeMillis() + ");";
+      String query = "INSERT INTO visit VALUES (" + visited + ", " + visitor + ", " + System.currentTimeMillis() + ");";
 
       Statement stmt = conn.createStatement();
       stmt.execute(query);

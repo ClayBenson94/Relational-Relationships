@@ -1,7 +1,5 @@
 package tables;
 
-import objects.User;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,7 +23,7 @@ public class InterestCategoriesTable {
     }
   }
 
-  public static boolean addInterestCategory(Connection conn, User user, String category) {
+  public static boolean addInterestCategory(Connection conn, String category) {
     try {
       String query = "INSERT INTO interest_categories "
         + "VALUES (category_name=\'" + category
