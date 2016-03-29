@@ -1,8 +1,10 @@
 package tables;
 
 import objects.User;
+import objects.Visit;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -31,9 +33,9 @@ public class VisitTable {
     }
   }
 
-  public void createVisit(Connection conn, String visited, String vistor) {
+  public void createVisit(Connection conn, String visited, String visitor) {
     try {
-      String query = "INSERT INTO visit VALUES (" + visited + ", " + vistor + ", " + System.currentTimeMillis() + ");";
+      String query = "INSERT INTO visit VALUES (" + visited + ", " + visitor + ", " + System.currentTimeMillis() + ");";
 
       Statement stmt = conn.createStatement();
       stmt.execute(query);
@@ -42,16 +44,20 @@ public class VisitTable {
     }
   }
 
-  public ArrayList<User> getVisitsForUser(Connection conn, User user) {
+  public ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
+    ArrayList<Visit> userVisits = new ArrayList<>();
     try {
-      String query = "SELECT * FROM visit WHERE visitor = " + user.getUsername() + ";";
+      String query = "SELECT * FROM visit WHERE visitor = \'" + user.getUsername() + "\';";
 
       Statement stmt = conn.createStatement();
-      stmt.execute(query);
+      ResultSet resultSet = stmt.executeQuery(query);
+      while (resultSet.next()) {
+        Visit visit = new Visit(resultSet.getString("visitor"), resultSet.getLong("timestamp"));
+        userVisits.add(visit);
+      }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    // TODO Make this return an actual array list
-    return null;
+    return userVisits;
   }
 }
