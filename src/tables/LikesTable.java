@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import objects.Like;
 import objects.User;
 
 public class LikesTable {
@@ -42,15 +44,26 @@ public class LikesTable {
     }
   }
 
-  public static ResultSet getLikesForUser(Connection conn, User user) {
-    ResultSet resultSet = null;
+  /**
+   * Get who likes you
+   * @param conn
+   * @param username - The user to do the query for
+   * @return An array list of usernames that like you
+     */
+  public static ArrayList<Like> getLikesForUser(Connection conn, String username) {
+    ArrayList<Like> likes = new ArrayList<>();
     try {
-      String query = "SELECT receiver, timestamp FROM likes WHERE sender=\'" + user.getUsername() + "\';";
+      String query = "SELECT sender, timestamp FROM likes WHERE receiver=\'" + username + "\';";
       Statement stmt = conn.createStatement();
-      resultSet = stmt.executeQuery(query);
+      ResultSet resultSet = stmt.executeQuery(query);
+
+      while (resultSet.next()){
+        Like like = new Like(resultSet.getString("sender"), resultSet.getLong("timestamp"));
+        likes.add(like);
+      }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    return resultSet;
+    return likes;
   }
 }

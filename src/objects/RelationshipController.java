@@ -50,8 +50,8 @@ public class RelationshipController {
     UserTable.addUser(conn, user);
   }
 
-  public ArrayList<User> getLikes(User user) {
-    return LikesTable.getLikesForUser(conn, user);
+  public ArrayList<Like> getLikes(User user) {
+    return LikesTable.getLikesForUser(conn, user.getUsername());
   }
 
   public void createLike(User sender, User receiver) {

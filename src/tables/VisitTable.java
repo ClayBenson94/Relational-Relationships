@@ -33,7 +33,7 @@ public class VisitTable {
     }
   }
 
-  public void createVisit(Connection conn, String visited, String visitor) {
+  public static void createVisit(Connection conn, String visited, String visitor) {
     try {
       String query = "INSERT INTO visit VALUES (" + visited + ", " + visitor + ", " + System.currentTimeMillis() + ");";
 
