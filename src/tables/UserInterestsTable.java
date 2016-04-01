@@ -30,11 +30,12 @@ public class UserInterestsTable {
     }
   }
 
-  public static boolean addInterestToUser(Connection conn, String username, String interest) {
+  public static boolean addInterestToUser(Connection conn, String username, Interest interest) {
+    String interestName = interest.getName();
     try {
       String query = "INSERT INTO user_interests "
         + "VALUES (username=\'" + username + "\',"
-        + "interest=\'" + interest + "\'"
+        + "interest=\'" + interestName + "\'"
         + ");";
 
       Statement stmt = conn.createStatement();
@@ -46,7 +47,7 @@ public class UserInterestsTable {
   }
 
   public static ArrayList<Interest> getUserInterests(Connection conn, String username) {
-    ArrayList<Interest> returnList = new ArrayList<>();
+    ArrayList<Interest> returnList = new ArrayList<Interest>();
 
     try {
       String query = "SELECT interest,category,interest_desc FROM user_interests "

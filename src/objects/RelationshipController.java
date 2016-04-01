@@ -6,14 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import tables.InterestCategoriesTable;
-import tables.InterestTable;
-import tables.LikesTable;
-import tables.LocationTable;
-import tables.RelationalRelationships;
-import tables.UserPhotosTable;
-import tables.UserTable;
-import tables.VisitTable;
+import tables.*;
 
 
 public class RelationshipController {
@@ -59,7 +52,7 @@ public class RelationshipController {
   }
 
   public ArrayList<String> getUserPhotos(User user) {
-    return UserPhotosTable.getUserPhotos(conn, user.getUsername());
+    return UserPhotosTable.getUserPhotos(conn, user);
   }
 
   public void deleteUserPhoto(User user, String photoURL) {
@@ -83,7 +76,7 @@ public class RelationshipController {
   }
 
   public boolean addInterestToUser(User user, Interest interest) {
-    return InterestTable.addInterestToUser(conn, user.getUsername(), interest);
+    return UserInterestsTable.addInterestToUser(conn, user.getUsername(), interest);
   }
 
   public void createVisit(User visitor, User visited) {
