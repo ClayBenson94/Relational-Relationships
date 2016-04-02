@@ -68,7 +68,7 @@ public class RelationshipController {
   }
 
   public ArrayList<Interest> getUserInterests(User user) {
-    return InterestTable.getUserInterests(conn, user.getUsername());
+    return UserInterestsTable.getUserInterests(conn, user.getUsername());
   }
 
   public void createInterest(Interest interest) {
