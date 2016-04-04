@@ -59,12 +59,12 @@ public class InterestCategoriesTable {
     return returnList;
   }
 
-  public static boolean addCSVToDB(Connection conn, String filePath) {
+  public static boolean populateFromCSV(Connection conn) {
 
     CSVHelper reader = new CSVHelper();
-    String categoryToAdd = "";
+    String categoryToAdd;
 
-    reader.openCSV(filePath);
+    reader.openCSV("resources/interestcategories.csv");
     while (reader.readRow()) {
       categoryToAdd = reader.currentRow.get(0);
       try {
