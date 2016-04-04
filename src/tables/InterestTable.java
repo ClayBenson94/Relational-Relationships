@@ -56,7 +56,7 @@ public class InterestTable {
     while (reader.readRow()) {
         System.out.println(reader.currentRow);
         try {
-            String query = "INSERT INTO interest"
+            String query = "INSERT INTO interests "
                     + "VALUES (\'" + reader.currentRow.get(0)
                     + "\', \'" + reader.currentRow.get(1) + "\', \'" + reader.currentRow.get(2) + "\');";
             Statement stmt = conn.createStatement();
