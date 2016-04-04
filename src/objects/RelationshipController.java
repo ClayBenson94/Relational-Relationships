@@ -106,6 +106,11 @@ public class RelationshipController {
       conn = relationalRelationships.getConnection();
 
       try {
+
+          //CLAYS TEST
+          InterestCategoriesTable.createInterestCategoriesTable(conn);
+          InterestCategoriesTable.addCSVToDB(conn, "resources/interestcategories.csv");
+
           Statement stmt = relationalRelationships.getConnection().createStatement();
           ResultSet resultSet = stmt.executeQuery("select * from user;");
 

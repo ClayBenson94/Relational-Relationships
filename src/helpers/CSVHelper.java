@@ -11,24 +11,29 @@ import java.util.Scanner;
  */
 public class CSVHelper{
 
-    Scanner scanner;
+    private Scanner scanner;
+    public ArrayList<String> currentRow;
 
-    public CSVHelper() {
-        //Empty?
+    public void openCSV(String filePath) {
+        try {
+            scanner = new Scanner(new File(filePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void openCSV(String filePath) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File(filePath));
-    }
-
-    public ArrayList<String> readRow() {
+    public boolean readRow() {
         ArrayList<String> returnList = new ArrayList<>();
         String[] splitList;
-        if (scanner.hasNext()){
+        boolean success;
+        success = scanner.hasNext();
+        if (success){
             splitList = scanner.next().split(",");
-            returnList = new ArrayList<String>(Arrays.asList(splitList));
+            returnList = new ArrayList<>(Arrays.asList(splitList));
         }
-        return returnList;
+        currentRow = returnList;
+        return success;
     }
 
     public void closeCSV() {

@@ -5,12 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import helpers.CSVHelper;
 
 public class InterestCategoriesTable {
 
   public static void createInterestCategoriesTable(Connection conn) {
     try {
-      String query = "CREATE TABLE interest_categories("
+      String query = "DROP TABLE IF EXISTS interest_categories; CREATE TABLE interest_categories("
         + "category_name VARCHAR(20),"
         + "PRIMARY KEY (category_name),"
         + ");";
@@ -56,6 +57,29 @@ public class InterestCategoriesTable {
       e.printStackTrace();
     }
     return returnList;
+  }
+
+  public static boolean addCSVToDB(Connection conn, String filePath) {
+
+    CSVHelper reader = new CSVHelper();
+    String categoryToAdd = "";
+
+    reader.openCSV(filePath);
+    while (reader.readRow()) {
+      categoryToAdd = reader.currentRow.get(0);
+      try {
+        String query = "INSERT INTO interest_categories "
+                + "(category_name) VALUES (\'" + categoryToAdd
+                + "\');";
+        Statement stmt = conn.createStatement();
+        stmt.execute(query);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    reader.closeCSV();
+
+    return true;
   }
 
 }
