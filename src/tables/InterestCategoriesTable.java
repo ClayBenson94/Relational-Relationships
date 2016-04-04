@@ -11,20 +11,11 @@ import helpers.SQLHelper;
 public class InterestCategoriesTable {
 
   public static void createInterestCategoriesTable(Connection conn) {
-    try {
-      String query = "DROP TABLE IF EXISTS interest_categories; CREATE TABLE interest_categories("
+     String query = "DROP TABLE IF EXISTS interest_categories; CREATE TABLE interest_categories("
         + "category_name VARCHAR(20),"
         + "PRIMARY KEY (category_name),"
         + ");";
-
-      /**
-       * Create a query and execute
-       */
-      Statement stmt = conn.createStatement();
-      stmt.execute(query);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+     SQLHelper.execute(conn, query);
   }
 
   public static boolean addInterestCategory(Connection conn, String category) {
@@ -38,11 +29,10 @@ public class InterestCategoriesTable {
     ArrayList<String> returnList = new ArrayList<String>();
     String categoryToAdd;
 
-    try {
-      String query = "SELECT category_name FROM interest_categories;";
+    String query = "SELECT category_name FROM interest_categories;";
+    ResultSet resultSet = SQLHelper.executeQuery(conn, query);
 
-      Statement stmt = conn.createStatement();
-      ResultSet resultSet = stmt.executeQuery(query);
+    try {
       while (resultSet.next()) {
         categoryToAdd = resultSet.getString("category_name");
         returnList.add(categoryToAdd);

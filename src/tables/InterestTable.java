@@ -1,6 +1,7 @@
 package tables;
 
 import helpers.CSVHelper;
+import helpers.SQLHelper;
 import objects.Interest;
 
 import java.sql.Connection;
@@ -35,34 +36,23 @@ public class InterestTable {
     description = interest.getDescription();
     category = interest.getCategory();
 
-    try {
-      String query = "INSERT INTO interests "
-        + "VALUES (interest_name=\'" + name + "\',"
-        + "interest_desc=\'" + description + "\',"
-        + "category=\'" + category + "\'"
-        + ");";
+    String query = "INSERT INTO interests "
+            + "VALUES (interest_name=\'" + name + "\',"
+            + "interest_desc=\'" + description + "\',"
+            + "category=\'" + category + "\'"
+            + ");";
 
-      Statement stmt = conn.createStatement();
-      return stmt.execute(query);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return false;
+    return SQLHelper.execute(conn, query);
   }
   public static boolean populateFromCSV(Connection conn) {
     CSVHelper reader = new CSVHelper();
 
     reader.openCSV("resources/interests.csv");
     while (reader.readRow()) {
-        try {
-            String query = "INSERT INTO interests "
-                    + "VALUES (\'" + reader.currentRow.get(0)
-                    + "\', \'" + reader.currentRow.get(1) + "\', \'" + reader.currentRow.get(2) + "\');";
-            Statement stmt = conn.createStatement();
-            stmt.execute(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+      String query = "INSERT INTO interests "
+              + "VALUES (\'" + reader.currentRow.get(0)
+              + "\', \'" + reader.currentRow.get(1) + "\', \'" + reader.currentRow.get(2) + "\');";
+      SQLHelper.execute(conn, query);
     }
     reader.closeCSV();
 
