@@ -77,6 +77,11 @@ public class RelationalRelationships {
         UserTable.createUserTable(conn);
         UserTable.populateFromCSV(conn);
 
+        //Create the InterestCategories table and populate it with data
+        InterestCategoriesTable.createInterestCategoriesTable(conn);
+        InterestCategoriesTable.populateFromCSV(conn);
+
+        //Create the interests table and populate it with data
         InterestTable.createInterestTable(conn);
         InterestTable.populateFromCSV(conn);
     }
