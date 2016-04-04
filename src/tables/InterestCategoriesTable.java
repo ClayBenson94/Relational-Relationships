@@ -67,15 +67,7 @@ public class InterestCategoriesTable {
     reader.openCSV("resources/interestcategories.csv");
     while (reader.readRow()) {
       categoryToAdd = reader.currentRow.get(0);
-      try {
-        String query = "INSERT INTO interest_categories "
-                + "(category_name) VALUES (\'" + categoryToAdd
-                + "\');";
-        Statement stmt = conn.createStatement();
-        stmt.execute(query);
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+      addInterestCategory(conn,categoryToAdd);
     }
     reader.closeCSV();
 
