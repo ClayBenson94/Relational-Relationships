@@ -29,7 +29,7 @@ public class InterestCategoriesTable {
   public static boolean addInterestCategory(Connection conn, String category) {
     try {
       String query = "INSERT INTO interest_categories "
-        + "VALUES (category_name=\'" + category
+        + "(category_name) VALUES (\'" + category
         + "\');";
 
       Statement stmt = conn.createStatement();
