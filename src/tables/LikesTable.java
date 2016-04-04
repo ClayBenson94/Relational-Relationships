@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import helpers.CSVHelper;
 import helpers.SQLHelper;
 import objects.Like;
 import objects.User;
@@ -12,7 +13,7 @@ import objects.User;
 public class LikesTable {
 
   public static void createLikesTable(Connection conn) {
-    String query = "CREATE TABLE likes("
+    String query = "DROP TABLE if exists likes; CREATE TABLE likes("
       + "sender VARCHAR(20),"
       + "receiver VARCHAR(20),"
       + "timestamp BIGINT UNSIGNED,"
@@ -24,11 +25,11 @@ public class LikesTable {
     SQLHelper.execute(conn, query);
   }
 
-  public static void createLike(Connection conn, User sender, User receiver) {
+  public static void createLike(Connection conn, String sender, String receiver) {
     String query = "INSERT INTO likes VALUES (\'"
-      + sender.getUsername() + "\',\'"
-      + receiver.getUsername() + "\',\'"
-      + System.currentTimeMillis() + "\');";
+            + sender + "\',\'"
+            + receiver + "\',\'"
+            + System.currentTimeMillis() + "\');";
 
     SQLHelper.execute(conn, query);
   }
@@ -54,4 +55,22 @@ public class LikesTable {
     }
     return likes;
   }
+
+  public static boolean populateFromCSV(Connection conn) {
+
+    CSVHelper reader = new CSVHelper();
+    String sender, receiver;
+
+    reader.openCSV("resources/likes.csv");
+    while (reader.readRow()) {
+      sender = reader.currentRow.get(0);
+      receiver = reader.currentRow.get(1);
+
+      createLike(conn,sender,receiver);
+    }
+    reader.closeCSV();
+
+    return true;
+  }
+
 }

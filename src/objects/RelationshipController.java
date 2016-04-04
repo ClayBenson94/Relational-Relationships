@@ -63,7 +63,7 @@ public class RelationshipController {
   }
 
   public void createLike(User sender, User receiver) {
-    LikesTable.createLike(conn, sender, receiver);
+    LikesTable.createLike(conn, sender.getUsername(), receiver.getUsername());
   }
 
   public ArrayList<String> getUserPhotos(User user) {
