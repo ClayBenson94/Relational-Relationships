@@ -10,7 +10,7 @@ import helpers.SQLHelper;
 public class InterestCategoriesTable {
 
   public static void createInterestCategoriesTable(Connection conn) {
-     String query = "DROP TABLE IF EXISTS interest_categories; CREATE TABLE interest_categories("
+     String query = "CREATE TABLE interest_categories("
         + "category_name VARCHAR(20),"
         + "PRIMARY KEY (category_name),"
         + ");";

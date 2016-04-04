@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class LocationTable {
 
   public static void createLocationTable(Connection conn) {
-      String query = "DROP TABLE IF EXISTS location; CREATE TABLE location("
+      String query = "CREATE TABLE location("
         + "zip_code int(5) PRIMARY KEY ,"
         + "city VARCHAR(16),"
         + "state VARCHAR(2),"

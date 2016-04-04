@@ -9,7 +9,7 @@ import java.sql.Connection;
 public class InterestTable {
 
   public static void createInterestTable(Connection conn) {
-    String query = "DROP TABLE IF EXISTS interests;CREATE TABLE interests("
+    String query = "CREATE TABLE interests("
             + "interest_name VARCHAR(20),"
             + "PRIMARY KEY (interest_name),"
             + "interest_desc VARCHAR(200),"

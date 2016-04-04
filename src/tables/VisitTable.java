@@ -13,8 +13,7 @@ import java.util.ArrayList;
 public class VisitTable {
 
   public static void createVisitTable(Connection conn) {
-    String query = "DROP TABLE if exists visit;"
-      + "CREATE TABLE visit("
+    String query = "CREATE TABLE visit("
       + "visited VARCHAR(20),"
       + "visitor VARCHAR(20),"
       + "timestamp BIGINT UNSIGNED,"

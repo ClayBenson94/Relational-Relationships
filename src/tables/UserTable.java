@@ -16,7 +16,7 @@ import objects.User;
 public class UserTable {
 
   public static void createUserTable(Connection conn) {
-    String query = "DROP TABLE IF EXISTS user; CREATE TABLE user("
+    String query = "CREATE TABLE user("
       + "username VARCHAR(20),"
       + "password VARCHAR(32),"
       + "name VARCHAR(255),"

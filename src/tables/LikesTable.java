@@ -13,7 +13,7 @@ import objects.User;
 public class LikesTable {
 
   public static void createLikesTable(Connection conn) {
-    String query = "DROP TABLE if exists likes; CREATE TABLE likes("
+    String query = "CREATE TABLE likes("
       + "sender VARCHAR(20),"
       + "receiver VARCHAR(20),"
       + "timestamp BIGINT UNSIGNED,"

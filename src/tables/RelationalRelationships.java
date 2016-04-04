@@ -1,5 +1,6 @@
 package tables;
 
+import helpers.SQLHelper;
 import objects.Visit;
 
 import java.sql.*;
@@ -61,6 +62,11 @@ public class RelationalRelationships {
     public void createDB() {
         String user = "relations";
         String password = "password";
+
+        //http://h2database.com/html/grammar.html#drop_all_objects
+        //Have to create the conn object twice, because technically it's dropped by this command
+        createConnection(user, password);
+        SQLHelper.execute(conn, "DROP ALL OBJECTS;");
 
         //Create the database connections, basically makes the database
         createConnection(user, password);
