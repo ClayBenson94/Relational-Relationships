@@ -1,5 +1,6 @@
 package tables;
 
+import helpers.CSVHelper;
 import objects.Interest;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ public class InterestTable {
 
   public static void createInterestTable(Connection conn) {
     try {
-      String query = "CREATE TABLE interests("
+      String query = "DROP TABLE IF EXISTS interests;CREATE TABLE interests("
         + "interest_name VARCHAR(20),"
         + "PRIMARY KEY (interest_name),"
         + "interest_desc VARCHAR(200),"
@@ -48,4 +49,24 @@ public class InterestTable {
     }
     return false;
   }
+  public static boolean populateFromCSV(Connection conn) {
+    CSVHelper reader = new CSVHelper();
+
+    reader.openCSV("resources/interests.csv");
+    while (reader.readRow()) {
+        System.out.println(reader.currentRow);
+        try {
+            String query = "INSERT INTO interest"
+                    + "VALUES (\'" + reader.currentRow.get(0)
+                    + "\', \'" + reader.currentRow.get(1) + "\', \'" + reader.currentRow.get(2) + "\');";
+            Statement stmt = conn.createStatement();
+            stmt.execute(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    reader.closeCSV();
+
+    return true;
+    }
 }

@@ -1,5 +1,7 @@
 package tables;
 
+import objects.Interest;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -74,5 +76,8 @@ public class RelationalRelationships {
         //Create User table and populate it with data
         UserTable.createUserTable(conn);
         UserTable.populateFromCSV(conn);
+
+        InterestTable.createInterestTable(conn);
+        InterestTable.populateFromCSV(conn);
     }
 }
