@@ -54,7 +54,6 @@ public class InterestTable {
 
     reader.openCSV("resources/interests.csv");
     while (reader.readRow()) {
-        System.out.println(reader.currentRow);
         try {
             String query = "INSERT INTO interest"
                     + "VALUES (\'" + reader.currentRow.get(0)

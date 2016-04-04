@@ -26,15 +26,10 @@ public class CSVHelper{
     public boolean readRow() {
         ArrayList<String> returnList = new ArrayList<>();
         String[] splitList;
-//        String debug = null;
         boolean success;
         success = scanner.hasNextLine();
         if (success){
-//            debug = scanner.nextLine();
-//            System.out.println(debug);
             splitList = scanner.nextLine().split(",");
-//            splitList = debug.split(",");
-            System.out.println(Arrays.toString(splitList));
             returnList = new ArrayList<>(Arrays.asList(splitList));
         }
         currentRow = returnList;
