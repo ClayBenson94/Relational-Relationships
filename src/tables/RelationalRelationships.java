@@ -1,9 +1,6 @@
 package tables;
 
-import objects.Interest;
-
 import java.sql.*;
-import java.util.ArrayList;
 
 public class RelationalRelationships {
 
