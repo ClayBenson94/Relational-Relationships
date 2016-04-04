@@ -3,45 +3,34 @@ package tables;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
+import helpers.SQLHelper;
 import objects.Like;
 import objects.User;
 
 public class LikesTable {
 
   public static void createLikesTable(Connection conn) {
-    try {
-      String query = "CREATE TABLE likes("
-        + "sender VARCHAR(20),"
-        + "receiver VARCHAR(20),"
-        + "timestamp BIGINT UNSIGNED,"
-        + "PRIMARY KEY (sender, receiver),"
-        + "FOREIGN KEY (sender) REFERENCES user(username),"
-        + "FOREIGN KEY (receiver) REFERENCES user(username)"
-        + ");";
+    String query = "CREATE TABLE likes("
+      + "sender VARCHAR(20),"
+      + "receiver VARCHAR(20),"
+      + "timestamp BIGINT UNSIGNED,"
+      + "PRIMARY KEY (sender, receiver),"
+      + "FOREIGN KEY (sender) REFERENCES user(username),"
+      + "FOREIGN KEY (receiver) REFERENCES user(username)"
+      + ");";
 
-      Statement stmt = conn.createStatement();
-      stmt.execute(query);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    SQLHelper.execute(conn, query);
   }
 
   public static void createLike(Connection conn, User sender, User receiver) {
-    try {
-      String query = "INSERT INTO likes VALUES (\'"
-        + sender.getUsername() + "\',\'"
-        + receiver.getUsername() + "\',\'"
-        + System.currentTimeMillis() + "\');";
+    String query = "INSERT INTO likes VALUES (\'"
+      + sender.getUsername() + "\',\'"
+      + receiver.getUsername() + "\',\'"
+      + System.currentTimeMillis() + "\');";
 
-
-      Statement stmt = conn.createStatement();
-      stmt.execute(query);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    SQLHelper.execute(conn, query);
   }
 
   /**
@@ -54,8 +43,7 @@ public class LikesTable {
     ArrayList<Like> likes = new ArrayList<Like>();
     try {
       String query = "SELECT sender, timestamp FROM likes WHERE receiver=\'" + username + "\';";
-      Statement stmt = conn.createStatement();
-      ResultSet resultSet = stmt.executeQuery(query);
+      ResultSet resultSet = SQLHelper.executeQuery(conn, query);
 
       while (resultSet.next()){
         Like like = new Like(resultSet.getString("sender"), resultSet.getLong("timestamp"));

@@ -101,26 +101,27 @@ public class RelationshipController {
   //private stack visitedPages
 
   public static void main(String args[]) throws SQLException {
-      RelationalRelationships relationalRelationships = new RelationalRelationships();
-      relationalRelationships.createDB();
-      conn = relationalRelationships.getConnection();
+    RelationalRelationships relationalRelationships = new RelationalRelationships();
+    relationalRelationships.createDB();
+    conn = relationalRelationships.getConnection();
 
-      try {
-          Statement stmt = conn.createStatement();
-          ResultSet resultSet = stmt.executeQuery("select * from user;");
+    try {
+      Statement stmt = conn.createStatement();
+      ResultSet resultSet = stmt.executeQuery("select * from user;");
 
-          ResultSetMetaData rsmd = resultSet.getMetaData();
-          int columnsNumber = rsmd.getColumnCount();
-          while (resultSet.next()) {
-              for (int i = 1; i <= columnsNumber; i++) {
-                  if (i > 1) System.out.print(",  ");
-                  String columnValue = resultSet.getString(i);
-                  System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
-              }
-              System.out.println("");
+      ResultSetMetaData rsmd = resultSet.getMetaData();
+      int columnsNumber = rsmd.getColumnCount();
+      while (resultSet.next()) {
+          for (int i = 1; i <= columnsNumber; i++) {
+              if (i > 1) System.out.print(",  ");
+              String columnValue = resultSet.getString(i);
+              System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
           }
-      } catch(SQLException e) {
-              e.printStackTrace();
+          System.out.println("");
       }
+    } catch(SQLException e) {
+          e.printStackTrace();
+    }
+    relationalRelationships.closeConnection();
     }
 }

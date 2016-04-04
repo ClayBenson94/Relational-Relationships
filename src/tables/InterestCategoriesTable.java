@@ -3,7 +3,6 @@ package tables;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import helpers.CSVHelper;
 import helpers.SQLHelper;
@@ -33,14 +32,14 @@ public class InterestCategoriesTable {
     ResultSet resultSet = SQLHelper.executeQuery(conn, query);
 
     try {
-      while (resultSet.next()) {
-        categoryToAdd = resultSet.getString("category_name");
-        returnList.add(categoryToAdd);
-      }
-    } catch (SQLException e) {
+        while (resultSet.next()) {
+          categoryToAdd = resultSet.getString("category_name");
+          returnList.add(categoryToAdd);
+        }
+    } catch (SQLException | NullPointerException e) {
       e.printStackTrace();
     }
-    return returnList;
+      return returnList;
   }
 
   public static boolean populateFromCSV(Connection conn) {

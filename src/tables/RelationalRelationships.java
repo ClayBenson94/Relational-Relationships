@@ -27,10 +27,7 @@ public class RelationalRelationships {
             conn = DriverManager.getConnection(url,
                                                user,
                                                password);
-        } catch (SQLException e) {
-            //You should handle this better
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             //You should handle this better
             e.printStackTrace();
         }

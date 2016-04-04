@@ -5,29 +5,19 @@ import helpers.SQLHelper;
 import objects.Interest;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class InterestTable {
 
   public static void createInterestTable(Connection conn) {
-    try {
-      String query = "DROP TABLE IF EXISTS interests;CREATE TABLE interests("
-        + "interest_name VARCHAR(20),"
-        + "PRIMARY KEY (interest_name),"
-        + "interest_desc VARCHAR(200),"
-        + "category VARCHAR(20),"
-        + "FOREIGN KEY (category) REFERENCES interest_categories(category_name)"
-        + ");";
+    String query = "DROP TABLE IF EXISTS interests;CREATE TABLE interests("
+            + "interest_name VARCHAR(20),"
+            + "PRIMARY KEY (interest_name),"
+            + "interest_desc VARCHAR(200),"
+            + "category VARCHAR(20),"
+            + "FOREIGN KEY (category) REFERENCES interest_categories(category_name)"
+            + ");";
 
-      /**
-       * Create a query and execute
-       */
-      Statement stmt = conn.createStatement();
-      stmt.execute(query);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    SQLHelper.execute(conn, query);
   }
 
   public static boolean createInterest(Connection conn, Interest interest) {

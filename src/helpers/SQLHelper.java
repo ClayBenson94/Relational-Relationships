@@ -25,11 +25,14 @@ public class SQLHelper {
     public static ResultSet executeQuery(Connection conn, String query) {
         try {
             Statement stmt = conn.createStatement();
-            ResultSet resultSet = stmt.executeQuery(query);
-            return resultSet;
+            return stmt.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        ResultSet nullSet;
+        nullSet = null;
+
+        //noinspection ConstantConditions
+        return nullSet;
     }
 }
