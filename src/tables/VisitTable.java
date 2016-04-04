@@ -1,5 +1,6 @@
 package tables;
 
+import helpers.CSVHelper;
 import helpers.SQLHelper;
 import objects.User;
 import objects.Visit;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class VisitTable {
 
   public static void createVisitTable(Connection conn) {
-    String query = "DROP TABLE visit;"
+    String query = "DROP TABLE if exists visit;"
       + "CREATE TABLE visit("
       + "visited VARCHAR(20),"
       + "visitor VARCHAR(20),"
@@ -26,7 +27,7 @@ public class VisitTable {
   }
 
   public static void createVisit(Connection conn, String visited, String visitor) {
-    String query = "INSERT INTO visit VALUES (" + visited + ", " + visitor + ", " + System.currentTimeMillis() + ");";
+    String query = "INSERT INTO visit VALUES (\'" + visited + "\', \'" + visitor + "\', " + System.currentTimeMillis() + ");";
 
     SQLHelper.execute(conn, query);
   }
@@ -46,5 +47,22 @@ public class VisitTable {
         e.printStackTrace();
     }
     return userVisits;
+    }
+
+    public static boolean populateFromCSV(Connection conn) {
+
+        CSVHelper reader = new CSVHelper();
+        String visited, visitor;
+
+        reader.openCSV("resources/visits.csv");
+        while (reader.readRow()) {
+            visited = reader.currentRow.get(0);
+            visitor = reader.currentRow.get(1);
+
+            createVisit(conn,visited,visitor);
+        }
+        reader.closeCSV();
+
+        return true;
     }
 }

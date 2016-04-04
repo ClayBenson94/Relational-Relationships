@@ -1,5 +1,7 @@
 package tables;
 
+import objects.Visit;
+
 import java.sql.*;
 
 public class RelationalRelationships {
@@ -78,5 +80,9 @@ public class RelationalRelationships {
         //Create the interests table and populate it with data
         InterestTable.createInterestTable(conn);
         InterestTable.populateFromCSV(conn);
+
+        //Create the interests table and populate it with data
+        VisitTable.createVisitTable(conn);
+        VisitTable.populateFromCSV(conn);
     }
 }
