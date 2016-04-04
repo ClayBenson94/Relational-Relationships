@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import helpers.CSVHelper;
+import helpers.SQLHelper;
 
 public class InterestCategoriesTable {
 
@@ -27,17 +28,10 @@ public class InterestCategoriesTable {
   }
 
   public static boolean addInterestCategory(Connection conn, String category) {
-    try {
-      String query = "INSERT INTO interest_categories "
-        + "(category_name) VALUES (\'" + category
-        + "\');";
-
-      Statement stmt = conn.createStatement();
-      return stmt.execute(query);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return false;
+    String query = "INSERT INTO interest_categories "
+            + "(category_name) VALUES (\'" + category
+            + "\');";
+    return SQLHelper.execute(conn, query);
   }
 
   public static ArrayList<String> getInterestCategoryNames(Connection conn) {
