@@ -28,7 +28,10 @@ public class RelationalRelationships {
             conn = DriverManager.getConnection(url,
                                                user,
                                                password);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
+            //You should handle this better
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             //You should handle this better
             e.printStackTrace();
         }
@@ -67,5 +70,9 @@ public class RelationalRelationships {
         //Create location table and populate it with data
         LocationTable.createLocationTable(conn);
         LocationTable.populateFromCSV(conn);
+
+        //Create User table and populate it with data
+        UserTable.createUserTable(conn);
+        UserTable.populateFromCSV(conn);
     }
 }

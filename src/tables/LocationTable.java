@@ -18,7 +18,7 @@ public class LocationTable {
 
   public static void createLocationTable(Connection conn) {
     try {
-      String query = "DROP TABLE location; CREATE TABLE location("
+      String query = "DROP TABLE IF EXISTS location; CREATE TABLE location("
         + "zip_code int(5) PRIMARY KEY ,"
         + "city VARCHAR(16),"
         + "state VARCHAR(2),"
@@ -68,7 +68,7 @@ public class LocationTable {
 
       for(int i = 0; i < locations.size(); i++){
           Location loc = locations.get(i);
-          sb.append(String.format("(%d,%s,%s)",
+          sb.append(String.format("(%d,'%s','%s')",
                   loc.getZipCode(), loc.getCity(), loc.getState()));
           if( i != locations.size()-1){
               sb.append(",");

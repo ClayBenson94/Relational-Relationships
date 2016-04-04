@@ -51,7 +51,7 @@ public class LikesTable {
    * @return An array list of usernames that like you
      */
   public static ArrayList<Like> getLikesForUser(Connection conn, String username) {
-    ArrayList<Like> likes = new ArrayList<>();
+    ArrayList<Like> likes = new ArrayList<Like>();
     try {
       String query = "SELECT sender, timestamp FROM likes WHERE receiver=\'" + username + "\';";
       Statement stmt = conn.createStatement();

@@ -45,7 +45,7 @@ public class VisitTable {
   }
 
   public ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
-    ArrayList<Visit> userVisits = new ArrayList<>();
+    ArrayList<Visit> userVisits = new ArrayList<Visit>();
     try {
       String query = "SELECT * FROM visit WHERE visitor = \'" + user.getUsername() + "\';";
 

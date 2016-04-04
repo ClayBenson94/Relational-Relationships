@@ -57,7 +57,7 @@ public class UserPhotosTable {
 
   public static ArrayList<String> getUserPhotos(Connection conn, User user) {
 
-    ArrayList<String> userPhotos = new ArrayList<>();
+    ArrayList<String> userPhotos = new ArrayList<String>();
 
     try {
       String query = "SELECT * FROM user_photos "

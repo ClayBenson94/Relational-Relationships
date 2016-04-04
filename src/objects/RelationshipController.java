@@ -1,9 +1,6 @@
 package objects;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 import tables.*;
@@ -20,11 +17,29 @@ public class RelationshipController {
     }
 
   public enum Sexuality {
-    Heterosexual, Homosexual
+    Heterosexual, Homosexual, Something
+  }
+
+  public static Sexuality getSexuality(String sexualityStr){
+    for (Sexuality sexuality : Sexuality.values()) {
+        if (sexuality.toString().toLowerCase().equals(sexualityStr.toLowerCase())){
+            return sexuality;
+        }
+    }
+    return Sexuality.Something;
   }
 
   public enum Gender {
-    Male, Female
+    Male, Female, Something
+  }
+
+  public static Gender getGender(String genderStr){
+    for (Gender gender : Gender.values()) {
+        if (gender.toString().toLowerCase().equals(genderStr.toLowerCase())){
+            return gender;
+        }
+    }
+    return Gender.Something;
   }
 
   public User getActiveUser() {
@@ -92,13 +107,17 @@ public class RelationshipController {
 
       try {
           Statement stmt = relationalRelationships.getConnection().createStatement();
-          ResultSet resultSet = stmt.executeQuery("select * from location;");
+          ResultSet resultSet = stmt.executeQuery("select * from user;");
 
+          ResultSetMetaData rsmd = resultSet.getMetaData();
+          int columnsNumber = rsmd.getColumnCount();
           while (resultSet.next()) {
-              // 0 is the username, 1 is the photo url
-              System.out.println(resultSet.getString("zip_code") + ", " + resultSet.getString("State") + ", " +
-                      resultSet.getString("City"));
-
+              for (int i = 1; i <= columnsNumber; i++) {
+                  if (i > 1) System.out.print(",  ");
+                  String columnValue = resultSet.getString(i);
+                  System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
+              }
+              System.out.println("");
           }
       } catch(SQLException e) {
               e.printStackTrace();
