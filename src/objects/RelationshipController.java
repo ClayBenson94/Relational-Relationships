@@ -106,7 +106,7 @@ public class RelationshipController {
       conn = relationalRelationships.getConnection();
 
       try {
-          Statement stmt = relationalRelationships.getConnection().createStatement();
+          Statement stmt = conn.createStatement();
           ResultSet resultSet = stmt.executeQuery("select * from user;");
 
           ResultSetMetaData rsmd = resultSet.getMetaData();
