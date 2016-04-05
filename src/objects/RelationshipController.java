@@ -96,7 +96,7 @@ public class RelationshipController {
 
   public void createVisit(User visitor, User visited) {
     VisitTable.createVisit(conn, visitor.getUsername(), visited.getUsername());
-  }+
+  }
 
   //private stack visitedPages
 
