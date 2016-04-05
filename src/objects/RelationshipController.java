@@ -2,8 +2,14 @@ package objects;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Stack;
 
+import oracle.jvm.hotspot.jfr.JFR;
 import tables.*;
+
+import ui.*;
+
+import javax.swing.*;
 
 
 public class RelationshipController {
@@ -11,6 +17,12 @@ public class RelationshipController {
   private static Connection conn;
   private User activeUser;
   private User visitingUser;
+
+  private Stack<JFrame> visitedPages;
+
+  public RelationshipController() {
+      visitedPages = new Stack<JFrame>();
+  }
 
   public static Connection getConnection(){
         return conn;
@@ -98,7 +110,26 @@ public class RelationshipController {
     VisitTable.createVisit(conn, visitor.getUsername(), visited.getUsername());
   }
 
-  //private stack visitedPages
+  //UI methods
+  public void startUI() {
+      visitedPages.push(LoginView.init(this, null));
+  }
+
+  public void login(String username, String password) {
+      //TODO login
+      //System.out.println("Open Login Page");
+
+      //page transition
+      JFrame nextPage = LoginView.init(this, visitedPages.peek());
+      visitedPages.peek().setVisible(false);
+      visitedPages.push(nextPage);
+  }
+
+  public void register(String username, String password) {
+      //TODO register
+      //System.out.println("Open Register Page");
+  }
+
 
   public static void main(String args[]) throws SQLException {
     RelationalRelationships relationalRelationships = new RelationalRelationships();
@@ -123,5 +154,10 @@ public class RelationshipController {
           e.printStackTrace();
     }
     relationalRelationships.closeConnection();
+
+    //UI
+    RelationshipController controllerInstance = new RelationshipController();
+    controllerInstance.startUI();
+
     }
 }
