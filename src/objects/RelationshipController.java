@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import oracle.jvm.hotspot.jfr.JFR;
 import tables.*;
 
 import ui.*;
