@@ -61,7 +61,7 @@ public class LikesTable {
     CSVHelper reader = new CSVHelper();
     String sender, receiver;
 
-    reader.openCSV("resources/likes.csv");
+    reader.openCSV("resources/csv/likes.csv");
     while (reader.readRow()) {
       sender = reader.currentRow.get(0);
       receiver = reader.currentRow.get(1);

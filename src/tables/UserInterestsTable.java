@@ -67,7 +67,7 @@ public class UserInterestsTable {
   public static void populateFromCSV(Connection conn){
     Set<String> userInterests = new HashSet<>();
     CSVHelper reader = new CSVHelper();
-    reader.openCSV("resources/userinterests.csv");
+    reader.openCSV("resources/csv/userinterests.csv");
     StringBuilder sb = new StringBuilder();
     sb.append("INSERT INTO user_interests (username, interest) VALUES ");
 
