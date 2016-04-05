@@ -96,13 +96,18 @@ public class RelationshipController {
 
   public void createVisit(User visitor, User visited) {
     VisitTable.createVisit(conn, visitor.getUsername(), visited.getUsername());
-  }
+  }+
 
   //private stack visitedPages
 
   public static void main(String args[]) throws SQLException {
     RelationalRelationships relationalRelationships = new RelationalRelationships();
-    relationalRelationships.createDB();
+
+    relationalRelationships.createConnection();
+    for (String argument : args) {
+      if (argument.equals("cleanDB")) relationalRelationships.createDB();
+    }
+
     conn = relationalRelationships.getConnection();
 
     try {
