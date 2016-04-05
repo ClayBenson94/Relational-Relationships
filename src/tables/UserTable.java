@@ -2,6 +2,8 @@ package tables;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,9 +76,73 @@ public class UserTable {
     SQLHelper.execute(conn, query);
   }
 
-  public static ArrayList<User> search(String zipCode) {
-    //TODO Implement search
-    return new ArrayList<User>();
+  public static ArrayList<User> search(Connection conn, String zipCode) {
+    ArrayList<User> returnList = new ArrayList<>();
+    if (!zipCode.equals("")) {
+
+      User curUser;
+
+      String query = "SELECT * FROM user WHERE location = " + zipCode + ";";
+      ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+      try {
+        while (resultSet.next()) {
+
+          RelationshipController.Gender myGender;
+          RelationshipController.Sexuality mySexuality, preferredSexuality;
+
+          //Maybe make these switch statements
+          if (resultSet.getString("gender").equals("Male")) {
+            myGender = RelationshipController.Gender.Male;
+          } else {
+            myGender = RelationshipController.Gender.Female;
+          }
+
+          if (resultSet.getString("sexuality").equals("Heterosexual")) {
+            mySexuality = RelationshipController.Sexuality.Heterosexual;
+          } else {
+            mySexuality = RelationshipController.Sexuality.Homosexual;
+          }
+
+          if (resultSet.getString("preferred_sexuality").equals("Heterosexual")) {
+            preferredSexuality = RelationshipController.Sexuality.Heterosexual;
+          } else {
+            preferredSexuality = RelationshipController.Sexuality.Homosexual;
+          }
+
+
+          DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+          java.util.Date date = null;
+          try {
+            date = format.parse(resultSet.getString("dob"));
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+          Date sqlDate = null;
+          if (date != null) {
+            sqlDate = new Date(date.getTime());
+          }
+
+          curUser = new User(resultSet.getString("username"),
+                  resultSet.getString("password"),
+                  resultSet.getString("name"),
+                  resultSet.getString("bio"),
+                  resultSet.getString("email"),
+                  sqlDate,
+                  myGender,
+                  mySexuality,
+                  resultSet.getInt("location"),
+                  resultSet.getInt("preferred_age_min"),
+                  resultSet.getInt("preferred_age_max"),
+                  preferredSexuality
+          );
+          returnList.add(curUser);
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      System.out.println(returnList);
+    }
+    return returnList;
   }
 
   /**
