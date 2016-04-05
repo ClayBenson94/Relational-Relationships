@@ -113,7 +113,7 @@ public class RelationshipController {
     conn = relationalRelationships.getConnection();
 
     //Check if it's a first time run (Does USERS table exist?)
-    ResultSet tableResults = SQLHelper.executeQuery(conn,"SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='USERS';");
+    ResultSet tableResults = SQLHelper.executeQuery(conn,"SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='USER';");
     if (tableResults.next()) {
       if (tableResults.getInt("count(TABLE_NAME)") != 1) {
         relationalRelationships.createPopulatedTables();
