@@ -94,5 +94,9 @@ public class RelationalRelationships {
         //Create the likes table and populate it with data
         LikesTable.createLikesTable(conn);
         LikesTable.populateFromCSV(conn);
+
+        //Create the user photos table and populate it with data
+        UserPhotosTable.createUserPhotosTable(conn);
+        UserPhotosTable.populateFromCSV(conn);
     }
 }
