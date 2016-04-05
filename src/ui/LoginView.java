@@ -116,4 +116,5 @@ public class LoginView {
     public JComponent $$$getRootComponent$$$() {
         return basePane;
     }
+
 }
