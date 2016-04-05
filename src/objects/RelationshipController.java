@@ -3,6 +3,7 @@ package objects;
 import java.sql.*;
 import java.util.ArrayList;
 
+import helpers.SQLHelper;
 import tables.*;
 
 
@@ -103,12 +104,21 @@ public class RelationshipController {
   public static void main(String args[]) throws SQLException {
     RelationalRelationships relationalRelationships = new RelationalRelationships();
 
+    //Check Arguments
     relationalRelationships.createConnection();
     for (String argument : args) {
-      if (argument.equals("cleanDB")) relationalRelationships.createPopulatedTables();
+      if (argument.equals("genDB")) relationalRelationships.createPopulatedTables();
     }
 
     conn = relationalRelationships.getConnection();
+
+    //Check if it's a first time run (Does USERS table exist?)
+    ResultSet tableResults = SQLHelper.executeQuery(conn,"SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='USERS';");
+    if (tableResults.next()) {
+      if (tableResults.getInt("count(TABLE_NAME)") != 1) {
+        relationalRelationships.createPopulatedTables();
+      }
+    }
 
     try {
       Statement stmt = conn.createStatement();
