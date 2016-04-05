@@ -59,7 +59,7 @@ public class RelationalRelationships {
     /**
      * Starts and runs the database
      */
-    public void createDB() {
+    public void createPopulatedTables() {
 
         //http://h2database.com/html/grammar.html#drop_all_objects
         //Have to create the conn object twice, because technically it's dropped by this command

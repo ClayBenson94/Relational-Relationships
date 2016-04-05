@@ -105,7 +105,7 @@ public class RelationshipController {
 
     relationalRelationships.createConnection();
     for (String argument : args) {
-      if (argument.equals("cleanDB")) relationalRelationships.createDB();
+      if (argument.equals("cleanDB")) relationalRelationships.createPopulatedTables();
     }
 
     conn = relationalRelationships.getConnection();
