@@ -82,7 +82,7 @@ public class UserTable {
     ArrayList<User> users = new ArrayList<User>();
 
     CSVHelper reader = new CSVHelper();
-    reader.openCSV("resources/users.csv");
+    reader.openCSV("resources/csv/users.csv");
     while (reader.readRow()) {
       DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
       java.util.Date date = null;

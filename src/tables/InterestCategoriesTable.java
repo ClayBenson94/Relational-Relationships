@@ -47,7 +47,7 @@ public class InterestCategoriesTable {
     CSVHelper reader = new CSVHelper();
     String categoryToAdd;
 
-    reader.openCSV("resources/interestcategories.csv");
+    reader.openCSV("resources/csv/interestcategories.csv");
     while (reader.readRow()) {
       categoryToAdd = reader.currentRow.get(0);
       addInterestCategory(conn,categoryToAdd);

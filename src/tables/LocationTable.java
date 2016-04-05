@@ -36,7 +36,7 @@ public class LocationTable {
 
     CSVHelper reader = new CSVHelper();
 
-    reader.openCSV("resources/cities.csv");
+    reader.openCSV("resources/csv/cities.csv");
     while (reader.readRow()) {
       locations.add(new Location(Integer.parseInt(reader.currentRow.get(0)), reader.currentRow.get(1),
               reader.currentRow.get(2)));
