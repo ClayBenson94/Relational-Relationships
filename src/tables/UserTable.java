@@ -74,6 +74,11 @@ public class UserTable {
     SQLHelper.execute(conn, query);
   }
 
+  public static ArrayList<User> search(String zipCode) {
+    //TODO Implement search
+    return new ArrayList<User>();
+  }
+
   /**
    * Reads a cvs file for data and adds to the user table
    * @param conn: database connection to work with

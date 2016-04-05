@@ -146,8 +146,8 @@ public class RelationshipController {
       visitedPages.peek().setVisible(true);
   }
 
-  public ArrayList<User> search(String zipcode) {
-      return new ArrayList<User>();
+  public ArrayList<User> search(String zipCode) {
+      return UserTable.search(zipCode)
   }
 
 
