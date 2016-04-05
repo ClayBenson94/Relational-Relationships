@@ -98,5 +98,9 @@ public class RelationalRelationships {
         //Create the user interest table and populate it with data
         UserInterestsTable.createUserInterestTable(conn);
         UserInterestsTable.populateFromCSV(conn);
+
+        //Create the user photos table and populate it with data
+        UserPhotosTable.createUserPhotosTable(conn);
+        UserPhotosTable.populateFromCSV(conn);
     }
 }
