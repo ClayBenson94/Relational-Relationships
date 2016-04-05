@@ -2,10 +2,14 @@ package ui;
 
 import objects.RelationshipController;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 
 public class LoginView implements View {
@@ -14,6 +18,7 @@ public class LoginView implements View {
     private JPasswordField passwordField;
     private JTextField usernameField;
     private JPanel basePane;
+    private JLabel logo;
     private RelationshipController controller;
 
     public LoginView(RelationshipController c) {
@@ -99,5 +104,18 @@ public class LoginView implements View {
      */
     public JComponent $$$getRootComponent$$$() {
         return basePane;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        BufferedImage myPicture = null;
+        try {
+            myPicture = ImageIO.read(new File("resources/logo.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logo = new JLabel(new ImageIcon(myPicture));
+        logo.setBounds(10,10,10,10);
+        //add(logo);
     }
 }
