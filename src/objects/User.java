@@ -24,7 +24,8 @@ public class User {
     private UserPreferences userPreferences;
 
     public User(String username, String password, String name, String bio, String email, Date dob,
-                RelationshipController.Gender gender, RelationshipController.Sexuality sexuality, int location) {
+                RelationshipController.Gender gender, RelationshipController.Sexuality sexuality, int location, Integer preferredAgeMin, Integer preferredAgeMax,
+                RelationshipController.Sexuality preferredSexuality) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -34,6 +35,7 @@ public class User {
         this.gender = gender;
         this.sexuality = sexuality;
         this.location = location;
+        this.userPreferences = new UserPreferences(preferredAgeMin, preferredAgeMax, preferredSexuality);
     }
 
     public String getUsername() {

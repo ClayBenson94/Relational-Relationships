@@ -1,7 +1,9 @@
 package tables;
 
+import helpers.SQLHelper;
+import objects.Visit;
+
 import java.sql.*;
-import java.util.ArrayList;
 
 public class RelationalRelationships {
 
@@ -61,11 +63,36 @@ public class RelationalRelationships {
         String user = "relations";
         String password = "password";
 
+        //http://h2database.com/html/grammar.html#drop_all_objects
+        //Have to create the conn object twice, because technically it's dropped by this command
+        createConnection(user, password);
+        SQLHelper.execute(conn, "DROP ALL OBJECTS;");
+
         //Create the database connections, basically makes the database
         createConnection(user, password);
 
         //Create location table and populate it with data
         LocationTable.createLocationTable(conn);
         LocationTable.populateFromCSV(conn);
+
+        //Create User table and populate it with data
+        UserTable.createUserTable(conn);
+        UserTable.populateFromCSV(conn);
+
+        //Create the InterestCategories table and populate it with data
+        InterestCategoriesTable.createInterestCategoriesTable(conn);
+        InterestCategoriesTable.populateFromCSV(conn);
+
+        //Create the interests table and populate it with data
+        InterestTable.createInterestTable(conn);
+        InterestTable.populateFromCSV(conn);
+
+        //Create the visits table and populate it with data
+        VisitTable.createVisitTable(conn);
+        VisitTable.populateFromCSV(conn);
+
+        //Create the likes table and populate it with data
+        LikesTable.createLikesTable(conn);
+        LikesTable.populateFromCSV(conn);
     }
 }

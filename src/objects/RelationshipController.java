@@ -1,19 +1,9 @@
 package objects;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
-import tables.InterestCategoriesTable;
-import tables.InterestTable;
-import tables.LikesTable;
-import tables.LocationTable;
-import tables.RelationalRelationships;
-import tables.UserPhotosTable;
-import tables.UserTable;
-import tables.VisitTable;
+import tables.*;
 
 
 public class RelationshipController {
@@ -27,11 +17,29 @@ public class RelationshipController {
     }
 
   public enum Sexuality {
-    Heterosexual, Homosexual
+    Heterosexual, Homosexual, Something
+  }
+
+  public static Sexuality getSexuality(String sexualityStr){
+    for (Sexuality sexuality : Sexuality.values()) {
+        if (sexuality.toString().toLowerCase().equals(sexualityStr.toLowerCase())){
+            return sexuality;
+        }
+    }
+    return Sexuality.Something;
   }
 
   public enum Gender {
-    Male, Female
+    Male, Female, Something
+  }
+
+  public static Gender getGender(String genderStr){
+    for (Gender gender : Gender.values()) {
+        if (gender.toString().toLowerCase().equals(genderStr.toLowerCase())){
+            return gender;
+        }
+    }
+    return Gender.Something;
   }
 
   public User getActiveUser() {
@@ -50,16 +58,16 @@ public class RelationshipController {
     UserTable.addUser(conn, user);
   }
 
-  public ArrayList<User> getLikes(User user) {
-    return LikesTable.getLikesForUser(conn, user);
+  public ArrayList<Like> getLikes(User user) {
+    return LikesTable.getLikesForUser(conn, user.getUsername());
   }
 
   public void createLike(User sender, User receiver) {
-    LikesTable.createLike(conn, sender, receiver);
+    LikesTable.createLike(conn, sender.getUsername(), receiver.getUsername());
   }
 
   public ArrayList<String> getUserPhotos(User user) {
-    return UserPhotosTable.getUserPhotos(conn, user.getUsername());
+    return UserPhotosTable.getUserPhotos(conn, user);
   }
 
   public void deleteUserPhoto(User user, String photoURL) {
@@ -75,7 +83,7 @@ public class RelationshipController {
   }
 
   public ArrayList<Interest> getUserInterests(User user) {
-    return InterestTable.getUserInterests(conn, user.getUsername());
+    return UserInterestsTable.getUserInterests(conn, user.getUsername());
   }
 
   public void createInterest(Interest interest) {
@@ -83,7 +91,7 @@ public class RelationshipController {
   }
 
   public boolean addInterestToUser(User user, Interest interest) {
-    return InterestTable.addInterestToUser(conn, user.getUsername(), interest);
+    return UserInterestsTable.addInterestToUser(conn, user.getUsername(), interest);
   }
 
   public void createVisit(User visitor, User visited) {
@@ -93,22 +101,27 @@ public class RelationshipController {
   //private stack visitedPages
 
   public static void main(String args[]) throws SQLException {
-      RelationalRelationships relationalRelationships = new RelationalRelationships();
-      relationalRelationships.createDB();
-      conn = relationalRelationships.getConnection();
+    RelationalRelationships relationalRelationships = new RelationalRelationships();
+    relationalRelationships.createDB();
+    conn = relationalRelationships.getConnection();
 
-      try {
-          Statement stmt = relationalRelationships.getConnection().createStatement();
-          ResultSet resultSet = stmt.executeQuery("select * from location;");
+    try {
+      Statement stmt = conn.createStatement();
+      ResultSet resultSet = stmt.executeQuery("select * from user;");
 
-          while (resultSet.next()) {
-              // 0 is the username, 1 is the photo url
-              System.out.println(resultSet.getString("zip_code") + ", " + resultSet.getString("State") + ", " +
-                      resultSet.getString("City"));
-
+      ResultSetMetaData rsmd = resultSet.getMetaData();
+      int columnsNumber = rsmd.getColumnCount();
+      while (resultSet.next()) {
+          for (int i = 1; i <= columnsNumber; i++) {
+              if (i > 1) System.out.print(",  ");
+              String columnValue = resultSet.getString(i);
+              System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
           }
-      } catch(SQLException e) {
-              e.printStackTrace();
+          System.out.println("");
       }
+    } catch(SQLException e) {
+          e.printStackTrace();
+    }
+    relationalRelationships.closeConnection();
     }
 }
