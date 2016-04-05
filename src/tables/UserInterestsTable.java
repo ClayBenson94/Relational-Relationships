@@ -1,12 +1,23 @@
 package tables;
 
+import helpers.CSVHelper;
 import helpers.SQLHelper;
 import objects.Interest;
+import objects.RelationshipController;
+import objects.User;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+import java.util.StringJoiner;
 
 public class UserInterestsTable {
 
@@ -33,10 +44,10 @@ public class UserInterestsTable {
   }
 
   public static ArrayList<Interest> getUserInterests(Connection conn, String username) {
-    ArrayList<Interest> returnList = new ArrayList<Interest>();
+    ArrayList<Interest> returnList = new ArrayList<>();
 
     String query = "SELECT interest,category,interest_desc FROM user_interests "
-      + "inner join interests on user_interests.interest=interests.interest_name "
+      + "INNER JOIN interests ON user_interests.interest=interests.interest_name "
       + "WHERE username=\'" + username + "\';";
 
     ResultSet resultSet = SQLHelper.executeQuery(conn, query);
@@ -52,4 +63,22 @@ public class UserInterestsTable {
     }
     return returnList;
     }
+
+  public static void populateFromCSV(Connection conn){
+    Set<String> userInterests = new HashSet<>();
+    CSVHelper reader = new CSVHelper();
+    reader.openCSV("resources/userinterests.csv");
+    StringBuilder sb = new StringBuilder();
+    sb.append("INSERT INTO user_interests (username, interest) VALUES ");
+
+    while (reader.readRow()) {
+      userInterests.add(String.format("('%s','%s')", reader.currentRow.get(0), reader.currentRow.get(1)));
+    }
+    reader.closeCSV();
+
+    sb.append(String.join(",", userInterests));
+    sb.append(";");
+
+    SQLHelper.execute(conn, sb.toString());
+  }
 }
