@@ -137,7 +137,7 @@ public class RelationshipController {
     //Check Arguments
     relationalRelationships.createConnection();
     for (String argument : args) {
-      if (argument.equals("genDB")) relationalRelationships.createPopulatedTables();
+      if (argument.equals("-n")) relationalRelationships.createPopulatedTables();
     }
 
     conn = relationalRelationships.getConnection();
