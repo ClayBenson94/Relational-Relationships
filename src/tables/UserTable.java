@@ -140,9 +140,23 @@ public class UserTable {
       } catch (SQLException e) {
         e.printStackTrace();
       }
-      System.out.println(returnList);
     }
     return returnList;
+  }
+
+  public static boolean isValidLogin(Connection conn, String username, String password) {
+    String query = "SELECT password FROM user WHERE username = \'" + username+ "\';";
+    ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+
+    try {
+      if (resultSet.next()) {
+        String DBPassword = resultSet.getString("password");
+        return password.equals(DBPassword);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 
   /**

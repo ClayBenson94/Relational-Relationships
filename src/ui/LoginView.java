@@ -29,8 +29,7 @@ public class LoginView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //do login
-                controller.login(usernameField.getText(), passwordField.getPassword().toString());
-
+                controller.login(usernameField.getText(), new String(passwordField.getPassword()));
             }
         });
 
