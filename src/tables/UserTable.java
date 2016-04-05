@@ -96,13 +96,19 @@ public class UserTable {
     if (date != null) {
       sqlDate = new Date(date.getTime());
     }
-    users.add(new User(reader.currentRow.get(0), reader.currentRow.get(1), reader.currentRow.get(2),
-            reader.currentRow.get(3), reader.currentRow.get(4), sqlDate,
-            RelationshipController.getGender(reader.currentRow.get(6)),
-            RelationshipController.getSexuality(reader.currentRow.get(7)),
-            Integer.parseInt(reader.currentRow.get(8)), Integer.parseInt(reader.currentRow.get(9)),
-            Integer.parseInt(reader.currentRow.get(10)),
-            RelationshipController.getSexuality(reader.currentRow.get(11))));
+    users.add(new User(
+      reader.currentRow.get(0),
+      reader.currentRow.get(1),
+      reader.currentRow.get(2),
+      reader.currentRow.get(3),
+      reader.currentRow.get(4),
+      sqlDate,
+      RelationshipController.getGender(reader.currentRow.get(6)),
+      RelationshipController.getSexuality(reader.currentRow.get(7)),
+      Integer.parseInt(reader.currentRow.get(8)),
+      Integer.parseInt(reader.currentRow.get(9)),
+      Integer.parseInt(reader.currentRow.get(10)),
+      RelationshipController.getSexuality(reader.currentRow.get(11))));
     }
     reader.closeCSV();
 
