@@ -152,6 +152,7 @@ public class RelationshipController {
     //UI
     RelationshipController controllerInstance = new RelationshipController();
     controllerInstance.startUI();
-    relationalRelationships.closeConnection();
+    //TODO close connection correclty
+    //relationalRelationships.closeConnection();
     }
 }
