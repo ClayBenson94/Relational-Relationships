@@ -53,11 +53,12 @@ public class LoginView {
         return frame;
     }
 
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
         BufferedImage myPicture = null;
         try {
-            myPicture = ImageIO.read(new File("resources/logo.png"));
+            myPicture = ImageIO.read(new File("resources/images/logo.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,4 +116,5 @@ public class LoginView {
     public JComponent $$$getRootComponent$$$() {
         return basePane;
     }
+
 }
