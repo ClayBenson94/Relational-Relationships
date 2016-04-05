@@ -11,12 +11,12 @@ public class RelationalRelationships {
     private Connection conn;
 
     /**
-     * Create a database connection with the given params
-     * @param user: user name for the owner of the database
-     * @param password: password of the database owner
+     * Create a database connection
      */
-    private void createConnection(String user,
-                                 String password){
+    public void createConnection(){
+        String user = "relations";
+        String password = "password";
+
         try {
 
             //This needs to be on the front of your location
@@ -38,7 +38,7 @@ public class RelationalRelationships {
 
     /**
      * just returns the connection
-     * @return: returns class level connection
+     * @return returns class level connection
      */
     public Connection getConnection(){
         return conn;
@@ -59,17 +59,15 @@ public class RelationalRelationships {
     /**
      * Starts and runs the database
      */
-    public void createDB() {
-        String user = "relations";
-        String password = "password";
+    public void createPopulatedTables() {
 
         //http://h2database.com/html/grammar.html#drop_all_objects
         //Have to create the conn object twice, because technically it's dropped by this command
-        createConnection(user, password);
+        createConnection();
         SQLHelper.execute(conn, "DROP ALL OBJECTS;");
 
         //Create the database connections, basically makes the database
-        createConnection(user, password);
+        createConnection();
 
         //Create location table and populate it with data
         LocationTable.createLocationTable(conn);
