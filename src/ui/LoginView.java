@@ -107,15 +107,14 @@ public class LoginView implements View {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         BufferedImage myPicture = null;
         try {
             myPicture = ImageIO.read(new File("resources/logo.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         logo = new JLabel(new ImageIcon(myPicture));
         logo.setBounds(10,10,10,10);
-        //add(logo);
     }
 }
