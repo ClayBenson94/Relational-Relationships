@@ -120,9 +120,18 @@ public class UserTable {
     for(int i = 0; i < users.size(); i++){
       User user = users.get(i);
       sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s')",
-              user.getUsername(), user.getPassword(), user.getName(), user.getBio(), user.getEmail(), user.getDob(),
-              user.getGender(), user.getSexuality(), user.getLocation(), user.getUserPreferences().getPreferredAgeMin(),
-              user.getUserPreferences().getPreferredAgeMax(), user.getUserPreferences().getPreferredSexuality()));
+        user.getUsername(),
+        user.getPassword(),
+        user.getName(),
+        user.getBio(),
+        user.getEmail(),
+        user.getDob(),
+        user.getGender(),
+        user.getSexuality(),
+        user.getLocation(),
+        user.getUserPreferences().getPreferredAgeMin(),
+        user.getUserPreferences().getPreferredAgeMax(),
+        user.getUserPreferences().getPreferredSexuality()));
       if( i != users.size()-1){
         sb.append(",");
       }
