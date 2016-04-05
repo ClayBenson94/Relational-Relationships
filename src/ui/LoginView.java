@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class LoginView implements View {
+public class LoginView {
     private JButton registerButton;
     private JButton loginButton;
     private JPasswordField passwordField;

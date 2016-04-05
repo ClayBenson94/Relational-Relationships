@@ -117,16 +117,31 @@ public class RelationshipController {
   public void login(String username, String password) {
       //TODO login
       //System.out.println("Open Login Page");
+      boolean loginSuccess = false;
 
-      //page transition
-      JFrame nextPage = LoginView.init(this, visitedPages.peek());
-      visitedPages.peek().setVisible(false);
-      visitedPages.push(nextPage);
+      if (loginSuccess) {
+          //page transition
+          JFrame nextPage = LoginView.init(this, visitedPages.peek());
+          visitedPages.peek().setVisible(false);
+          visitedPages.push(nextPage);
+      } else {
+          //error popup
+          String error = "Username/Password combination is incorrect.";
+          JFrame nextPage = ErrorView.init(this, visitedPages.peek(), error);
+          visitedPages.push(nextPage);
+      }
+
   }
 
   public void register(String username, String password) {
       //TODO register
       //System.out.println("Open Register Page");
+  }
+
+  public void back() {
+      visitedPages.peek().dispose();
+      visitedPages.pop();
+      visitedPages.peek().setVisible(true);
   }
 
 
