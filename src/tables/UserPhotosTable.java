@@ -1,5 +1,6 @@
 package tables;
 
+import helpers.CSVHelper;
 import helpers.SQLHelper;
 import objects.User;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class UserPhotosTable {
 
-  public static void createUserTable(Connection conn) {
+  public static void createUserPhotosTable(Connection conn) {
     String query = "CREATE TABLE user_photos("
       + "username VARCHAR(20),"
       + "photo_url VARCHAR(1024),"
@@ -21,10 +22,10 @@ public class UserPhotosTable {
     SQLHelper.execute(conn, query);
   }
 
-  public static boolean addPhotoToUser(Connection conn, User user, String photoURL) {
-    String query = "INSERT INTO user_photos "
-      + "VALUES (username=\'" + user.getUsername()
-      + "\',photo_url=\'" + photoURL + "\');";
+  public static boolean addPhotoToUser(Connection conn, String username, String photoURL) {
+    String query = "INSERT INTO user_photos (username, photo_url) "
+      + "VALUES (\'" + username
+      + "\',\'" + photoURL + "\');";
 
     return SQLHelper.execute(conn, query);
   }
@@ -53,4 +54,20 @@ public class UserPhotosTable {
     }
     return userPhotos;
     }
+
+  public static boolean populateFromCSV(Connection conn) {
+    CSVHelper reader = new CSVHelper();
+    String username, photoURL;
+
+    reader.openCSV("resources/userphotos.csv");
+    while (reader.readRow()) {
+      username = reader.currentRow.get(0);
+      photoURL = reader.currentRow.get(1);
+
+      addPhotoToUser(conn,username,photoURL);
+    }
+    reader.closeCSV();
+
+    return true;
+  }
 }
