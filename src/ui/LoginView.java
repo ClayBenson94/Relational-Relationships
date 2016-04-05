@@ -110,7 +110,7 @@ public class LoginView implements View {
         // TODO: place custom component creation code here
         BufferedImage myPicture = null;
         try {
-            myPicture = ImageIO.read(new File("resources/logo.png"));
+            myPicture = ImageIO.read(new File("resources/images/logo.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

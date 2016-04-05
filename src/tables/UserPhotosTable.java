@@ -59,7 +59,7 @@ public class UserPhotosTable {
     CSVHelper reader = new CSVHelper();
     String username, photoURL;
 
-    reader.openCSV("resources/userphotos.csv");
+    reader.openCSV("resources/csv/userphotos.csv");
     while (reader.readRow()) {
       username = reader.currentRow.get(0);
       photoURL = reader.currentRow.get(1);

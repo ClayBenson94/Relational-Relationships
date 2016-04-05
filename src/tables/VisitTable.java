@@ -53,7 +53,7 @@ public class VisitTable {
         CSVHelper reader = new CSVHelper();
         String visited, visitor;
 
-        reader.openCSV("resources/visits.csv");
+        reader.openCSV("resources/csv/visits.csv");
         while (reader.readRow()) {
             visited = reader.currentRow.get(0);
             visitor = reader.currentRow.get(1);

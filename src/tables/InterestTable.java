@@ -37,7 +37,7 @@ public class InterestTable {
   public static boolean populateFromCSV(Connection conn) {
     CSVHelper reader = new CSVHelper();
 
-    reader.openCSV("resources/interests.csv");
+    reader.openCSV("resources/csv/interests.csv");
     while (reader.readRow()) {
       String query = "INSERT INTO interests "
               + "VALUES (\'" + reader.currentRow.get(0)
