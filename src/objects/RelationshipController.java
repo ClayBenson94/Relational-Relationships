@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import helpers.SQLHelper;
 import tables.*;
 
 import ui.*;
@@ -132,8 +133,22 @@ public class RelationshipController {
 
   public static void main(String args[]) throws SQLException {
     RelationalRelationships relationalRelationships = new RelationalRelationships();
-    relationalRelationships.createDB();
+
+    //Check Arguments
+    relationalRelationships.createConnection();
+    for (String argument : args) {
+      if (argument.equals("genDB")) relationalRelationships.createPopulatedTables();
+    }
+
     conn = relationalRelationships.getConnection();
+
+    //Check if it's a first time run (Does USERS table exist?)
+    ResultSet tableResults = SQLHelper.executeQuery(conn,"SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='USER';");
+    if (tableResults.next()) {
+      if (tableResults.getInt("count(TABLE_NAME)") != 1) {
+        relationalRelationships.createPopulatedTables();
+      }
+    }
 
     try {
       Statement stmt = conn.createStatement();
