@@ -117,11 +117,11 @@ public class RelationshipController {
   public void login(String username, String password) {
       //TODO login
       //System.out.println("Open Login Page");
-      boolean loginSuccess = false;
+      boolean loginSuccess = true;
 
       if (loginSuccess) {
           //page transition
-          JFrame nextPage = LoginView.init(this, visitedPages.peek());
+          JFrame nextPage = SearchView.init(this, visitedPages.peek());
           visitedPages.peek().setVisible(false);
           visitedPages.push(nextPage);
       } else {
@@ -142,6 +142,10 @@ public class RelationshipController {
       visitedPages.peek().dispose();
       visitedPages.pop();
       visitedPages.peek().setVisible(true);
+  }
+
+  public ArrayList<User> search(String zipcode) {
+      return new ArrayList<User>();
   }
 
 
