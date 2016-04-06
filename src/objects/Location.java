@@ -30,4 +30,8 @@ public class Location {
     public String getCity() {
         return city;
     }
+
+    public String toString(){
+        return city + " " + state + ", " + zipCode;
+    }
 }
