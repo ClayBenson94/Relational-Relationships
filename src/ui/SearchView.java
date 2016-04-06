@@ -135,7 +135,7 @@ class UserListRenderer extends JLabel implements ListCellRenderer {
             if (images.size() == 0) {
                 myPicture = ImageIO.read(new File("resources/images/logo.png"));
             } else {
-                System.out.println(images);
+
                 URL url = new URL(images.get(0));
                 myPicture = ImageIO.read(url);
             }
@@ -146,7 +146,7 @@ class UserListRenderer extends JLabel implements ListCellRenderer {
         }
         //resize
         double factor = (double)100/(double)myPicture.getHeight();
-        System.out.println(factor);
+
         Image newimg = myPicture.getScaledInstance((int)(myPicture.getWidth()*factor),(int)(myPicture.getHeight()*factor),  java.awt.Image.SCALE_SMOOTH);
         //
         setIcon(new ImageIcon(newimg));
