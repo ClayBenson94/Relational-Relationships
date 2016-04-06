@@ -91,25 +91,10 @@ public class UserTable {
           RelationshipController.Gender myGender;
           RelationshipController.Sexuality mySexuality, preferredSexuality;
 
-          //Maybe make these switch statements
-          if (resultSet.getString("gender").equals("Male")) {
-            myGender = RelationshipController.Gender.Male;
-          } else {
-            myGender = RelationshipController.Gender.Female;
-          }
-
-          if (resultSet.getString("sexuality").equals("Heterosexual")) {
-            mySexuality = RelationshipController.Sexuality.Heterosexual;
-          } else {
-            mySexuality = RelationshipController.Sexuality.Homosexual;
-          }
-
-          if (resultSet.getString("preferred_sexuality").equals("Heterosexual")) {
-            preferredSexuality = RelationshipController.Sexuality.Heterosexual;
-          } else {
-            preferredSexuality = RelationshipController.Sexuality.Homosexual;
-          }
-
+          //Create some user properties
+          myGender = RelationshipController.getGender(resultSet.getString("gender"));
+          mySexuality = RelationshipController.getSexuality(resultSet.getString("sexuality"));
+          preferredSexuality = RelationshipController.getSexuality(resultSet.getString("preferred_sexuality"));
           Date sqlDate = DateHelper.dateStringToSQLDate("yyyy-MM-dd",resultSet.getString("dob"));
 
           curUser = new User(resultSet.getString("username"),
