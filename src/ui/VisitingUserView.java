@@ -41,7 +41,7 @@ public class VisitingUserView {
         backBttn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                c.goBack();
+                c.back();
             }
         });
         ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), controller.getVisitingUser());
