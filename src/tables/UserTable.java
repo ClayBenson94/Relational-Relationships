@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import helpers.CSVHelper;
+import helpers.DateHelper;
 import helpers.SQLHelper;
 import objects.RelationshipController;
 import objects.User;
@@ -109,18 +110,7 @@ public class UserTable {
             preferredSexuality = RelationshipController.Sexuality.Homosexual;
           }
 
-
-          DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-          java.util.Date date = null;
-          try {
-            date = format.parse(resultSet.getString("dob"));
-          } catch (ParseException e) {
-            e.printStackTrace();
-          }
-          Date sqlDate = null;
-          if (date != null) {
-            sqlDate = new Date(date.getTime());
-          }
+          Date sqlDate = DateHelper.dateStringToSQLDate("yyyy-MM-dd",resultSet.getString("dob"));
 
           curUser = new User(resultSet.getString("username"),
                   resultSet.getString("password"),
@@ -169,31 +159,20 @@ public class UserTable {
     CSVHelper reader = new CSVHelper();
     reader.openCSV("resources/csv/users.csv");
     while (reader.readRow()) {
-      DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-      java.util.Date date = null;
-    try {
-      date = format.parse(reader.currentRow.get(5));
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
-
-    Date sqlDate = null;
-    if (date != null) {
-      sqlDate = new Date(date.getTime());
-    }
-    users.add(new User(
-      reader.currentRow.get(0),
-      reader.currentRow.get(1),
-      reader.currentRow.get(2),
-      reader.currentRow.get(3),
-      reader.currentRow.get(4),
-      sqlDate,
-      RelationshipController.getGender(reader.currentRow.get(6)),
-      RelationshipController.getSexuality(reader.currentRow.get(7)),
-      Integer.parseInt(reader.currentRow.get(8)),
-      Integer.parseInt(reader.currentRow.get(9)),
-      Integer.parseInt(reader.currentRow.get(10)),
-      RelationshipController.getSexuality(reader.currentRow.get(11))));
+      Date sqlDate = DateHelper.dateStringToSQLDate("MM/dd/yyyy",reader.currentRow.get(5));
+      users.add(new User(
+        reader.currentRow.get(0),
+        reader.currentRow.get(1),
+        reader.currentRow.get(2),
+        reader.currentRow.get(3),
+        reader.currentRow.get(4),
+        sqlDate,
+        RelationshipController.getGender(reader.currentRow.get(6)),
+        RelationshipController.getSexuality(reader.currentRow.get(7)),
+        Integer.parseInt(reader.currentRow.get(8)),
+        Integer.parseInt(reader.currentRow.get(9)),
+        Integer.parseInt(reader.currentRow.get(10)),
+        RelationshipController.getSexuality(reader.currentRow.get(11))));
     }
     reader.closeCSV();
 

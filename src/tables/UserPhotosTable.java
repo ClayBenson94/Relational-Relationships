@@ -46,7 +46,7 @@ public class UserPhotosTable {
     ResultSet resultSet = SQLHelper.executeQuery(conn, query);
     try {
       while (resultSet.next()){
-        // 0 is the username, 1 is the photo url
+        // 1 is the username, 2 is the photo url
         userPhotos.add(resultSet.getString(2));
       }
     } catch (SQLException e) {
