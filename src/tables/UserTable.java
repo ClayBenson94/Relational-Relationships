@@ -77,13 +77,13 @@ public class UserTable {
     SQLHelper.execute(conn, query);
   }
 
-  public static ArrayList<User> search(Connection conn, String zipCode) {
+  public static ArrayList<User> search(Connection conn, String zipCode, User excludeUser) {
     ArrayList<User> returnList = new ArrayList<>();
     if (!zipCode.equals("")) {
 
       User curUser;
 
-      String query = "SELECT * FROM user WHERE location = " + zipCode + ";";
+      String query = "SELECT * FROM user WHERE location = " + zipCode + " AND username NOT = \'" + excludeUser.getUsername() +"\';";
       ResultSet resultSet = SQLHelper.executeQuery(conn, query);
       try {
         while (resultSet.next()) {

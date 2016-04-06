@@ -151,7 +151,7 @@ public class RelationshipController {
   }
 
   public ArrayList<User> search(String zipCode) {
-      return UserTable.search(conn, zipCode);
+      return UserTable.search(conn, zipCode, activeUser);
   }
 
 
