@@ -31,8 +31,7 @@ public class SearchView {
     public SearchView(RelationshipController c) {
         controller = c;
 
-        resultsList.setCellRenderer(new UserListRenderer(controller));
-        searchButton.addActionListener(new ActionListener() {
+        ActionListener searchListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<User> results = controller.search(zipcodeField.getText());
@@ -42,7 +41,11 @@ public class SearchView {
                 }
                 resultsList.setModel(m);
             }
-        });
+        };
+
+        resultsList.setCellRenderer(new UserListRenderer(controller));
+        searchButton.addActionListener(searchListener);
+        zipcodeField.addActionListener(searchListener);
 
         resultsList.addMouseListener(new MouseAdapter() {
             @Override
