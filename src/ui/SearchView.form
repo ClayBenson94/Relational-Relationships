@@ -108,20 +108,7 @@
               <component id="a8ca6" class="javax.swing.JList" binding="resultsList">
                 <constraints/>
                 <properties>
-                  <model>
-                    <item value="Test 1"/>
-                    <item value="Test 2"/>
-                    <item value="Test 3"/>
-                    <item value="Test 4"/>
-                    <item value="Test 5"/>
-                    <item value="Test 6"/>
-                    <item value="Test 7"/>
-                    <item value="Test 8"/>
-                    <item value="Test 9"/>
-                    <item value="Test 10"/>
-                    <item value="Test 11"/>
-                    <item value="Test 12"/>
-                  </model>
+                  <model/>
                 </properties>
               </component>
             </children>

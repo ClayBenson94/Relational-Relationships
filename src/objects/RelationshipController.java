@@ -108,7 +108,11 @@ public class RelationshipController {
   }
 
   public void createVisit(User visitor, User visited) {
-    VisitTable.createVisit(conn, visitor.getUsername(), visited.getUsername());
+    VisitTable.createVisit(conn, visited.getUsername(), visitor.getUsername());
+    visitingUser = visited;
+    JFrame nextPage = VisitingUserView.init(this, visitedPages.peek());
+    visitedPages.peek().setVisible(false);
+    visitedPages.push(nextPage);
   }
 
   //UI methods
@@ -117,11 +121,11 @@ public class RelationshipController {
   }
 
   public void login(String username, String password) {
-      //TODO login
       //System.out.println("Open Login Page");
       boolean loginSuccess = UserTable.isValidLogin(conn, username, password);
 
       if (loginSuccess) {
+          activeUser = UserTable.getUserObject(conn, username);
           //page transition
           JFrame nextPage = SearchView.init(this, visitedPages.peek());
           visitedPages.peek().setVisible(false);
@@ -147,7 +151,7 @@ public class RelationshipController {
   }
 
   public ArrayList<User> search(String zipCode) {
-      return UserTable.search(conn, zipCode);
+      return UserTable.search(conn, zipCode, activeUser);
   }
 
 

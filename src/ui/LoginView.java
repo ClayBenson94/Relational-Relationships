@@ -23,15 +23,20 @@ public class LoginView {
 
     public LoginView(RelationshipController c) {
         controller = c;
-
         $$$setupUI$$$();
-        loginButton.addActionListener(new ActionListener() {
+
+        ActionListener loginListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //do login
                 controller.login(usernameField.getText(), new String(passwordField.getPassword()));
             }
-        });
+        };
+
+        //All three of these fields will log you in (ENTER on either text field, or clicking the login button)
+        loginButton.addActionListener(loginListener);
+        passwordField.addActionListener(loginListener);
+        usernameField.addActionListener(loginListener);
 
         registerButton.addActionListener(new ActionListener() {
             @Override
@@ -40,6 +45,7 @@ public class LoginView {
                 controller.register(usernameField.getText(), passwordField.getPassword().toString());
             }
         });
+
     }
 
     public static JFrame init(RelationshipController c, JFrame previousWindow) {
@@ -115,5 +121,4 @@ public class LoginView {
     public JComponent $$$getRootComponent$$$() {
         return basePane;
     }
-
 }
