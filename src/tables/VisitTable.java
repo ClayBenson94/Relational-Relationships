@@ -26,7 +26,7 @@ public class VisitTable {
   }
 
   public static void createVisit(Connection conn, String visited, String visitor) {
-    String query = "INSERT INTO visit VALUES (\'" + visited + "\', \'" + visitor + "\', " + System.currentTimeMillis() + ");";
+    String query = "INSERT INTO visit (visited, visitor, timestamp) VALUES (\'" + visited + "\', \'" + visitor + "\', " + System.currentTimeMillis() + ");";
 
     SQLHelper.execute(conn, query);
   }

@@ -35,7 +35,16 @@ public class VisitingUserView {
                 // TODO like the user and change the button text OR unlike the user and change the button text
             }
         });
-
+        ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), controller.getVisitingUser());
+        DefaultListModel m = new DefaultListModel();
+        if (images.size() == 0) {
+            m.addElement(new ResultListPhotoObject("resources/images/logo.png"));
+        } else {
+            for (String image : images){
+                m.addElement(new ResultListPhotoObject(image));
+            }
+        }
+        userPhotos.setModel(m);
     }
 
     public static JFrame init(RelationshipController c, JFrame previousWindow) {
@@ -46,19 +55,6 @@ public class VisitingUserView {
         frame.setLocationRelativeTo(previousWindow);
         frame.setVisible(true);
         return frame;
-    }
-
-    private void createUIComponents() {
-        ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), controller.getActiveUser());
-        DefaultListModel m = new DefaultListModel();
-        if (images.size() == 0) {
-            m.addElement(new ResultListPhotoObject("resources/images/logo.png"));
-        } else {
-            for (String image : images){
-                m.addElement(new ResultListPhotoObject(image));
-            }
-        }
-        userPhotos.setModel(m);
     }
 }
 
