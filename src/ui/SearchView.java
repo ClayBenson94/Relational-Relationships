@@ -47,6 +47,9 @@ public class SearchView {
         searchButton.addActionListener(searchListener);
         zipcodeField.addActionListener(searchListener);
 
+        String myZip = Integer.toString(controller.getActiveUser().getLocation());
+        zipcodeField.setText(myZip);
+
         resultsList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
