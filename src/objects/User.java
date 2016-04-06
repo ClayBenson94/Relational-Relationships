@@ -128,7 +128,7 @@ public class User {
         String userString = "";
 
         userString = userString + username + "\n";
-        userString = userString + LocationTable.getInformationViaZip(RelationshipController.getConnection(), location)
+        userString = userString + LocationTable.getInformationViaZip(RelationshipController.getConnection(), location).getZipCode().toString()
                 + "\n";
         userString = userString + bio + "\n";
         // TODO finish rest of string
