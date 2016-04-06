@@ -35,7 +35,7 @@ public class SearchView {
                 ArrayList<User> results = controller.search(zipcodeField.getText());
                 DefaultListModel m = new DefaultListModel();
                 for (int i = 0; i < results.size(); i++) {
-                    m.addElement(results.get(i));
+                    m.addElement(new ResultListObject(results.get(i)));
                 }
                 resultsList.setModel(m);
             }
@@ -116,22 +116,15 @@ public class SearchView {
     }
 }
 
-class UserListRenderer extends JLabel implements ListCellRenderer {
-    private static final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+class ResultListObject {
+    private ImageIcon icon;
+    private User user;
 
-    public UserListRenderer() {
-        setOpaque(true);
-        setIconTextGap(12);
-    }
-
-    public Component getListCellRendererComponent(JList list, Object value,
-                                                  int index, boolean isSelected, boolean cellHasFocus) {
-        User entry = (User) value;
-        setText(entry.getName());
-        //TODO icon
+    public ResultListObject(User u) {
+        user = u;
         BufferedImage myPicture = null;
         try {
-            ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), entry);
+            ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), user);
             if (images.size() == 0) {
                 myPicture = ImageIO.read(new File("resources/images/logo.png"));
             } else {
@@ -149,7 +142,35 @@ class UserListRenderer extends JLabel implements ListCellRenderer {
 
         Image newimg = myPicture.getScaledInstance((int)(myPicture.getWidth()*factor),(int)(myPicture.getHeight()*factor),  java.awt.Image.SCALE_SMOOTH);
         //
-        setIcon(new ImageIcon(newimg));
+        icon = new ImageIcon(newimg);
+    }
+
+    public ImageIcon getIcon()
+    {
+        return icon;
+    }
+
+    public String getName()
+    {
+        return user.getName();
+    }
+}
+
+class UserListRenderer extends JLabel implements ListCellRenderer {
+    private static final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+
+    public UserListRenderer() {
+        setOpaque(true);
+        setIconTextGap(12);
+    }
+
+    public Component getListCellRendererComponent(JList list, Object value,
+                                                  int index, boolean isSelected, boolean cellHasFocus) {
+        ResultListObject entry = (ResultListObject) value;
+        setText(entry.getName());
+        //TODO icon
+
+        setIcon(entry.getIcon());
         if (isSelected) {
             setBackground(HIGHLIGHT_COLOR);
             setForeground(Color.white);
