@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
 
+import tables.LocationTable;
 import tables.RelationalRelationships;
 import tables.UserTable;
 
@@ -121,5 +122,16 @@ public class User {
 
     public void updateUser() {
         UserTable.updateUser(RelationshipController.getConnection(), this);
+    }
+
+    public String getUserString(){
+        String userString = "";
+
+        userString = userString + username + "\n";
+        userString = userString + LocationTable.getInformationViaZip(RelationshipController.getConnection(), location)
+                + "\n";
+        userString = userString + bio + "\n";
+        // TODO finish rest of string
+        return userString;
     }
 }
