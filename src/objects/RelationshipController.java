@@ -119,7 +119,7 @@ public class RelationshipController {
   public void login(String username, String password) {
       //TODO login
       //System.out.println("Open Login Page");
-      boolean loginSuccess = true;
+      boolean loginSuccess = UserTable.isValidLogin(conn, username, password);
 
       if (loginSuccess) {
           //page transition
@@ -146,8 +146,8 @@ public class RelationshipController {
       visitedPages.peek().setVisible(true);
   }
 
-  public ArrayList<User> search(String zipcode) {
-      return new ArrayList<User>();
+  public ArrayList<User> search(String zipCode) {
+      return UserTable.search(conn, zipCode);
   }
 
 
