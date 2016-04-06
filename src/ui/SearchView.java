@@ -3,8 +3,11 @@ package ui;
 import objects.RelationshipController;
 import objects.User;
 import tables.UserPhotosTable;
+import tables.UserTable;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +31,7 @@ public class SearchView {
     public SearchView(RelationshipController c) {
         controller = c;
 
-        resultsList.setCellRenderer(new UserListRenderer());
+        resultsList.setCellRenderer(new UserListRenderer(controller));
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -41,6 +44,14 @@ public class SearchView {
             }
         });
 
+        resultsList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ResultListObject resultListObject = (ResultListObject) resultsList.getSelectedValue();
+                controller.createVisit(controller.getActiveUser(),
+                        UserTable.getUserObject(RelationshipController.getConnection(), resultListObject.getName()));
+            }
+        });
     }
 
     public static JFrame init(RelationshipController c, JFrame previousWindow) {
@@ -152,14 +163,14 @@ class ResultListObject {
 
     public String getName()
     {
-        return user.getName();
+        return user.getUsername();
     }
 }
 
 class UserListRenderer extends JLabel implements ListCellRenderer {
     private static final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
 
-    public UserListRenderer() {
+    public UserListRenderer(RelationshipController controller) {
         setOpaque(true);
         setIconTextGap(12);
     }

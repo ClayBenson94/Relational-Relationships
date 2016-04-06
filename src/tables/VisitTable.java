@@ -17,7 +17,7 @@ public class VisitTable {
       + "visited VARCHAR(20),"
       + "visitor VARCHAR(20),"
       + "timestamp BIGINT UNSIGNED,"
-      + "PRIMARY KEY (visited, visitor),"
+      + "PRIMARY KEY (visited, visitor, timestamp),"
       + "FOREIGN KEY (visited) REFERENCES user(username),"
       + "FOREIGN KEY (visitor) REFERENCES user(username),"
       + ");";

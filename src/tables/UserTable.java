@@ -205,4 +205,25 @@ public class UserTable {
     }
     SQLHelper.execute(conn, sb.toString());
     }
+
+  public static User getUserObject(Connection conn, String username){
+    String query = "SELECT * FROM user WHERE username = \'" + username+ "\';";
+    ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+
+    try {
+      if (resultSet.next()) {
+        return new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("name"),
+                resultSet.getString("bio"), resultSet.getString("email"), resultSet.getDate("dob"),
+                RelationshipController.getGender(resultSet.getString("gender")),
+                RelationshipController.getSexuality(resultSet.getString("sexuality")),
+                resultSet.getInt("location"),resultSet.getInt("preferred_age_min"),
+                resultSet.getInt("preferred_age_max"),
+                RelationshipController.getSexuality(resultSet.getString("preferred_sexuality")));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
 }
