@@ -23,6 +23,7 @@ public class VisitingUserView {
     private JTextArea userInfo;
     private JPanel basePane;
     private JButton likeBttn;
+    private JButton backBttn;
 
 
     private RelationshipController controller;
@@ -35,6 +36,12 @@ public class VisitingUserView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO like the user and change the button text OR unlike the user and change the button text
+            }
+        });
+        backBttn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c.goBack();
             }
         });
         ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), controller.getVisitingUser());

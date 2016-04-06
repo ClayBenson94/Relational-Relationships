@@ -46,6 +46,13 @@ public class RelationshipController {
     Male, Female, Something
   }
 
+  public void goBack(){
+    JFrame myPage = visitedPages.pop();
+    myPage.setVisible(false);
+    JFrame backPage = visitedPages.peek();
+    backPage.setVisible(true);
+  }
+
   public static Gender getGender(String genderStr){
     for (Gender gender : Gender.values()) {
         if (gender.toString().toLowerCase().equals(genderStr.toLowerCase())){
