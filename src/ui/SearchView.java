@@ -2,10 +2,16 @@ package ui;
 
 import objects.RelationshipController;
 import objects.User;
+import tables.UserPhotosTable;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,14 +28,14 @@ public class SearchView {
     public SearchView(RelationshipController c) {
         controller = c;
 
-
+        resultsList.setCellRenderer(new UserListRenderer());
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<User> results = controller.search(zipcodeField.getText());
                 DefaultListModel m = new DefaultListModel();
                 for (int i = 0; i < results.size(); i++) {
-                    m.addElement(results.get(i).getName());
+                    m.addElement(results.get(i));
                 }
                 resultsList.setModel(m);
             }
@@ -98,18 +104,6 @@ public class SearchView {
         panel5.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         resultsList = new JList();
         final DefaultListModel defaultListModel1 = new DefaultListModel();
-        defaultListModel1.addElement("Test 1");
-        defaultListModel1.addElement("Test 2");
-        defaultListModel1.addElement("Test 3");
-        defaultListModel1.addElement("Test 4");
-        defaultListModel1.addElement("Test 5");
-        defaultListModel1.addElement("Test 6");
-        defaultListModel1.addElement("Test 7");
-        defaultListModel1.addElement("Test 8");
-        defaultListModel1.addElement("Test 9");
-        defaultListModel1.addElement("Test 10");
-        defaultListModel1.addElement("Test 11");
-        defaultListModel1.addElement("Test 12");
         resultsList.setModel(defaultListModel1);
         scrollPane1.setViewportView(resultsList);
     }
@@ -119,5 +113,50 @@ public class SearchView {
      */
     public JComponent $$$getRootComponent$$$() {
         return basePane;
+    }
+}
+
+class UserListRenderer extends JLabel implements ListCellRenderer {
+    private static final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+
+    public UserListRenderer() {
+        setOpaque(true);
+        setIconTextGap(12);
+    }
+
+    public Component getListCellRendererComponent(JList list, Object value,
+                                                  int index, boolean isSelected, boolean cellHasFocus) {
+        User entry = (User) value;
+        setText(entry.getName());
+        //TODO icon
+        BufferedImage myPicture = null;
+        try {
+            ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), entry);
+            if (images.size() == 0) {
+                myPicture = ImageIO.read(new File("resources/images/logo.png"));
+            } else {
+                System.out.println(images);
+                URL url = new URL(images.get(0));
+                myPicture = ImageIO.read(url);
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //resize
+        double factor = (double)100/(double)myPicture.getHeight();
+        System.out.println(factor);
+        Image newimg = myPicture.getScaledInstance((int)(myPicture.getWidth()*factor),(int)(myPicture.getHeight()*factor),  java.awt.Image.SCALE_SMOOTH);
+        //
+        setIcon(new ImageIcon(newimg));
+        if (isSelected) {
+            setBackground(HIGHLIGHT_COLOR);
+            setForeground(Color.white);
+        } else {
+            setBackground(Color.white);
+            setForeground(Color.black);
+        }
+        return this;
     }
 }

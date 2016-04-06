@@ -117,7 +117,6 @@ public class RelationshipController {
   }
 
   public void login(String username, String password) {
-      //TODO login
       //System.out.println("Open Login Page");
       boolean loginSuccess = UserTable.isValidLogin(conn, username, password);
 

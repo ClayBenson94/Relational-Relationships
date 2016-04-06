@@ -40,6 +40,7 @@ public class LoginView {
                 controller.register(usernameField.getText(), passwordField.getPassword().toString());
             }
         });
+        
     }
 
     public static JFrame init(RelationshipController c, JFrame previousWindow) {
@@ -115,5 +116,4 @@ public class LoginView {
     public JComponent $$$getRootComponent$$$() {
         return basePane;
     }
-
 }
