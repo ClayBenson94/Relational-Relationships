@@ -62,6 +62,7 @@ public class SearchView {
         frame.setContentPane(new SearchView(c).basePane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setSize(300,600);
         frame.setLocationRelativeTo(previousWindow);
         frame.setVisible(true);
         return frame;
