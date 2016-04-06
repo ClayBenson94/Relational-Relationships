@@ -47,6 +47,7 @@ public class VisitingUserView {
             }
         }
         userPhotos.setModel(m);
+        userInfo.setText(controller.getVisitingUser().getUserString());
     }
 
     public static JFrame init(RelationshipController c, JFrame previousWindow) {
