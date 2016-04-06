@@ -157,7 +157,7 @@ class ResultListObject {
 }
 
 class UserListRenderer extends JLabel implements ListCellRenderer {
-    private static final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+    private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
 
     public UserListRenderer() {
         setOpaque(true);
