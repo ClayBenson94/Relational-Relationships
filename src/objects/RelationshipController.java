@@ -1,5 +1,7 @@
 package objects;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -139,15 +141,31 @@ public class RelationshipController {
 
   }
 
-  public void register(String username, String password) {
-      //TODO register
-      //System.out.println("Open Register Page");
+  public void register(User user) {
+    //TODO validation on fields
+    UserTable.addUser(conn, user);
+    this.back();
+  }
+
+  public void createRegisterView(String username, String password) {
+    visitedPages.peek().setVisible(false);
+    JFrame registerView = RegisterView.init(this, visitedPages.peek(), username, password);
+    visitedPages.push(registerView);
   }
 
   public void back() {
       visitedPages.peek().dispose();
       visitedPages.pop();
       visitedPages.peek().setVisible(true);
+  }
+
+  public ActionListener backListener(RelationshipController controller) {
+    return new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        controller.back();
+      }
+    };
   }
 
   public ArrayList<User> search(String zipCode) {
