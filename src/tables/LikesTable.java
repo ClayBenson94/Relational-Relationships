@@ -34,6 +34,14 @@ public class LikesTable {
     SQLHelper.execute(conn, query);
   }
 
+  public static void deleteLike(Connection conn, String sender, String receiver) {
+    String query = "delete from likes where sender= \'"
+            + sender + "\' and receiver=\'"
+            + receiver + "\';";
+
+    SQLHelper.execute(conn, query);
+  }
+
   /**
    * Get who likes you
    * @param conn
@@ -54,6 +62,27 @@ public class LikesTable {
       e.printStackTrace();
     }
     return likes;
+  }
+
+  /**
+   * Has user liked given user
+   * @param conn
+   * @param username - The user to do the query for
+   * @return An array list of usernames that like you
+   */
+  public static Boolean doesUserLike(Connection conn, String username, String otherUser) {
+    try {
+      String query = "SELECT * FROM likes WHERE sender=\'" + username +
+              "\' and receiver= \'" + otherUser + "\';";
+      ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+
+      if (resultSet.next()){
+        return true;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 
   public static boolean populateFromCSV(Connection conn) {

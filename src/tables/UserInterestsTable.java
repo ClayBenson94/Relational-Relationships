@@ -54,7 +54,7 @@ public class UserInterestsTable {
 
     try{
       while (resultSet.next()) {
-        Interest interest = new Interest(resultSet.getString("username"), resultSet.getString("interest_desc"),
+        Interest interest = new Interest(resultSet.getString("interest"), resultSet.getString("interest_desc"),
                 resultSet.getString("category"));
         returnList.add(interest);
       }

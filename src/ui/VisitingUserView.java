@@ -4,6 +4,8 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import objects.RelationshipController;
 import objects.User;
+import tables.LikesTable;
+import tables.RelationalRelationships;
 import tables.UserPhotosTable;
 
 import javax.imageio.ImageIO;
@@ -23,6 +25,7 @@ public class VisitingUserView {
     private JTextArea userInfo;
     private JPanel basePane;
     private JButton likeBttn;
+    private JButton backBttn;
 
 
     private RelationshipController controller;
@@ -34,7 +37,22 @@ public class VisitingUserView {
         likeBttn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO like the user and change the button text OR unlike the user and change the button text
+                if (likeBttn.getText().equals("Like")){
+                    LikesTable.createLike(RelationshipController.getConnection(),
+                            controller.getActiveUser().getUsername(), controller.getVisitingUser().getUsername());
+                    likeBttn.setText("Unlike");
+                }
+                else{
+                    LikesTable.deleteLike(RelationshipController.getConnection(),
+                            controller.getActiveUser().getUsername(), controller.getVisitingUser().getUsername());
+                    likeBttn.setText("Like");
+                }
+            }
+        });
+        backBttn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c.back();
             }
         });
         ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), controller.getVisitingUser());
@@ -48,6 +66,11 @@ public class VisitingUserView {
         }
         userPhotos.setModel(m);
         userInfo.setText(controller.getVisitingUser().getUserString());
+
+        if (LikesTable.doesUserLike(RelationshipController.getConnection(), controller.getActiveUser().getUsername(),
+                controller.getVisitingUser().getUsername())){
+            likeBttn.setText("Unlike");
+        }
     }
 
     public static JFrame init(RelationshipController c, JFrame previousWindow) {

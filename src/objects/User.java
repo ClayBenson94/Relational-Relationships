@@ -129,27 +129,28 @@ public class User {
     public String getUserString(){
         String userString = "";
 
-        userString = userString + username + "\n";
-        userString = userString + "Gender: " + gender + "\n";
-        userString = userString + "Sexuality: " + sexuality + "\n";
+        userString = userString + username + "\n\n";
+        userString = userString + "Gender: " + gender + "\n\n";
+        userString = userString + "Sexuality: " + sexuality + "\n\n";
         userString = userString + "Looking for: " + userPreferences.getPreferredSexuality() + " ages " +
-                userPreferences.getPreferredAgeMin() + " to " + userPreferences.getPreferredAgeMax() + "\n";
+                userPreferences.getPreferredAgeMin() + " to " + userPreferences.getPreferredAgeMax() + "\n\n";
         userString = userString + LocationTable.getInformationViaZip(RelationshipController.getConnection(), location)
-                + "\n";
-        userString = userString + bio + "\n";
+                + "\n\n";
+        userString = userString + bio + "\n\n";
 
         ArrayList<Interest> userInterests = UserInterestsTable.getUserInterests(RelationshipController.getConnection(),
                 username);
 
-        String currentCategory = userInterests.get(0).getCategory();
-        userString = userString + "Interests:\n\t" + currentCategory + ":\n";
-        for(Interest interest: userInterests){
-            if (interest.getCategory().equals(currentCategory)){
-                userString = userString + "\t\t" + interest.getName() + " - " + interest.getDescription() + "\n";
-            }
-            else {
-                currentCategory = interest.getCategory();
-                userString = userString + "\t" + currentCategory + ":\n\t\t" + interest.getName() + " - " + interest.getDescription() + "\n";
+        if (userInterests.size() > 0) {
+            String currentCategory = userInterests.get(0).getCategory();
+            userString = userString + "Interests:\n    " + currentCategory + ":\n";
+            for (Interest interest : userInterests) {
+                if (interest.getCategory().equals(currentCategory)) {
+                    userString = userString + "        " + interest.getName() + " - " + interest.getDescription() + "\n";
+                } else {
+                    currentCategory = interest.getCategory();
+                    userString = userString + "    " + currentCategory + ":\n        " + interest.getName() + " - " + interest.getDescription() + "\n";
+                }
             }
         }
         return userString;
