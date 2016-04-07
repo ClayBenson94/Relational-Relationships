@@ -3,9 +3,11 @@ package objects;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 
 import tables.LocationTable;
 import tables.RelationalRelationships;
+import tables.UserInterestsTable;
 import tables.UserTable;
 
 /**
@@ -128,10 +130,28 @@ public class User {
         String userString = "";
 
         userString = userString + username + "\n";
+        userString = userString + "Gender: " + gender + "\n";
+        userString = userString + "Sexuality: " + sexuality + "\n";
+        userString = userString + "Looking for: " + userPreferences.getPreferredSexuality() + " ages " +
+                userPreferences.getPreferredAgeMin() + " to " + userPreferences.getPreferredAgeMax() + "\n";
         userString = userString + LocationTable.getInformationViaZip(RelationshipController.getConnection(), location)
                 + "\n";
         userString = userString + bio + "\n";
-        // TODO finish rest of string
+
+        ArrayList<Interest> userInterests = UserInterestsTable.getUserInterests(RelationshipController.getConnection(),
+                username);
+
+        String currentCategory = userInterests.get(0).getCategory();
+        userString = userString + "Interests:\n\t" + currentCategory + ":\n";
+        for(Interest interest: userInterests){
+            if (interest.getCategory().equals(currentCategory)){
+                userString = userString + "\t\t" + interest.getName() + " - " + interest.getDescription() + "\n";
+            }
+            else {
+                currentCategory = interest.getCategory();
+                userString = userString + "\t" + currentCategory + ":\n\t\t" + interest.getName() + " - " + interest.getDescription() + "\n";
+            }
+        }
         return userString;
     }
 }

@@ -48,7 +48,7 @@ public class UserInterestsTable {
 
     String query = "SELECT interest,category,interest_desc FROM user_interests "
       + "INNER JOIN interests ON user_interests.interest=interests.interest_name "
-      + "WHERE username=\'" + username + "\';";
+      + "WHERE username=\'" + username + "\' order by category;";
 
     ResultSet resultSet = SQLHelper.executeQuery(conn, query);
 
