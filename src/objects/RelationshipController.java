@@ -2,18 +2,31 @@ package objects;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Stack;
 
-
-import helpers.SQLHelper;
-import tables.*;
-
-import ui.*;
-
 import javax.swing.*;
 
+import helpers.SQLHelper;
+
+import tables.InterestCategoriesTable;
+import tables.InterestTable;
+import tables.LikesTable;
+import tables.LocationTable;
+import tables.RelationalRelationships;
+import tables.UserInterestsTable;
+import tables.UserPhotosTable;
+import tables.UserTable;
+import tables.VisitTable;
+
+import ui.ErrorView;
+import ui.LoginView;
+import ui.SearchView;
+import ui.VisitingUserView;
 
 public class RelationshipController {
 
@@ -24,22 +37,22 @@ public class RelationshipController {
   private Stack<JFrame> visitedPages;
 
   public RelationshipController() {
-      visitedPages = new Stack<JFrame>();
+    visitedPages = new Stack<JFrame>();
   }
 
-  public static Connection getConnection(){
-        return conn;
-    }
+  public static Connection getConnection() {
+    return conn;
+  }
 
   public enum Sexuality {
     Heterosexual, Homosexual, Something
   }
 
-  public static Sexuality getSexuality(String sexualityStr){
+  public static Sexuality getSexuality(String sexualityStr) {
     for (Sexuality sexuality : Sexuality.values()) {
-        if (sexuality.toString().toLowerCase().equals(sexualityStr.toLowerCase())){
-            return sexuality;
-        }
+      if (sexuality.toString().toLowerCase().equals(sexualityStr.toLowerCase())) {
+        return sexuality;
+      }
     }
     return Sexuality.Something;
   }
@@ -48,11 +61,11 @@ public class RelationshipController {
     Male, Female, Something
   }
 
-  public static Gender getGender(String genderStr){
+  public static Gender getGender(String genderStr) {
     for (Gender gender : Gender.values()) {
-        if (gender.toString().toLowerCase().equals(genderStr.toLowerCase())){
-            return gender;
-        }
+      if (gender.toString().toLowerCase().equals(genderStr.toLowerCase())) {
+        return gender;
+      }
     }
     return Gender.Something;
   }
@@ -112,32 +125,27 @@ public class RelationshipController {
   public void createVisit(User visitor, User visited) {
     VisitTable.createVisit(conn, visited.getUsername(), visitor.getUsername());
     visitingUser = visited;
-    JFrame nextPage = VisitingUserView.init(this, visitedPages.peek());
-    visitedPages.peek().setVisible(false);
-    visitedPages.push(nextPage);
+    JFrame nextPage = VisitingUserView.init(this);
+    addPageToVistedPages(nextPage);
   }
 
   //UI methods
   public void startUI() {
-      visitedPages.push(LoginView.init(this, null));
+    addPageToVistedPages(LoginView.init(this));
   }
 
   public void login(String username, String password) {
-      //System.out.println("Open Login Page");
-      boolean loginSuccess = UserTable.isValidLogin(conn, username, password);
+    boolean loginSuccess = UserTable.isValidLogin(conn, username, password);
 
-      if (loginSuccess) {
-          activeUser = UserTable.getUserObject(conn, username);
-          //page transition
-          JFrame nextPage = SearchView.init(this, visitedPages.peek());
-          visitedPages.peek().setVisible(false);
-          visitedPages.push(nextPage);
-      } else {
-          //error popup
-          String error = "Username/Password combination is incorrect.";
-          JFrame nextPage = ErrorView.init(this, visitedPages.peek(), error);
-          visitedPages.push(nextPage);
-      }
+    if (loginSuccess) {
+      activeUser = UserTable.getUserObject(conn, username);
+      //page transition
+      JFrame nextPage = SearchView.init(this);
+      addPageToVistedPages(nextPage);
+    } else {
+      //error popup
+      createErrorView("Username/Password combination is incorrect.");
+    }
 
   }
 
@@ -147,16 +155,24 @@ public class RelationshipController {
     this.back();
   }
 
-  public void createRegisterView(String username, String password) {
-    visitedPages.peek().setVisible(false);
-    JFrame registerView = RegisterView.init(this, visitedPages.peek(), username, password);
-    visitedPages.push(registerView);
+  public void addPageToVistedPages(JFrame nextPage) {
+    if (!visitedPages.isEmpty()) {
+      visitedPages.peek().setVisible(false);
+      nextPage.setLocationRelativeTo(visitedPages.peek());
+    }
+    nextPage.setVisible(true);
+    visitedPages.push(nextPage);
+  }
+
+  public void createErrorView(String error) {
+    JFrame nextPage = ErrorView.init(this, visitedPages.peek(), error);
+    visitedPages.push(nextPage);
   }
 
   public void back() {
-      visitedPages.peek().dispose();
-      visitedPages.pop();
-      visitedPages.peek().setVisible(true);
+    visitedPages.peek().dispose();
+    visitedPages.pop();
+    visitedPages.peek().setVisible(true);
   }
 
   public ActionListener backListener(RelationshipController controller) {
@@ -169,7 +185,7 @@ public class RelationshipController {
   }
 
   public ArrayList<User> search(String zipCode) {
-      return UserTable.search(conn, zipCode, activeUser);
+    return UserTable.search(conn, zipCode, activeUser);
   }
 
 
@@ -185,7 +201,7 @@ public class RelationshipController {
     conn = relationalRelationships.getConnection();
 
     //Check if it's a first time run (Does USERS table exist?)
-    ResultSet tableResults = SQLHelper.executeQuery(conn,"SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='USER';");
+    ResultSet tableResults = SQLHelper.executeQuery(conn, "SELECT count(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='USER';");
     if (tableResults.next()) {
       if (tableResults.getInt("count(TABLE_NAME)") != 1) {
         relationalRelationships.createPopulatedTables();
@@ -196,5 +212,5 @@ public class RelationshipController {
     controllerInstance.startUI();
     //TODO close connection correclty
     //relationalRelationships.closeConnection();
-    }
+  }
 }
