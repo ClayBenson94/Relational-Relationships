@@ -126,20 +126,20 @@ public class User {
         UserTable.updateUser(RelationshipController.getConnection(), this);
     }
 
-    public String getUserString() {
+    public String getUserString(){
         String userString = "";
 
         userString = userString + username + "\n\n";
         userString = userString + "Gender: " + gender + "\n\n";
         userString = userString + "Sexuality: " + sexuality + "\n\n";
         userString = userString + "Looking for: " + userPreferences.getPreferredSexuality() + " ages " +
-            userPreferences.getPreferredAgeMin() + " to " + userPreferences.getPreferredAgeMax() + "\n\n";
+                userPreferences.getPreferredAgeMin() + " to " + userPreferences.getPreferredAgeMax() + "\n\n";
         userString = userString + LocationTable.getInformationViaZip(RelationshipController.getConnection(), location)
-            + "\n\n";
+                + "\n\n";
         userString = userString + bio + "\n\n";
 
         ArrayList<Interest> userInterests = UserInterestsTable.getUserInterests(RelationshipController.getConnection(),
-            username);
+                username);
 
         if (userInterests.size() > 0) {
             String currentCategory = userInterests.get(0).getCategory();
