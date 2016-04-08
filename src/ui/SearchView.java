@@ -3,6 +3,7 @@ package ui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+
 import objects.RelationshipController;
 import objects.User;
 import tables.UserPhotosTable;
@@ -19,6 +20,7 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -54,7 +56,7 @@ public class SearchView {
             public void mouseClicked(MouseEvent e) {
                 ResultListObject resultListObject = (ResultListObject) resultsList.getSelectedValue();
                 controller.createVisit(controller.getActiveUser(),
-                        UserTable.getUserObject(RelationshipController.getConnection(), resultListObject.getName()));
+                    UserTable.getUserObject(RelationshipController.getConnection(), resultListObject.getName()));
             }
         });
     }
@@ -164,20 +166,18 @@ class ResultListObject {
             e.printStackTrace();
         }
         //resize
-        double factor = (double)100/(double)myPicture.getHeight();
+        double factor = (double) 100 / (double) myPicture.getHeight();
 
-        Image newimg = myPicture.getScaledInstance((int)(myPicture.getWidth()*factor),(int)(myPicture.getHeight()*factor),  java.awt.Image.SCALE_SMOOTH);
+        Image newimg = myPicture.getScaledInstance((int) (myPicture.getWidth() * factor), (int) (myPicture.getHeight() * factor), java.awt.Image.SCALE_SMOOTH);
         //
         icon = new ImageIcon(newimg);
     }
 
-    public ImageIcon getIcon()
-    {
+    public ImageIcon getIcon() {
         return icon;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return user.getUsername();
     }
 }
