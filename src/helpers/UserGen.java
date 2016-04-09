@@ -25,68 +25,68 @@ public class UserGen{
     private String username;
     private String password;
     private String firstName;
-	 private String bio;
-	 private String email;
-	 private Date dob;
-	 private String gender;
-	 private String sexuality;
-	 private int location;
-	 private int preferredAgeMin;
-	 private int preferredAgeMax;
-	 private String preferredSexuality;
+	private String bio;
+	private String email;
+	private Date dob;
+	private String gender;
+	private String sexuality;
+	private int location;
+	private int preferredAgeMin;
+	private int preferredAgeMax;
+	private String preferredSexuality;
   
 
     public UserGen(){
         Random rand = new Random();
-		  if(rand.nextInt(2) == 1){
-		      gender = "Male";
-			   firstName = MALEFIRSTNAMES[rand.nextInt(MALEFIRSTNAMES.length)];
-		  }
-	  	  else{
-		      gender = "Female";
-			   firstName = FEMALEFIRSTNAMES[rand.nextInt(FEMALEFIRSTNAMES.length)];
-		  }
+		if(rand.nextInt(2) == 1){
+		    gender = "Male";
+		    firstName = MALEFIRSTNAMES[rand.nextInt(MALEFIRSTNAMES.length)];
+	    }
+	  	else{
+	        gender = "Female";
+			firstName = FEMALEFIRSTNAMES[rand.nextInt(FEMALEFIRSTNAMES.length)];
+		}
 		
-		  username = firstName.toLowerCase()+rand.nextInt(1000);
-		  password = "";
-		  for(int x = 0; x < 10; x++){
-		      password += rand.nextInt(10);
-		  }
+		username = firstName.toLowerCase()+rand.nextInt(1000);
+		password = "";
+		for(int x = 0; x < 10; x++){
+		    password += rand.nextInt(10);
+		}
 		
 		
-		  location = 14620;
+		location = 14620;
 		
-		  bio = "I am from location " + location;
+		bio = "I am from location " + location;
 		
-	     email = username + "@rit.edu"; 
+	    email = username + "@rit.edu"; 
 		
-		  if(rand.nextInt(2) == 1){
+		if(rand.nextInt(2) == 1){
 		    sexuality = "Heterosexual";
-		  }
-		  else{
+		}
+		else{
 		    sexuality = "Homosexual";
-		  }
+		}
 		
-		  if(rand.nextInt(2) == 1){
+		if(rand.nextInt(2) == 1){
 		    preferredSexuality = "Heterosexual";
-		  }
-		  else{
+		}
+		else{
 		    preferredSexuality = "Homosexual";
-		  }
+		}
 		
-	  	  preferredAgeMin = rand.nextInt(101);
-		  preferredAgeMax = 0;
-		  while(preferredAgeMax <= preferredAgeMin){
-		      preferredAgeMax = rand.nextInt(101);
-		  }
+	  	preferredAgeMin = rand.nextInt(101);
+		preferredAgeMax = 0;
+		while(preferredAgeMax <= preferredAgeMin){
+		    preferredAgeMax = rand.nextInt(101);
+		}
 		
-		  long num = 0;
-		  long lower = 20000;
-		  long current = System.currentTimeMillis();
-		  while(num < lower || num > current){
-		      num = lower + (long)(rand.nextDouble()*(current-lower));
-		  }
-		  dob = new Date(num);
+		long num = 0;
+		long lower = 20000;
+		long current = System.currentTimeMillis();
+		while(num < lower || num > current){
+		    num = lower + (long)(rand.nextDouble()*(current-lower));
+		}
+		dob = new Date(num);
     }
   
   
