@@ -2,28 +2,20 @@
 
 ## Synopsis
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
-
-## Code Example
-
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+**Relational Relationships** is a desktop dating application, which allows you to view and match with other users of the system.
 
 ## Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+This project was created for the _Principles of Data Management_ course.
 
-## Installation
+## Collaborators
 
-Provide code examples and explanations of how to get the project.
+[Clay Benson](https://github.com/ClayBenson94)
 
-## Tests
+[Nick Coriale](https://github.com/njc3006)
 
-Describe and show how to run the tests with code examples.
+[Jarryd Lee](https://github.com/jarrydlee)
 
-## Contributors
+[Joshua Horning](https://github.com/jrh827)
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
-
-## License
-
-A short snippet describing the license (MIT, Apache, etc.)
+[Robert Adams](https://github.com/robthethird)
