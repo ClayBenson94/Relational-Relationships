@@ -1,7 +1,7 @@
 package objects;
 
 /**
-This class is intended to store a user who visited another user and when they visited
+ * This class is intended to store a user who visited another user and when they visited
  **/
 public class Visit {
 
