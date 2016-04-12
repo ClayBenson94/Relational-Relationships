@@ -9,7 +9,7 @@ import java.util.Scanner;
 /**
  * Created by Clay on 4/4/2016.
  */
-public class CSVHelper{
+public class CSVHelper {
 
     private Scanner scanner;
     public ArrayList<String> currentRow;
@@ -28,7 +28,7 @@ public class CSVHelper{
         String[] splitList;
         boolean success;
         success = scanner.hasNextLine();
-        if (success){
+        if (success) {
             splitList = scanner.nextLine().split(",");
             returnList = new ArrayList<>(Arrays.asList(splitList));
         }
