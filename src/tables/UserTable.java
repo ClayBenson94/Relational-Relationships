@@ -4,11 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import helpers.CSVHelper;
 import helpers.DateHelper;
@@ -32,6 +28,7 @@ public class UserTable {
             + "preferred_age_min INT(5),"
             + "preferred_age_max INT(5),"
             + "preferred_sexuality VARCHAR(50),"
+            + "is_admin BOOLEAN DEFAULT FALSE,"
             + "PRIMARY KEY (username),"
             + "FOREIGN KEY (location) REFERENCES location(zip_code),"
             + "CHECK (gender IN ('Male', 'Female')),"
@@ -54,7 +51,8 @@ public class UserTable {
             + "\',location=" + user.getLocation()
             + ",preferred_age_min=" + user.getUserPreferences().getPreferredAgeMin()
             + ",preferred_age_max=" + user.getUserPreferences().getPreferredAgeMax()
-            + ",preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality() + "\');";
+            + ",preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality() + "\'"
+            + ",is_admin =\'" + user.getIsAdmin() + "\');";
 
         return SQLHelper.execute(conn, query);
     }
@@ -72,6 +70,7 @@ public class UserTable {
             + "\',preferred_age_min=\'" + user.getUserPreferences().getPreferredAgeMin()
             + "\',preferred_age_max=\'" + user.getUserPreferences().getPreferredAgeMax()
             + "\',preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality()
+            + "\',is_admin=\'"
             + "\' WHERE username=\'" + user.getUsername() + "\';";
 
         SQLHelper.execute(conn, query);
@@ -108,7 +107,8 @@ public class UserTable {
                         resultSet.getInt("location"),
                         resultSet.getInt("preferred_age_min"),
                         resultSet.getInt("preferred_age_max"),
-                        preferredSexuality
+                        preferredSexuality,
+                        resultSet.getBoolean("is_admin")
                     );
                     returnList.add(curUser);
                 }
@@ -158,7 +158,8 @@ public class UserTable {
                 Integer.parseInt(reader.currentRow.get(8)),
                 Integer.parseInt(reader.currentRow.get(9)),
                 Integer.parseInt(reader.currentRow.get(10)),
-                RelationshipController.getSexuality(reader.currentRow.get(11))));
+                RelationshipController.getSexuality(reader.currentRow.get(11)),
+                Boolean.parseBoolean(reader.currentRow.get(12))));
         }
         reader.closeCSV();
 
@@ -203,7 +204,8 @@ public class UserTable {
                     RelationshipController.getSexuality(resultSet.getString("sexuality")),
                     resultSet.getInt("location"), resultSet.getInt("preferred_age_min"),
                     resultSet.getInt("preferred_age_max"),
-                    RelationshipController.getSexuality(resultSet.getString("preferred_sexuality")));
+                    RelationshipController.getSexuality(resultSet.getString("preferred_sexuality")),
+                    resultSet.getBoolean("is_admin"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
