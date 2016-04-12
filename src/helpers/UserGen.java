@@ -25,10 +25,10 @@ public class UserGen{
     private String username;
     private String password;
     private String firstName;
-	private String bio;
-	private String email;
-	private Date dob;
-	private String gender;
+    private String bio;
+    private String email;
+    private Date dob;
+    private String gender;
 	private String sexuality;
 	private int location;
 	private int preferredAgeMin;
