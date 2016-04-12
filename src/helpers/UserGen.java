@@ -1,5 +1,7 @@
 package helpers;
 
+import helpers.SQLHelper;
+import java.util.ArrayList;
 import java.util.Random;
 import java.sql.Date;
 
@@ -31,6 +33,7 @@ public class UserGen{
     private String gender;
 	private String sexuality;
 	private int location;
+	private ArrayList<Integer> locations;
 	private int preferredAgeMin;
 	private int preferredAgeMax;
 	private String preferredSexuality;
@@ -54,7 +57,10 @@ public class UserGen{
 		}
 		
 		
-		location = 14620;
+		String locationQuery = "Select zip from locations";
+		SQLHelper.executeQuery
+		locations
+		
 		
 		bio = "I am from location " + location;
 		
