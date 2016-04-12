@@ -57,10 +57,29 @@ public class UserGen{
 		    password += rand.nextInt(10);
 		}
 		
-		
-		String locationQuery = "select zip_code from location";
-		SQLHelper.executeQuery(conn, locationQuery)
+		Connection conn = RelationshipController.getConnection();
+		String locationQuery = "SELECT zip_code FROM location";
+		ResultSet resultSet = SQLHelper.executeQuery(conn, locationQuery)
+		if(resultSet.next()){
+		  locations.add(resultSet.getInt("zip_code"));	
+		}
 		locations = 
+		/*
+		public static Location getInformationViaZip(Connection conn, Integer zipCode) {
+                 Location location = null;
+                 try {
+                  String query = "SELECT * FROM location WHERE zip_code = " + zipCode + ";";
+
+                ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+            if (resultSet.next()) {
+                location = new Location(resultSet.getInt("zip_code"), resultSet.getString("state"),
+                    resultSet.getString("city"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return location;
+    }*/
 		
 		location = locations.get(rand.nextInt(locations.size()))
 		
