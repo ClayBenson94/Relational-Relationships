@@ -31,7 +31,7 @@ public class Location {
         return city;
     }
 
-    public String toString() {
+    public String toString(){
         return city + " " + state + ", " + zipCode;
     }
 }
