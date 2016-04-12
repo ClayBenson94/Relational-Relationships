@@ -44,6 +44,9 @@ public class SearchView {
     private JButton searchButton;
     private JTextField zipcodeField;
     private JPanel basePane;
+    private JButton visitedButton;
+    private JButton preferencesButton;
+    private JButton likesButton;
 
     private RelationshipController controller;
 
