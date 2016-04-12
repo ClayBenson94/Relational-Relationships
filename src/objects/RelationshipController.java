@@ -159,6 +159,8 @@ public class RelationshipController {
         if (!visitedPages.isEmpty()) {
             visitedPages.peek().setVisible(false);
             nextPage.setLocationRelativeTo(visitedPages.peek());
+        } else {
+            nextPage.setLocationRelativeTo(null);
         }
         nextPage.setVisible(true);
         visitedPages.push(nextPage);
