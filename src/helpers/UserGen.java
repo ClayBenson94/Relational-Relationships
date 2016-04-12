@@ -4,6 +4,7 @@ import helpers.SQLHelper;
 import java.util.ArrayList;
 import java.util.Random;
 import java.sql.Date;
+import java.sql.Connection;
 
 /**
  * UserGen objects represent a randomly generated user.
@@ -57,14 +58,15 @@ public class UserGen{
 		}
 		
 		
-		String locationQuery = "Select zip from locations";
-		SQLHelper.executeQuery
-		locations
+		String locationQuery = "select zip_code from location";
+		SQLHelper.executeQuery(conn, locationQuery)
+		locations = 
 		
+		location = locations.get(rand.nextInt(locations.size()))
 		
 		bio = "I am from location " + location;
 		
-	    email = username + "@rit.edu"; 
+	       email = username + "@rit.edu"; 
 		
 		if(rand.nextInt(2) == 1){
 		    sexuality = "Heterosexual";
@@ -95,6 +97,10 @@ public class UserGen{
 		dob = new Date(num);
     }
   
+    public void insertIntoLocationDB(){
+        String locInsertQuery = "insert into location values";
+        SQLHelper.executeQuery(conn, locInsertQuery);
+    }
   
     public String getUsername(){
 	     return username;
