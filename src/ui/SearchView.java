@@ -53,12 +53,7 @@ public class SearchView {
     ActionListener searchListener = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        ArrayList<User> results = controller.search(zipcodeField.getText());
-        DefaultListModel m = new DefaultListModel();
-        for (User result : results) {
-          m.addElement(new ResultListObject(result));
-        }
-        resultsList.setModel(m);
+        performSearch(zipcodeField.getText());
       }
     };
 
@@ -67,7 +62,7 @@ public class SearchView {
     zipcodeField.addActionListener(searchListener);
 
     String myZip = Integer.toString(controller.getActiveUser().getLocation());
-    zipcodeField.setText(myZip);
+    performSearch(myZip);
 
     resultsList.addMouseListener(new MouseAdapter() {
       @Override
