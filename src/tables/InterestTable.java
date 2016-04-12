@@ -10,12 +10,12 @@ public class InterestTable {
 
     public static void createInterestTable(Connection conn) {
         String query = "CREATE TABLE interests("
-            + "interest_name VARCHAR(20),"
-            + "PRIMARY KEY (interest_name),"
-            + "interest_desc VARCHAR(200),"
-            + "category VARCHAR(20),"
-            + "FOREIGN KEY (category) REFERENCES interest_categories(category_name)"
-            + ");";
+                + "interest_name VARCHAR(20),"
+                + "PRIMARY KEY (interest_name),"
+                + "interest_desc VARCHAR(200),"
+                + "category VARCHAR(20),"
+                + "FOREIGN KEY (category) REFERENCES interest_categories(category_name)"
+                + ");";
 
         SQLHelper.execute(conn, query);
     }
@@ -27,10 +27,10 @@ public class InterestTable {
         category = interest.getCategory();
 
         String query = "INSERT INTO interests "
-            + "VALUES (interest_name=\'" + name + "\',"
-            + "interest_desc=\'" + description + "\',"
-            + "category=\'" + category + "\'"
-            + ");";
+                + "VALUES (interest_name=\'" + name + "\',"
+                + "interest_desc=\'" + description + "\',"
+                + "category=\'" + category + "\'"
+                + ");";
 
         return SQLHelper.execute(conn, query);
     }
@@ -41,8 +41,8 @@ public class InterestTable {
         reader.openCSV("resources/csv/interests.csv");
         while (reader.readRow()) {
             String query = "INSERT INTO interests "
-                + "VALUES (\'" + reader.currentRow.get(0)
-                + "\', \'" + reader.currentRow.get(1) + "\', \'" + reader.currentRow.get(2) + "\');";
+                    + "VALUES (\'" + reader.currentRow.get(0)
+                    + "\', \'" + reader.currentRow.get(1) + "\', \'" + reader.currentRow.get(2) + "\');";
             SQLHelper.execute(conn, query);
         }
         reader.closeCSV();

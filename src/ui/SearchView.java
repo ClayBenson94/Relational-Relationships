@@ -9,7 +9,11 @@ import objects.User;
 import tables.UserPhotosTable;
 import tables.UserTable;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -19,7 +23,17 @@ import java.util.ArrayList;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +44,9 @@ public class SearchView {
     private JButton searchButton;
     private JTextField zipcodeField;
     private JPanel basePane;
+    private JButton visitedButton;
+    private JButton preferencesButton;
+    private JButton likesButton;
 
     private RelationshipController controller;
 
@@ -48,7 +65,6 @@ public class SearchView {
         zipcodeField.addActionListener(searchListener);
 
         String myZip = Integer.toString(controller.getActiveUser().getLocation());
-//        zipcodeField.setText(myZip);
         performSearch(myZip);
 
         resultsList.addMouseListener(new MouseAdapter() {
@@ -56,19 +72,17 @@ public class SearchView {
             public void mouseClicked(MouseEvent e) {
                 ResultListObject resultListObject = (ResultListObject) resultsList.getSelectedValue();
                 controller.createVisit(controller.getActiveUser(),
-                    UserTable.getUserObject(RelationshipController.getConnection(), resultListObject.getName()));
+                        UserTable.getUserObject(RelationshipController.getConnection(), resultListObject.getName()));
             }
         });
     }
 
-    public static JFrame init(RelationshipController c, JFrame previousWindow) {
+    public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("SearchView");
         frame.setContentPane(new SearchView(c).basePane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(300, 600);
-        frame.setLocationRelativeTo(previousWindow);
-        frame.setVisible(true);
+        frame.setSize(400, 600);
         return frame;
     }
 
@@ -144,66 +158,3 @@ public class SearchView {
     }
 }
 
-class ResultListObject {
-    private ImageIcon icon;
-    private User user;
-
-    public ResultListObject(User u) {
-        user = u;
-        BufferedImage myPicture = null;
-        try {
-            ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), user);
-            if (images.size() == 0) {
-                myPicture = ImageIO.read(new File("resources/images/logo.png"));
-            } else {
-
-                URL url = new URL(images.get(0));
-                myPicture = ImageIO.read(url);
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //resize
-        double factor = (double) 100 / (double) myPicture.getHeight();
-
-        Image newimg = myPicture.getScaledInstance((int) (myPicture.getWidth() * factor), (int) (myPicture.getHeight() * factor), java.awt.Image.SCALE_SMOOTH);
-        //
-        icon = new ImageIcon(newimg);
-    }
-
-    public ImageIcon getIcon() {
-        return icon;
-    }
-
-    public String getName() {
-        return user.getUsername();
-    }
-}
-
-class UserListRenderer extends JLabel implements ListCellRenderer {
-    private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
-
-    public UserListRenderer(RelationshipController controller) {
-        setOpaque(true);
-        setIconTextGap(12);
-    }
-
-    public Component getListCellRendererComponent(JList list, Object value,
-                                                  int index, boolean isSelected, boolean cellHasFocus) {
-        ResultListObject entry = (ResultListObject) value;
-        setText(entry.getName());
-        //TODO icon
-
-        setIcon(entry.getIcon());
-        if (isSelected) {
-            setBackground(HIGHLIGHT_COLOR);
-            setForeground(Color.white);
-        } else {
-            setBackground(Color.white);
-            setForeground(Color.black);
-        }
-        return this;
-    }
-}

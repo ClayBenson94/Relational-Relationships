@@ -14,13 +14,13 @@ public class VisitTable {
 
     public static void createVisitTable(Connection conn) {
         String query = "CREATE TABLE visit("
-            + "visited VARCHAR(20),"
-            + "visitor VARCHAR(20),"
-            + "timestamp BIGINT UNSIGNED,"
-            + "PRIMARY KEY (visited, visitor, timestamp),"
-            + "FOREIGN KEY (visited) REFERENCES user(username),"
-            + "FOREIGN KEY (visitor) REFERENCES user(username),"
-            + ");";
+                + "visited VARCHAR(20),"
+                + "visitor VARCHAR(20),"
+                + "timestamp BIGINT UNSIGNED,"
+                + "PRIMARY KEY (visited, visitor, timestamp),"
+                + "FOREIGN KEY (visited) REFERENCES user(username),"
+                + "FOREIGN KEY (visitor) REFERENCES user(username),"
+                + ");";
 
         SQLHelper.execute(conn, query);
     }

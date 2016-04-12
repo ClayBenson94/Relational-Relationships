@@ -14,30 +14,30 @@ public class LikesTable {
 
     public static void createLikesTable(Connection conn) {
         String query = "CREATE TABLE likes("
-            + "sender VARCHAR(20),"
-            + "receiver VARCHAR(20),"
-            + "timestamp BIGINT UNSIGNED,"
-            + "PRIMARY KEY (sender, receiver),"
-            + "FOREIGN KEY (sender) REFERENCES user(username),"
-            + "FOREIGN KEY (receiver) REFERENCES user(username)"
-            + ");";
+                + "sender VARCHAR(20),"
+                + "receiver VARCHAR(20),"
+                + "timestamp BIGINT UNSIGNED,"
+                + "PRIMARY KEY (sender, receiver),"
+                + "FOREIGN KEY (sender) REFERENCES user(username),"
+                + "FOREIGN KEY (receiver) REFERENCES user(username)"
+                + ");";
 
         SQLHelper.execute(conn, query);
     }
 
     public static void createLike(Connection conn, String sender, String receiver) {
         String query = "INSERT INTO likes VALUES (\'"
-            + sender + "\',\'"
-            + receiver + "\',\'"
-            + System.currentTimeMillis() + "\');";
+                + sender + "\',\'"
+                + receiver + "\',\'"
+                + System.currentTimeMillis() + "\');";
 
         SQLHelper.execute(conn, query);
     }
 
     public static void deleteLike(Connection conn, String sender, String receiver) {
         String query = "delete from likes where sender= \'"
-            + sender + "\' and receiver=\'"
-            + receiver + "\';";
+                + sender + "\' and receiver=\'"
+                + receiver + "\';";
 
         SQLHelper.execute(conn, query);
     }
@@ -75,7 +75,7 @@ public class LikesTable {
     public static Boolean doesUserLike(Connection conn, String username, String otherUser) {
         try {
             String query = "SELECT * FROM likes WHERE sender=\'" + username +
-                "\' and receiver= \'" + otherUser + "\';";
+                    "\' and receiver= \'" + otherUser + "\';";
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
 
             if (resultSet.next()) {

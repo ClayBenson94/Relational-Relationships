@@ -34,7 +34,6 @@ public class UserTable {
             + "CHECK (gender IN ('Male', 'Female')),"
             + "CHECK (sexuality IN ('Heterosexual', 'Homosexual')),"
             + ");";
-
         SQLHelper.execute(conn, query);
     }
 
@@ -53,7 +52,6 @@ public class UserTable {
             + ",preferred_age_max=" + user.getUserPreferences().getPreferredAgeMax()
             + ",preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality() + "\'"
             + ",is_admin =\'" + user.getIsAdmin() + "\');";
-
         return SQLHelper.execute(conn, query);
     }
 
@@ -72,7 +70,6 @@ public class UserTable {
             + "\',preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality()
             + "\',is_admin=\'"
             + "\' WHERE username=\'" + user.getUsername() + "\';";
-
         SQLHelper.execute(conn, query);
     }
 
@@ -166,23 +163,23 @@ public class UserTable {
         StringBuilder sb = new StringBuilder();
 
         sb.append("INSERT INTO user (username, password, name, bio, email, dob, gender, sexuality," +
-            " location, preferred_age_min, preferred_age_max, preferred_sexuality) VALUES");
+                " location, preferred_age_min, preferred_age_max, preferred_sexuality) VALUES");
 
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
             sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s')",
-                user.getUsername(),
-                user.getPassword(),
-                user.getName(),
-                user.getBio(),
-                user.getEmail(),
-                user.getDob(),
-                user.getGender(),
-                user.getSexuality(),
-                user.getLocation(),
-                user.getUserPreferences().getPreferredAgeMin(),
-                user.getUserPreferences().getPreferredAgeMax(),
-                user.getUserPreferences().getPreferredSexuality()));
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getName(),
+                    user.getBio(),
+                    user.getEmail(),
+                    user.getDob(),
+                    user.getGender(),
+                    user.getSexuality(),
+                    user.getLocation(),
+                    user.getUserPreferences().getPreferredAgeMin(),
+                    user.getUserPreferences().getPreferredAgeMax(),
+                    user.getUserPreferences().getPreferredSexuality()));
             if (i != users.size() - 1) {
                 sb.append(",");
             } else {

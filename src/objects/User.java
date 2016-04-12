@@ -6,7 +6,6 @@ import java.time.Period;
 import java.util.ArrayList;
 
 import tables.LocationTable;
-import tables.RelationalRelationships;
 import tables.UserInterestsTable;
 import tables.UserTable;
 
