@@ -13,7 +13,7 @@ public class RelationalRelationships {
     /**
      * Create a database connection
      */
-    public void createConnection(){
+    public void createConnection() {
         String user = "relations";
         String password = "password";
 
@@ -28,8 +28,8 @@ public class RelationalRelationships {
 
             //creates the connection
             conn = DriverManager.getConnection(url,
-                                               user,
-                                               password);
+                user,
+                password);
         } catch (SQLException | ClassNotFoundException e) {
             //You should handle this better
             e.printStackTrace();
@@ -38,9 +38,10 @@ public class RelationalRelationships {
 
     /**
      * just returns the connection
+     *
      * @return returns class level connection
      */
-    public Connection getConnection(){
+    public Connection getConnection() {
         return conn;
     }
 
@@ -48,7 +49,7 @@ public class RelationalRelationships {
      * When your database program exits
      * you should close the connection
      */
-    public void closeConnection(){
+    public void closeConnection() {
         try {
             conn.close();
         } catch (SQLException e) {
