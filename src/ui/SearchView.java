@@ -82,7 +82,7 @@ public class SearchView {
         frame.setContentPane(new SearchView(c).basePane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(300, 600);
+        frame.setSize(400, 600);
         return frame;
     }
 
@@ -158,66 +158,3 @@ public class SearchView {
     }
 }
 
-class ResultListObject {
-    private ImageIcon icon;
-    private User user;
-
-    public ResultListObject(User u) {
-        user = u;
-        BufferedImage myPicture = null;
-        try {
-            ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), user);
-            if (images.size() == 0) {
-                myPicture = ImageIO.read(new File("resources/images/logo.png"));
-            } else {
-
-                URL url = new URL(images.get(0));
-                myPicture = ImageIO.read(url);
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //resize
-        double factor = (double) 100 / (double) myPicture.getHeight();
-
-        Image newimg = myPicture.getScaledInstance((int) (myPicture.getWidth() * factor), (int) (myPicture.getHeight() * factor), java.awt.Image.SCALE_SMOOTH);
-        //
-        icon = new ImageIcon(newimg);
-    }
-
-    public ImageIcon getIcon() {
-        return icon;
-    }
-
-    public String getName() {
-        return user.getUsername();
-    }
-}
-
-class UserListRenderer extends JLabel implements ListCellRenderer {
-    private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
-
-    public UserListRenderer(RelationshipController controller) {
-        setOpaque(true);
-        setIconTextGap(12);
-    }
-
-    public Component getListCellRendererComponent(JList list, Object value,
-                                                  int index, boolean isSelected, boolean cellHasFocus) {
-        ResultListObject entry = (ResultListObject) value;
-        setText(entry.getName());
-        //TODO icon
-
-        setIcon(entry.getIcon());
-        if (isSelected) {
-            setBackground(HIGHLIGHT_COLOR);
-            setForeground(Color.white);
-        } else {
-            setBackground(Color.white);
-            setForeground(Color.black);
-        }
-        return this;
-    }
-}
