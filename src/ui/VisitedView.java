@@ -22,6 +22,7 @@ public class VisitedView {
         controller = c;
         backBttn.addActionListener(controller.backListener(controller));
         populateVisits(Integer.toString(c.getActiveUser().getLocation()));
+        visitedList.setCellRenderer(new UserListRenderer(controller));
 
         visitedList.addMouseListener(new MouseAdapter() {
             @Override
@@ -44,6 +45,8 @@ public class VisitedView {
     }
 
     public void populateVisits(String zipCode) {
+//        ArrayList<User> results = controller.search(zipCode);
+        //TODO Implement getting visits instead of search (search is temporary)
         ArrayList<User> results = controller.search(zipCode);
         DefaultListModel m = new DefaultListModel();
         for (int i = 0; i < results.size(); i++) {
