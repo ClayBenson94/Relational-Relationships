@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class VisitedView {
     private JButton backBttn;
     private JList visitedList;
+    private JPanel basePane;
     private RelationshipController controller;
 
     public VisitedView(RelationshipController c) {
@@ -31,6 +32,15 @@ public class VisitedView {
             }
         });
 
+    }
+
+    public static JFrame init(RelationshipController c) {
+        JFrame frame = new JFrame("VisitedView");
+        frame.setContentPane(new VisitedView(c).basePane);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setSize(700, 700);
+        return frame;
     }
 
     public void populateVisits(String zipCode) {
