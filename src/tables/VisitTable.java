@@ -34,12 +34,12 @@ public class VisitTable {
     public static ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
         ArrayList<Visit> userVisits = new ArrayList<>();
 
-        String query = "SELECT * FROM visit WHERE visitor = \'" + user.getUsername() + "\';";
+        String query = "SELECT * FROM visit WHERE visited = \'" + user.getUsername() + "\';";
 
         ResultSet resultSet = SQLHelper.executeQuery(conn, query);
         try {
             while (resultSet.next()) {
-                Visit visit = new Visit(resultSet.getString("visited"), resultSet.getLong("timestamp"));
+                Visit visit = new Visit(resultSet.getString("visitor"), resultSet.getLong("timestamp"));
                 userVisits.add(visit);
             }
         } catch (SQLException e) {
@@ -55,8 +55,8 @@ public class VisitTable {
 
         reader.openCSV("resources/csv/visits.csv");
         while (reader.readRow()) {
-            visited = reader.currentRow.get(0);
-            visitor = reader.currentRow.get(1);
+            visitor = reader.currentRow.get(0);
+            visited = reader.currentRow.get(1);
 
             createVisit(conn, visited, visitor);
         }

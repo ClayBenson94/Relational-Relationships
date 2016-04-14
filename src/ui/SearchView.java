@@ -68,8 +68,8 @@ public class SearchView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 ResultListObject resultListObject = (ResultListObject) resultsList.getSelectedValue();
-                controller.createVisit(controller.getActiveUser(),
-                        UserTable.getUserObject(RelationshipController.getConnection(), resultListObject.getName()));
+                controller.createVisit(UserTable.getUserObject(RelationshipController.getConnection(),
+                        resultListObject.getName()),controller.getActiveUser());
             }
         });
     }

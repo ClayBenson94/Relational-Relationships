@@ -123,7 +123,7 @@ public class RelationshipController {
         return VisitTable.getVisitsForUser(conn, currentUser);
     }
 
-    public void createVisit(User visitor, User visited) {
+    public void createVisit(User visited, User visitor) {
         VisitTable.createVisit(conn, visited.getUsername(), visitor.getUsername());
         visitingUser = visited;
         JFrame nextPage = VisitingUserView.init(this);

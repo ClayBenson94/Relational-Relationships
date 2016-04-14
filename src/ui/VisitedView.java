@@ -29,8 +29,8 @@ public class VisitedView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 VisitedListObject visitListObject = (VisitedListObject) visitedList.getSelectedValue();
-                controller.createVisit(controller.getActiveUser(),
-                        UserTable.getUserObject(RelationshipController.getConnection(), visitListObject.getName()));
+                controller.createVisit(UserTable.getUserObject(RelationshipController.getConnection(),
+                        visitListObject.getName()),controller.getActiveUser());
             }
         });
 
