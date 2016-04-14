@@ -2,6 +2,7 @@ package ui;
 
 import objects.RelationshipController;
 import objects.User;
+import objects.Visit;
 import tables.UserTable;
 
 import javax.swing.*;
@@ -21,15 +22,15 @@ public class VisitedView {
     public VisitedView(RelationshipController c) {
         controller = c;
         backBttn.addActionListener(controller.backListener(controller));
-        populateVisits(Integer.toString(c.getActiveUser().getLocation()));
-        visitedList.setCellRenderer(new UserListRenderer(controller));
+        populateVisits(c.getActiveUser());
+        visitedList.setCellRenderer(new VisitListRenderer(controller));
 
         visitedList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ResultListObject resultListObject = (ResultListObject) visitedList.getSelectedValue();
+                VisitedListObject visitListObject = (VisitedListObject) visitedList.getSelectedValue();
                 controller.createVisit(controller.getActiveUser(),
-                        UserTable.getUserObject(RelationshipController.getConnection(), resultListObject.getName()));
+                        UserTable.getUserObject(RelationshipController.getConnection(), visitListObject.getName()));
             }
         });
 
@@ -44,13 +45,13 @@ public class VisitedView {
         return frame;
     }
 
-    public void populateVisits(String zipCode) {
-//        ArrayList<User> results = controller.search(zipCode);
+    public void populateVisits(User curUser) {
         //TODO Implement getting visits instead of search (search is temporary)
-        ArrayList<User> results = controller.search(zipCode);
+//        ArrayList<User> results = controller.search(zipCode);
+        ArrayList<Visit> results = controller.getVisitsForUser(curUser);
         DefaultListModel m = new DefaultListModel();
         for (int i = 0; i < results.size(); i++) {
-            m.addElement(new ResultListObject(results.get(i)));
+            m.addElement(new VisitedListObject(results.get(i)));
         }
         visitedList.setModel(m);
     }

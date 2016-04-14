@@ -31,15 +31,15 @@ public class VisitTable {
         SQLHelper.execute(conn, query);
     }
 
-    public ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
-        ArrayList<Visit> userVisits = new ArrayList<Visit>();
+    public static ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
+        ArrayList<Visit> userVisits = new ArrayList<>();
 
         String query = "SELECT * FROM visit WHERE visitor = \'" + user.getUsername() + "\';";
 
         ResultSet resultSet = SQLHelper.executeQuery(conn, query);
         try {
             while (resultSet.next()) {
-                Visit visit = new Visit(resultSet.getString("visitor"), resultSet.getLong("timestamp"));
+                Visit visit = new Visit(resultSet.getString("visited"), resultSet.getLong("timestamp"));
                 userVisits.add(visit);
             }
         } catch (SQLException e) {
