@@ -115,7 +115,19 @@ public class UserGen{
   
     public void insertIntoUserDB(){
         try{
-            String userInsertQuery = "INSERT INTO user VALUES"+;
+            String userInsertQuery = "INSERT INTO user "
+                + "VALUES (\'" + this.getUsername()
+                + "\',\'" + this.getPassword()
+                + "\',\'" + this.getName()
+                + "\',\'" + this.getBio()
+                + "\',\'" + this.getEmail()
+                + "\',\'" + this.getDOB()
+                + "\',\'" + this.getGender()
+                + "\',\'" + this.getSexuality()
+                + "\'," + this.getLocation()
+                + "," + this.getPreferredAgeMin()
+                + "," + this.getPreferredAgeMax()
+                + ",\'" + this.getPreferredSexuality() + "\');";
             SQLHelper.executeQuery(conn, userInsertQuery);
         }
         catch(SQLException e){
