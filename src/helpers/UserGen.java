@@ -13,6 +13,10 @@ import java.sql.Connection;
  */
 public class UserGen{
 
+    private static final String[] ALPHABET = 
+    {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r",
+     "s","t","u","v","w","x","y","z"};
+
     private static final String[] MALEFIRSTNAMES = 
 	 {"Alan","Andrew","Andy","Bert","Billy","Bob","Cal","Charley","Chris","Clay",
 	 "Dan","Dave","Drew","Dylan","Eddie","Frank","Greg","Jarryd","Jimmy","John",
@@ -51,41 +55,33 @@ public class UserGen{
 			firstName = FEMALEFIRSTNAMES[rand.nextInt(FEMALEFIRSTNAMES.length)];
 		}
 		
-		username = firstName.toLowerCase()+rand.nextInt(1000);
+		username = firstName.toLowerCase()+alphabet[rand.nextInt(ALPHABET.length)]+
+		           alphabet[rand.nextInt(ALPHABET.length)]+alphabet[rand.nextInt(ALPHABET.length)]+
+		           alphabet[rand.nextInt(ALPHABET.length)]+alphabet[rand.nextInt(ALPHABET.length)]+
+		           rand.nextInt(10000);
+		           
 		password = "";
 		for(int x = 0; x < 10; x++){
 		    password += rand.nextInt(10);
 		}
 		
 		Connection conn = RelationshipController.getConnection();
-		String locationQuery = "SELECT zip_code FROM location";
-		ResultSet resultSet = SQLHelper.executeQuery(conn, locationQuery)
-		if(resultSet.next()){
-		  locations.add(resultSet.getInt("zip_code"));	
+		try{
+		    String locationQuery = "SELECT zip_code FROM location";
+		    ResultSet resultSet = SQLHelper.executeQuery(conn, locationQuery)
+		    while(resultSet.next()){
+		        locations.add(resultSet.getInt("zip_code"));	
+		    }
 		}
-		locations = 
-		/*
-		public static Location getInformationViaZip(Connection conn, Integer zipCode) {
-                 Location location = null;
-                 try {
-                  String query = "SELECT * FROM location WHERE zip_code = " + zipCode + ";";
-
-                ResultSet resultSet = SQLHelper.executeQuery(conn, query);
-            if (resultSet.next()) {
-                location = new Location(resultSet.getInt("zip_code"), resultSet.getString("state"),
-                    resultSet.getString("city"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return location;
-    }*/
+		catch(SQLException e){
+		    e.printStackTrace();    
+		}
 		
-		location = locations.get(rand.nextInt(locations.size()))
+		location = locations.get(rand.nextInt(locations.size()));
 		
 		bio = "I am from location " + location;
 		
-	       email = username + "@rit.edu"; 
+	    email = username + "@relationalrelationships.com"; 
 		
 		if(rand.nextInt(2) == 1){
 		    sexuality = "Heterosexual";
@@ -114,11 +110,17 @@ public class UserGen{
 		    num = lower + (long)(rand.nextDouble()*(current-lower));
 		}
 		dob = new Date(num);
+		
     }
   
-    public void insertIntoLocationDB(){
-        String locInsertQuery = "insert into location values";
-        SQLHelper.executeQuery(conn, locInsertQuery);
+    public void insertIntoUserDB(){
+        try{
+            String userInsertQuery = "INSERT INTO user VALUES"+;
+            SQLHelper.executeQuery(conn, userInsertQuery);
+        }
+        catch(SQLException e){
+            e.printStackTrace();    
+        }
     }
   
     public String getUsername(){
