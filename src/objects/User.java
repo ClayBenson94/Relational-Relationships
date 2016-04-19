@@ -24,10 +24,11 @@ public class User {
     private RelationshipController.Sexuality sexuality;
     private int location;
     private UserPreferences userPreferences;
+    private Boolean isAdmin;
 
     public User(String username, String password, String name, String bio, String email, Date dob,
                 RelationshipController.Gender gender, RelationshipController.Sexuality sexuality, int location, Integer preferredAgeMin, Integer preferredAgeMax,
-                RelationshipController.Sexuality preferredSexuality) {
+                RelationshipController.Sexuality preferredSexuality, Boolean isAdmin) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -38,15 +39,23 @@ public class User {
         this.sexuality = sexuality;
         this.location = location;
         this.userPreferences = new UserPreferences(preferredAgeMin, preferredAgeMax, preferredSexuality);
+        this.isAdmin = isAdmin;
     }
 
     public String getUsername() {
         return username;
     }
 
-
     public String getPassword() {
         return password;
+    }
+
+    public Boolean getIsAdmin(){
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin){
+        this.isAdmin = isAdmin;
     }
 
     public void setPassword(String password) {
