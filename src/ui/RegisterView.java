@@ -86,7 +86,8 @@ public class RegisterView {
                             Integer.parseInt(zipCodeTextField.getText()),
                             Integer.parseInt(preferredAgeMinTextField.getText()),
                             Integer.parseInt(preferredAgeMaxTextField.getText()),
-                            (Sexuality) preferredSexuality.getSelectedItem()));
+                            (Sexuality) preferredSexuality.getSelectedItem(),
+                            false));
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                 }
