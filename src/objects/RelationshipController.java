@@ -3,10 +3,12 @@ package objects;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 
 import javax.swing.*;
@@ -194,10 +196,21 @@ public class RelationshipController {
     public static void main(String args[]) throws SQLException {
         RelationalRelationships relationalRelationships = new RelationalRelationships();
 
+        String username = "";
+        String password = "";
+        Boolean autoLogin = false;
         //Check Arguments
         relationalRelationships.createConnection();
-        for (String argument : args) {
-            if (argument.equals("-n")) relationalRelationships.createPopulatedTables();
+
+        for (int i=0; i < args.length; i++){
+            if (args[i].equals("-n")){
+                relationalRelationships.createPopulatedTables();
+            }
+            if (args[i].equals("-l")){
+                autoLogin = true;
+                username = args[i+1];
+                password = args[i+2];
+            }
         }
 
         conn = relationalRelationships.getConnection();
@@ -211,7 +224,13 @@ public class RelationshipController {
         }
         //UI
         RelationshipController controllerInstance = new RelationshipController();
-        controllerInstance.startUI();
+        if (autoLogin){
+            controllerInstance.login(username, password);
+        }
+        else{
+            controllerInstance.startUI();
+        }
+
         //TODO close connection correclty
         //relationalRelationships.closeConnection();
     }
