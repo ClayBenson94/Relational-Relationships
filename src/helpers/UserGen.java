@@ -1,5 +1,6 @@
 package helpers;
 
+import objects.RelationshipController;
 import helpers.SQLHelper;
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,6 +13,8 @@ import java.sql.Connection;
  * Created by Josh Horning
  */
 public class UserGen{
+
+    private static ArrayList<UserGen> userGens = new ArrayList<UserGen>(100);
 
     private static final String[] ALPHABET = 
     {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r",
@@ -111,24 +114,39 @@ public class UserGen{
 		}
 		dob = new Date(num);
 		
+		userGens.add(this);
     }
   
-    public void insertIntoUserDB(){
+    public static void insertIntoUserDB(){
+        Connection conn = RelationshipController.getConnection();
         try{
-            String userInsertQuery = "INSERT INTO user "
-                + "VALUES (\'" + this.getUsername()
-                + "\',\'" + this.getPassword()
-                + "\',\'" + this.getName()
-                + "\',\'" + this.getBio()
-                + "\',\'" + this.getEmail()
-                + "\',\'" + this.getDOB()
-                + "\',\'" + this.getGender()
-                + "\',\'" + this.getSexuality()
-                + "\'," + this.getLocation()
-                + "," + this.getPreferredAgeMin()
-                + "," + this.getPreferredAgeMax()
-                + ",\'" + this.getPreferredSexuality() + "\');";
-            SQLHelper.executeQuery(conn, userInsertQuery);
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("INSERT INTO user (username, password, name, bio, email, dob, gender, sexuality," +
+                  " location, preferred_age_min, preferred_age_max, preferred_sexuality) VALUES");
+
+            for (int i = 0; i < userGens.size(); i++) {
+                UserGen user = userGens.get(i);
+                sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s')",
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getName(),
+                    user.getBio(),
+                    user.getEmail(),
+                    user.getDOB(),
+                    user.getGender(),
+                    user.getSexuality(),
+                    user.getLocation(),
+                    user.getPreferredAgeMin(),
+                    user.getPreferredAgeMax(),
+                    user.getPreferredSexuality()));
+                if (i != usersGens.size() - 1) {
+                    sb.append(",");
+                } else {
+                    sb.append(";");
+                }
+            }
+            SQLHelper.execute(conn, sb.toString());
         }
         catch(SQLException e){
             e.printStackTrace();    
