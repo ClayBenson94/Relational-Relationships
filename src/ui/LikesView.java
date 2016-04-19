@@ -4,17 +4,24 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import objects.RelationshipController;
-import objects.User;
+import tables.UserPhotosTable;
 import tables.UserTable;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
 import java.util.ArrayList;
 import objects.Like;
+import java.util.Date;
 
 public class LikesView {
     private JButton backButton;
@@ -51,8 +58,9 @@ public class LikesView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 LikedListObject likedListObject = (LikedListObject) likesList.getSelectedValue();
-                controller.createVisit(controller.getActiveUser(),
-                        UserTable.getUserObject(RelationshipController.getConnection(), likedListObject.getName()));
+                if (likedListObject != null)
+                    controller.createVisit(controller.getActiveUser(),
+                            UserTable.getUserObject(RelationshipController.getConnection(), likedListObject.getName()));
             }
         });
     }
@@ -135,5 +143,76 @@ public class LikesView {
      */
     public JComponent $$$getRootComponent$$$() {
         return basePane;
+    }
+
+    static class LikedListObject {
+        private ImageIcon icon;
+        private Like like;
+
+        public LikedListObject(Like l) {
+            like = l;
+            BufferedImage myPicture = null;
+            try {
+                Connection conn = RelationshipController.getConnection();
+                ArrayList<String> images = UserPhotosTable.getUserPhotos(conn, UserTable.getUserObject(conn, l.getUsername()));
+                if (images.size() == 0) {
+                    myPicture = ImageIO.read(new File("resources/images/logo.png"));
+                } else {
+
+                    URL url = new URL(images.get(0));
+                    myPicture = ImageIO.read(url);
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //resize
+            double factor = (double) 100 / (double) myPicture.getHeight();
+
+            Image newimg = myPicture.getScaledInstance((int) (myPicture.getWidth() * factor), (int) (myPicture.getHeight() * factor), Image.SCALE_SMOOTH);
+            //
+            icon = new ImageIcon(newimg);
+        }
+
+        public ImageIcon getIcon() {
+            return icon;
+        }
+
+        public String getName() {
+            return like.getUsername();
+        }
+
+        public String getPrintableString() {
+            Long time = like.getTimestamp();
+            Date date = new Date(time);
+            return date.toString() + " | " + getName();
+        }
+    }
+
+
+    static class LikedListRenderer extends JLabel implements ListCellRenderer {
+        private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
+
+        public LikedListRenderer(RelationshipController controller) {
+            setOpaque(true);
+            setIconTextGap(12);
+        }
+
+        public Component getListCellRendererComponent(JList list, Object value,
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
+            LikedListObject entry = (LikedListObject) value;
+            setText(entry.getPrintableString());
+
+            setIcon(entry.getIcon());
+            if (isSelected) {
+                setBackground(HIGHLIGHT_COLOR);
+                setForeground(Color.white);
+            } else {
+                setBackground(Color.white);
+                setForeground(Color.black);
+            }
+            return this;
+        }
     }
 }
