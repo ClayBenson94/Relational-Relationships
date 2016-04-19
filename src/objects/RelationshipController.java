@@ -23,10 +23,7 @@ import tables.UserPhotosTable;
 import tables.UserTable;
 import tables.VisitTable;
 
-import ui.ErrorView;
-import ui.LoginView;
-import ui.SearchView;
-import ui.VisitingUserView;
+import ui.*;
 
 public class RelationshipController {
 
@@ -147,6 +144,11 @@ public class RelationshipController {
             createErrorView("Username/Password combination is incorrect.");
         }
 
+    }
+
+    public void openLikedPage() {
+        JFrame page = LikesView.init(this);
+        addPageToVistedPages(page);
     }
 
     public void register(User user) {
