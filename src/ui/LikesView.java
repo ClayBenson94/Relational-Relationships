@@ -35,12 +35,17 @@ public class LikesView {
         controller = c;
 
         likesList.setCellRenderer(new LikedListRenderer(controller));
-        matchesList.setCellRenderer(new LikedListRenderer(controller));
+        matchesList.setCellRenderer(new MatchListRenderer(controller));
 
-        //TODO get matches
-
-        ArrayList<Like> results = controller.getLikes(controller.getActiveUser());
+        ArrayList<Like> results = controller.getMatches(controller.getActiveUser());
         DefaultListModel m = new DefaultListModel();
+        for (int i = 0; i < results.size(); i++) {
+            m.addElement(new LikedListObject(results.get(i)));
+        }
+        matchesList.setModel(m);
+
+        results = controller.getLikes(controller.getActiveUser());
+        m = new DefaultListModel();
         for (int i = 0; i < results.size(); i++) {
             m.addElement(new LikedListObject(results.get(i)));
         }
@@ -58,11 +63,27 @@ public class LikesView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 LikedListObject likedListObject = (LikedListObject) likesList.getSelectedValue();
-                if (likedListObject != null)
+                if (likedListObject != null) {
                     controller.createVisit(controller.getActiveUser(),
                             UserTable.getUserObject(RelationshipController.getConnection(), likedListObject.getName()));
+                }
+
             }
         });
+
+        matchesList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                LikedListObject matchesListObject = (LikedListObject) matchesList.getSelectedValue();
+                if (matchesListObject != null) {
+                    controller.createVisit(controller.getActiveUser(),
+                            UserTable.getUserObject(RelationshipController.getConnection(), matchesListObject.getName()));
+                }
+
+            }
+        });
+
+
     }
 
     public static JFrame init(RelationshipController c) {
@@ -203,6 +224,31 @@ public class LikesView {
                                                       int index, boolean isSelected, boolean cellHasFocus) {
             LikedListObject entry = (LikedListObject) value;
             setText(entry.getPrintableString());
+
+            setIcon(entry.getIcon());
+            if (isSelected) {
+                setBackground(HIGHLIGHT_COLOR);
+                setForeground(Color.white);
+            } else {
+                setBackground(Color.white);
+                setForeground(Color.black);
+            }
+            return this;
+        }
+    }
+
+    static class MatchListRenderer extends JLabel implements ListCellRenderer {
+        private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
+
+        public MatchListRenderer(RelationshipController controller) {
+            setOpaque(true);
+            setIconTextGap(12);
+        }
+
+        public Component getListCellRendererComponent(JList list, Object value,
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
+            LikedListObject entry = (LikedListObject) value;
+            setText(entry.getName());
 
             setIcon(entry.getIcon());
             if (isSelected) {
