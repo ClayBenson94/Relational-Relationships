@@ -163,11 +163,11 @@ public class UserTable {
         StringBuilder sb = new StringBuilder();
 
         sb.append("INSERT INTO user (username, password, name, bio, email, dob, gender, sexuality," +
-                " location, preferred_age_min, preferred_age_max, preferred_sexuality) VALUES");
+                " location, preferred_age_min, preferred_age_max, preferred_sexuality, is_admin) VALUES");
 
         for (int i = 0; i < users.size(); i++) {
             User user = users.get(i);
-            sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s')",
+            sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s', '%s')",
                     user.getUsername(),
                     user.getPassword(),
                     user.getName(),
@@ -179,7 +179,8 @@ public class UserTable {
                     user.getLocation(),
                     user.getUserPreferences().getPreferredAgeMin(),
                     user.getUserPreferences().getPreferredAgeMax(),
-                    user.getUserPreferences().getPreferredSexuality()));
+                    user.getUserPreferences().getPreferredSexuality(),
+                    user.getIsAdmin()));
             if (i != users.size() - 1) {
                 sb.append(",");
             } else {

@@ -47,11 +47,16 @@ public class SearchView {
     private JButton visitedButton;
     private JButton preferencesButton;
     private JButton likesButton;
+    private JButton adminButton;
 
     private RelationshipController controller;
 
     public SearchView(RelationshipController c) {
         controller = c;
+
+        if (!controller.getActiveUser().getIsAdmin()){
+            adminButton.setVisible(false);
+        }
 
         ActionListener searchListener = new ActionListener() {
             @Override
