@@ -25,10 +25,7 @@ import tables.UserPhotosTable;
 import tables.UserTable;
 import tables.VisitTable;
 
-import ui.ErrorView;
-import ui.LoginView;
-import ui.SearchView;
-import ui.VisitingUserView;
+import ui.*;
 
 public class RelationshipController {
 
@@ -124,7 +121,11 @@ public class RelationshipController {
         return UserInterestsTable.addInterestToUser(conn, user.getUsername(), interest);
     }
 
-    public void createVisit(User visitor, User visited) {
+    public ArrayList<Visit> getVisitsForUser(User currentUser) {
+        return VisitTable.getVisitsForUser(conn, currentUser);
+    }
+
+    public void createVisit(User visited, User visitor) {
         VisitTable.createVisit(conn, visited.getUsername(), visitor.getUsername());
         visitingUser = visited;
         JFrame nextPage = VisitingUserView.init(this);
@@ -149,6 +150,11 @@ public class RelationshipController {
             createErrorView("Username/Password combination is incorrect.");
         }
 
+    }
+
+    public void openVisitPage() {
+        JFrame nextPage = VisitedView.init(this);
+        addPageToVistedPages(nextPage);
     }
 
     public void register(User user) {

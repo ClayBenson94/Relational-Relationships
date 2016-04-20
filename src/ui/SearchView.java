@@ -23,17 +23,7 @@ import java.util.ArrayList;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,6 +53,12 @@ public class SearchView {
         resultsList.setCellRenderer(new UserListRenderer(controller));
         searchButton.addActionListener(searchListener);
         zipcodeField.addActionListener(searchListener);
+        visitedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openVisitPage();
+            }
+        });
 
         String myZip = Integer.toString(controller.getActiveUser().getLocation());
         performSearch(myZip);
@@ -71,8 +67,8 @@ public class SearchView {
             @Override
             public void mouseClicked(MouseEvent e) {
                 ResultListObject resultListObject = (ResultListObject) resultsList.getSelectedValue();
-                controller.createVisit(controller.getActiveUser(),
-                        UserTable.getUserObject(RelationshipController.getConnection(), resultListObject.getName()));
+                controller.createVisit(UserTable.getUserObject(RelationshipController.getConnection(),
+                        resultListObject.getName()),controller.getActiveUser());
             }
         });
     }
@@ -155,6 +151,75 @@ public class SearchView {
      */
     public JComponent $$$getRootComponent$$$() {
         return basePane;
+    }
+
+    /**
+     * Created by Clay on 4/12/2016.
+     */
+    static class ResultListObject {
+        private ImageIcon icon;
+        private User user;
+
+        public ResultListObject(User u) {
+            user = u;
+            BufferedImage myPicture = null;
+            try {
+                ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), user);
+                if (images.size() == 0) {
+                    myPicture = ImageIO.read(new File("resources/images/logo.png"));
+                } else {
+
+                    URL url = new URL(images.get(0));
+                    myPicture = ImageIO.read(url);
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //resize
+            double factor = (double) 100 / (double) myPicture.getHeight();
+
+            Image newimg = myPicture.getScaledInstance((int) (myPicture.getWidth() * factor), (int) (myPicture.getHeight() * factor), Image.SCALE_SMOOTH);
+            //
+            icon = new ImageIcon(newimg);
+        }
+
+        public ImageIcon getIcon() {
+            return icon;
+        }
+
+        public String getName() {
+            return user.getUsername();
+        }
+    }
+
+    /**
+     * Created by Clay on 4/12/2016.
+     */
+    static class UserListRenderer extends JLabel implements ListCellRenderer {
+        private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
+
+        public UserListRenderer(RelationshipController controller) {
+            setOpaque(true);
+            setIconTextGap(12);
+        }
+
+        public Component getListCellRendererComponent(JList list, Object value,
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
+            ResultListObject entry = (ResultListObject) value;
+            setText(entry.getName());
+
+            setIcon(entry.getIcon());
+            if (isSelected) {
+                setBackground(HIGHLIGHT_COLOR);
+                setForeground(Color.white);
+            } else {
+                setBackground(Color.white);
+                setForeground(Color.black);
+            }
+            return this;
+        }
     }
 }
 
