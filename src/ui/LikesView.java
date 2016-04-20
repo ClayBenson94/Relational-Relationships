@@ -64,8 +64,8 @@ public class LikesView {
             public void mouseClicked(MouseEvent e) {
                 LikedListObject likedListObject = (LikedListObject) likesList.getSelectedValue();
                 if (likedListObject != null) {
-                    controller.createVisit(controller.getActiveUser(),
-                            UserTable.getUserObject(RelationshipController.getConnection(), likedListObject.getName()));
+                    controller.createVisit(UserTable.getUserObject(RelationshipController.getConnection(),
+                            likedListObject.getName()),controller.getActiveUser());
                 }
 
             }
@@ -76,8 +76,8 @@ public class LikesView {
             public void mouseClicked(MouseEvent e) {
                 LikedListObject matchesListObject = (LikedListObject) matchesList.getSelectedValue();
                 if (matchesListObject != null) {
-                    controller.createVisit(controller.getActiveUser(),
-                            UserTable.getUserObject(RelationshipController.getConnection(), matchesListObject.getName()));
+                    controller.createVisit(UserTable.getUserObject(RelationshipController.getConnection(),
+                            matchesListObject.getName()), controller.getActiveUser());
                 }
 
             }
