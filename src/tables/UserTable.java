@@ -32,6 +32,7 @@ public class UserTable {
                 + "preferred_age_min INT(5),"
                 + "preferred_age_max INT(5),"
                 + "preferred_sexuality VARCHAR(50),"
+                + "is_admin BOOLEAN DEFAULT FALSE,"
                 + "PRIMARY KEY (username),"
                 + "FOREIGN KEY (location) REFERENCES location(zip_code),"
                 + "CHECK (gender IN ('Male', 'Female')),"
@@ -54,7 +55,8 @@ public class UserTable {
                 + "\'," + user.getLocation()
                 + "," + user.getUserPreferences().getPreferredAgeMin()
                 + "," + user.getUserPreferences().getPreferredAgeMax()
-                + ",\'" + user.getUserPreferences().getPreferredSexuality() + "\');";
+                + ",\'" + user.getUserPreferences().getPreferredSexuality()
+                + ",is_admin =\'" + user.getIsAdmin() + "\');";
 
         return SQLHelper.execute(conn, query);
     }
@@ -72,6 +74,7 @@ public class UserTable {
                 + "\',preferred_age_min=\'" + user.getUserPreferences().getPreferredAgeMin()
                 + "\',preferred_age_max=\'" + user.getUserPreferences().getPreferredAgeMax()
                 + "\',preferred_sexuality=\'" + user.getUserPreferences().getPreferredSexuality()
+                + "\',is_admin=\'" + user.getIsAdmin()
                 + "\' WHERE username=\'" + user.getUsername() + "\';";
 
         SQLHelper.execute(conn, query);
@@ -108,7 +111,8 @@ public class UserTable {
                             resultSet.getInt("location"),
                             resultSet.getInt("preferred_age_min"),
                             resultSet.getInt("preferred_age_max"),
-                            preferredSexuality
+                            preferredSexuality,
+                            resultSet.getBoolean("is_admin")
                     );
                     returnList.add(curUser);
                 }
@@ -158,38 +162,39 @@ public class UserTable {
                     Integer.parseInt(reader.currentRow.get(8)),
                     Integer.parseInt(reader.currentRow.get(9)),
                     Integer.parseInt(reader.currentRow.get(10)),
-                    RelationshipController.getSexuality(reader.currentRow.get(11))));
-        }
-        reader.closeCSV();
-
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("INSERT INTO user (username, password, name, bio, email, dob, gender, sexuality," +
-                " location, preferred_age_min, preferred_age_max, preferred_sexuality) VALUES");
-
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s')",
-                    user.getUsername(),
-                    user.getPassword(),
-                    user.getName(),
-                    user.getBio(),
-                    user.getEmail(),
-                    user.getDob(),
-                    user.getGender(),
-                    user.getSexuality(),
-                    user.getLocation(),
-                    user.getUserPreferences().getPreferredAgeMin(),
-                    user.getUserPreferences().getPreferredAgeMax(),
-                    user.getUserPreferences().getPreferredSexuality()));
-            if (i != users.size() - 1) {
-                sb.append(",");
-            } else {
-                sb.append(";");
+                    RelationshipController.getSexuality(reader.currentRow.get(11)),
+                        Boolean.parseBoolean(reader.currentRow.get(12))));
             }
+            reader.closeCSV();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("INSERT INTO user (username, password, name, bio, email, dob, gender, sexuality," +
+                    " location, preferred_age_min, preferred_age_max, preferred_sexuality) VALUES");
+
+            for (int i = 0; i < users.size(); i++) {
+                User user = users.get(i);
+                sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s')",
+                        user.getUsername(),
+                        user.getPassword(),
+                        user.getName(),
+                        user.getBio(),
+                        user.getEmail(),
+                        user.getDob(),
+                        user.getGender(),
+                        user.getSexuality(),
+                        user.getLocation(),
+                        user.getUserPreferences().getPreferredAgeMin(),
+                        user.getUserPreferences().getPreferredAgeMax(),
+                        user.getUserPreferences().getPreferredSexuality()));
+                if (i != users.size() - 1) {
+                    sb.append(",");
+                } else {
+                    sb.append(";");
+                }
+            }
+            SQLHelper.execute(conn, sb.toString());
         }
-        SQLHelper.execute(conn, sb.toString());
-    }
 
     public static User getUserObject(Connection conn, String username) {
         String query = "SELECT * FROM user WHERE username = \'" + username + "\';";
@@ -203,7 +208,8 @@ public class UserTable {
                         RelationshipController.getSexuality(resultSet.getString("sexuality")),
                         resultSet.getInt("location"), resultSet.getInt("preferred_age_min"),
                         resultSet.getInt("preferred_age_max"),
-                        RelationshipController.getSexuality(resultSet.getString("preferred_sexuality")));
+                        RelationshipController.getSexuality(resultSet.getString("preferred_sexuality")),
+                        resultSet.getBoolean("is_admin"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
