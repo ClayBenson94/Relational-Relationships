@@ -55,8 +55,8 @@ public class VisitTable {
 
         reader.openCSV("resources/csv/visits.csv");
         while (reader.readRow()) {
-            visitor = reader.currentRow.get(0);
-            visited = reader.currentRow.get(1);
+            visited = reader.currentRow.get(0);
+            visitor = reader.currentRow.get(1);
 
             createVisit(conn, visited, visitor);
         }
