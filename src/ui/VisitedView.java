@@ -31,7 +31,7 @@ public class VisitedView {
     public VisitedView(RelationshipController c) {
         controller = c;
         backBttn.addActionListener(controller.backListener(controller));
-        populateVisits(c.getActiveUser());
+        populateVisits(controller.getActiveUser());
         visitedList.setCellRenderer(new VisitListRenderer(controller));
 
         visitedList.addMouseListener(new MouseAdapter() {
