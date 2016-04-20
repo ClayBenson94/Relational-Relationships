@@ -89,6 +89,10 @@ public class RelationshipController {
         return LikesTable.getLikesForUser(conn, user.getUsername());
     }
 
+    public ArrayList<Like> getMatches(User user) {
+        return LikesTable.getMatchesForUser(conn, user.getUsername());
+    }
+
     public void createLike(User sender, User receiver) {
         LikesTable.createLike(conn, sender.getUsername(), receiver.getUsername());
     }
@@ -155,6 +159,11 @@ public class RelationshipController {
     public void openVisitPage() {
         JFrame nextPage = VisitedView.init(this);
         addPageToVistedPages(nextPage);
+    }
+
+    public void openLikedPage() {
+        JFrame page = LikesView.init(this);
+        addPageToVistedPages(page);
     }
 
     public void register(User user) {

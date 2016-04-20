@@ -66,6 +66,31 @@ public class LikesTable {
     }
 
     /**
+     * Get matches
+     *
+     * @param conn
+     * @param username - The user to do the query for
+     * @return An array list of usernames that match
+     */
+    public static ArrayList<Like> getMatchesForUser(Connection conn, String username) {
+        ArrayList<Like> likes = new ArrayList<Like>();
+        try {
+            String query = "SELECT l1.sender, 11.timestamp "
+            + "FROM likes AS l1 JOIN likes AS l2 ON l1.receiver = l2.sender "
+            + "WHERE l1.receiver=\'" + username + "\' AND l1.sender = l2.receiver;";
+            ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+
+            while (resultSet.next()) {
+                Like like = new Like(resultSet.getString("sender"), resultSet.getLong("timestamp"));
+                likes.add(like);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return likes;
+    }
+
+    /**
      * Has user liked given user
      *
      * @param conn
