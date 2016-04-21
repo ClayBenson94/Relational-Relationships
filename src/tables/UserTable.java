@@ -16,6 +16,8 @@ import helpers.SQLHelper;
 import objects.RelationshipController;
 import objects.User;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+
 public class UserTable {
 
     public static void createUserTable(Connection conn) {
@@ -78,6 +80,37 @@ public class UserTable {
                 + "\' WHERE username=\'" + user.getUsername() + "\';";
 
         SQLHelper.execute(conn, query);
+    }
+
+    public static String deleteUser(Connection conn, String username) {
+        String countQuery = "SELECT count(*) FROM user WHERE username='" + username + "\';";
+        ResultSet resultSet = SQLHelper.executeQuery(conn, countQuery);
+
+        try {
+            if (resultSet.next()){
+                if (resultSet.getInt("Count(*)") == 1){
+                    String query = "DELETE FROM user_interests WHERE username=\'" + username + "\';";
+
+                    query = query + "DELETE FROM visit WHERE visited=\'" + username + "\' or visitor =\'" + username + "\';";
+
+                    query = query + "DELETE FROM likes WHERE sender=\'" + username + "\' or receiver ='" + username + "\';";
+
+                    query = query + "DELETE FROM user_photos WHERE username=\'" + username + "\';";
+
+                    query = query + "DELETE FROM user WHERE username=\'" + username + "\';";
+                    System.out.println(query);
+                    SQLHelper.execute(conn, query);
+
+                    return "User: " + username + " was deleted";
+                } else {
+                    return "User: " + username + " was not found";
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "User: " + username + " was not deleted";
     }
 
     public static ArrayList<User> search(Connection conn, String zipCode, User excludeUser) {

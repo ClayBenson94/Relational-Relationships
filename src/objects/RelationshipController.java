@@ -155,6 +155,10 @@ public class RelationshipController {
         }
 
     }
+    public void openAdminPage() {
+        JFrame nextPage = AdminView.init(this);
+        addPageToVistedPages(nextPage);
+    }
 
     public void openVisitPage() {
         JFrame nextPage = VisitedView.init(this);
