@@ -14,6 +14,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -65,8 +67,7 @@ public class SearchView {
             }
         });
 
-        String myZip = Integer.toString(controller.getActiveUser().getLocation());
-        performSearch(myZip);
+
 
         resultsList.addMouseListener(new MouseAdapter() {
             @Override
@@ -93,11 +94,24 @@ public class SearchView {
 
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("SearchView");
-        frame.setContentPane(new SearchView(c).basePane);
+        SearchView searchView = new SearchView(c);
+        frame.setContentPane(searchView.basePane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(400, 600);
+        frame.addComponentListener (new ComponentAdapter() {
+            @Override
+            public void componentShown ( ComponentEvent e )
+            {
+                String myZip = searchView.getMyZip();
+                searchView.performSearch(myZip);
+            }
+        });
         return frame;
+    }
+
+    private String getMyZip() {
+        return Integer.toString(controller.getActiveUser().getLocation());
     }
 
     public void performSearch(String zipCode) {
