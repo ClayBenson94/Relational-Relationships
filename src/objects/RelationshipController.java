@@ -155,6 +155,15 @@ public class RelationshipController {
         }
 
     }
+
+    public void logout(){
+        activeUser = null;
+        visitedPages.peek().dispose();
+        visitedPages.clear();
+        addPageToVistedPages(LoginView.init(this));
+    }
+
+
     public void openAdminPage() {
         JFrame nextPage = AdminView.init(this);
         addPageToVistedPages(nextPage);
