@@ -40,6 +40,7 @@ public class SearchView {
     private JButton preferencesButton;
     private JButton likesButton;
     private JButton adminButton;
+    private JButton logoutButton;
 
     private RelationshipController controller;
 
@@ -88,6 +89,13 @@ public class SearchView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.openAdminPage();
+            }
+        });
+
+        logoutButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.logout();
             }
         });
     }
