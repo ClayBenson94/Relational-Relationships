@@ -82,7 +82,19 @@ public class UserTable {
         SQLHelper.execute(conn, query);
     }
 
-    public static String deleteUser(Connection conn, String username) {
+    /**
+     * Delete a user from the database
+     * @param conn - the connection object to the db
+     * @param username - the username to delete
+     * @param activeAdminUsername - if an admin is deleting accounts, pass his username, otherwise pass ""
+     * @return A message indicating what happened
+     */
+    public static String deleteUser(Connection conn, String username, String activeAdminUsername) {
+
+        if (username.equals(activeAdminUsername)){
+            return "You cannot delete your own account here, please go to preferences";
+        }
+
         String countQuery = "SELECT count(*) FROM user WHERE username='" + username + "\';";
         ResultSet resultSet = SQLHelper.executeQuery(conn, countQuery);
 

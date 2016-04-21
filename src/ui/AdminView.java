@@ -26,7 +26,7 @@ public class AdminView {
         deleteBttn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                deleteMsg.setText(UserTable.deleteUser(RelationshipController.getConnection(), usernameField.getText()));
+                deleteMsg.setText(UserTable.deleteUser(RelationshipController.getConnection(), usernameField.getText(), controller.getActiveUser().getUsername()));
             }
         });
 
