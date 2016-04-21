@@ -16,6 +16,8 @@ import helpers.SQLHelper;
 import objects.RelationshipController;
 import objects.User;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+
 public class UserTable {
 
     public static void createUserTable(Connection conn) {
@@ -78,6 +80,40 @@ public class UserTable {
                 + "\' WHERE username=\'" + user.getUsername() + "\';";
 
         SQLHelper.execute(conn, query);
+    }
+
+    /**
+     * Delete a user from the database
+     * @param conn - the connection object to the db
+     * @param username - the username to delete
+     * @param activeAdminUsername - if an admin is deleting accounts, pass his username, otherwise pass ""
+     * @return A message indicating what happened
+     */
+    public static String deleteUser(Connection conn, String username, String activeAdminUsername) {
+
+        if (username.equals(activeAdminUsername)){
+            return "You cannot delete your own account here, please go to preferences";
+        }
+
+        String countQuery = "SELECT count(*) FROM user WHERE username='" + username + "\';";
+        ResultSet resultSet = SQLHelper.executeQuery(conn, countQuery);
+
+        try {
+            if (resultSet.next()){
+                if (resultSet.getInt("Count(*)") == 1){
+                    String query =  "DELETE FROM user WHERE username=\'" + username + "\';";
+                    SQLHelper.execute(conn, query);
+
+                    return "User: " + username + " was deleted";
+                } else {
+                    return "User: " + username + " was not found";
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "User: " + username + " was not deleted";
     }
 
     public static ArrayList<User> search(Connection conn, String zipCode, User excludeUser) {

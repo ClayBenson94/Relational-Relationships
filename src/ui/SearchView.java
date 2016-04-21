@@ -83,6 +83,13 @@ public class SearchView {
                 controller.openLikedPage();
             }
         });
+
+        adminButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.openAdminPage();
+            }
+        });
     }
 
     public static JFrame init(RelationshipController c) {

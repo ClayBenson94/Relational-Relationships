@@ -16,7 +16,7 @@ public class UserPhotosTable {
                 + "username VARCHAR(20),"
                 + "photo_url VARCHAR(1024),"
                 + "PRIMARY KEY (username, photo_url),"
-                + "FOREIGN KEY (username) REFERENCES user(username),"
+                + "FOREIGN KEY (username) REFERENCES user(username) ON DELETE CASCADE,"
                 + ");";
 
         SQLHelper.execute(conn, query);

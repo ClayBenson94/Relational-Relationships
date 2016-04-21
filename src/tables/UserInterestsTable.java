@@ -26,8 +26,8 @@ public class UserInterestsTable {
                 + "username VARCHAR(20),"
                 + "interest VARCHAR(20),"
                 + "PRIMARY KEY (username,interest),"
-                + "FOREIGN KEY (username) REFERENCES user(username),"
-                + "FOREIGN KEY (interest) REFERENCES interests(interest_name)"
+                + "FOREIGN KEY (username) REFERENCES user(username) ON DELETE CASCADE,"
+                + "FOREIGN KEY (interest) REFERENCES interests(interest_name) ON DELETE CASCADE"
                 + ");";
 
         SQLHelper.execute(conn, query);
