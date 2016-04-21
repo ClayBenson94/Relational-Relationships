@@ -12,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -33,24 +35,6 @@ public class LikesView {
 
     public LikesView(RelationshipController c) {
         controller = c;
-
-        likesList.setCellRenderer(new LikedListRenderer(controller));
-        matchesList.setCellRenderer(new MatchListRenderer(controller));
-
-        ArrayList<Like> results = controller.getMatches(controller.getActiveUser());
-        DefaultListModel m = new DefaultListModel();
-        for (int i = 0; i < results.size(); i++) {
-            m.addElement(new LikedListObject(results.get(i)));
-        }
-        matchesList.setModel(m);
-
-        results = controller.getLikes(controller.getActiveUser());
-        m = new DefaultListModel();
-        for (int i = 0; i < results.size(); i++) {
-            m.addElement(new LikedListObject(results.get(i)));
-        }
-        likesList.setModel(m);
-
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -82,15 +66,41 @@ public class LikesView {
 
             }
         });
+    }
 
+    protected void getLikesAndMatches() {
+        likesList.setCellRenderer(new LikedListRenderer(controller));
+        matchesList.setCellRenderer(new MatchListRenderer(controller));
 
+        ArrayList<Like> results = controller.getMatches(controller.getActiveUser());
+        DefaultListModel m = new DefaultListModel();
+        for (int i = 0; i < results.size(); i++) {
+            m.addElement(new LikedListObject(results.get(i)));
+        }
+        matchesList.setModel(m);
+
+        results = controller.getLikes(controller.getActiveUser());
+        m = new DefaultListModel();
+        for (int i = 0; i < results.size(); i++) {
+            m.addElement(new LikedListObject(results.get(i)));
+        }
+        likesList.setModel(m);
     }
 
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("LikesView");
-        frame.setContentPane(new LikesView(c).basePane);
+        LikesView likesView = new LikesView(c);
+        JPanel basePane = likesView.basePane;
+        frame.setContentPane(basePane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
+        frame.addComponentListener (new ComponentAdapter() {
+            @Override
+            public void componentShown ( ComponentEvent e )
+            {
+                likesView.getLikesAndMatches();
+            }
+        });
         return frame;
     }
 
