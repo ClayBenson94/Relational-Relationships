@@ -31,10 +31,10 @@ public class VisitTable {
         SQLHelper.execute(conn, query);
     }
 
-    public ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
-        ArrayList<Visit> userVisits = new ArrayList<Visit>();
+    public static ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
+        ArrayList<Visit> userVisits = new ArrayList<>();
 
-        String query = "SELECT * FROM visit WHERE visitor = \'" + user.getUsername() + "\';";
+        String query = "SELECT * FROM visit WHERE visited = \'" + user.getUsername() + "\';";
 
         ResultSet resultSet = SQLHelper.executeQuery(conn, query);
         try {

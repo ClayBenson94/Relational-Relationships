@@ -40,11 +40,13 @@ public class User {
         this.location = location;
         this.userPreferences = new UserPreferences(preferredAgeMin, preferredAgeMax, preferredSexuality);
         this.isAdmin = isAdmin;
+
     }
 
     public String getUsername() {
         return username;
     }
+
 
     public String getPassword() {
         return password;
