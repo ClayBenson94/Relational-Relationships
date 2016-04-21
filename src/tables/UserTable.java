@@ -101,16 +101,7 @@ public class UserTable {
         try {
             if (resultSet.next()){
                 if (resultSet.getInt("Count(*)") == 1){
-                    String query = "DELETE FROM user_interests WHERE username=\'" + username + "\';";
-
-                    query = query + "DELETE FROM visit WHERE visited=\'" + username + "\' or visitor =\'" + username + "\';";
-
-                    query = query + "DELETE FROM likes WHERE sender=\'" + username + "\' or receiver ='" + username + "\';";
-
-                    query = query + "DELETE FROM user_photos WHERE username=\'" + username + "\';";
-
-                    query = query + "DELETE FROM user WHERE username=\'" + username + "\';";
-                    System.out.println(query);
+                    String query =  "DELETE FROM user WHERE username=\'" + username + "\';";
                     SQLHelper.execute(conn, query);
 
                     return "User: " + username + " was deleted";

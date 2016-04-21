@@ -18,8 +18,8 @@ public class VisitTable {
                 + "visitor VARCHAR(20),"
                 + "timestamp BIGINT UNSIGNED,"
                 + "PRIMARY KEY (visited, visitor, timestamp),"
-                + "FOREIGN KEY (visited) REFERENCES user(username),"
-                + "FOREIGN KEY (visitor) REFERENCES user(username),"
+                + "FOREIGN KEY (visited) REFERENCES user(username) ON DELETE CASCADE,"
+                + "FOREIGN KEY (visitor) REFERENCES user(username) ON DELETE CASCADE,"
                 + ");";
 
         SQLHelper.execute(conn, query);

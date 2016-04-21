@@ -18,8 +18,8 @@ public class LikesTable {
                 + "receiver VARCHAR(20),"
                 + "timestamp BIGINT UNSIGNED,"
                 + "PRIMARY KEY (sender, receiver),"
-                + "FOREIGN KEY (sender) REFERENCES user(username),"
-                + "FOREIGN KEY (receiver) REFERENCES user(username)"
+                + "FOREIGN KEY (sender) REFERENCES user(username) ON DELETE CASCADE,"
+                + "FOREIGN KEY (receiver) REFERENCES user(username) ON DELETE CASCADE"
                 + ");";
 
         SQLHelper.execute(conn, query);
