@@ -161,7 +161,6 @@ public class RelationshipController {
         visitedPages.forEach(JFrame::dispose);
         visitedPages.clear();
         addPageToVistedPages(LoginView.init(this));
-        System.out.println(visitedPages);
     }
 
 
