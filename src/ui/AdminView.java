@@ -23,12 +23,15 @@ public class AdminView {
     public AdminView(RelationshipController c) {
         controller = c;
 
-        deleteBttn.addActionListener(new ActionListener() {
+        ActionListener deleteListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                deleteMsg.setText(UserTable.deleteUser(RelationshipController.getConnection(), usernameField.getText(), controller.getActiveUser().getUsername()));
+                deleteUser();
             }
-        });
+        };
+
+        deleteBttn.addActionListener(deleteListener);
+        usernameField.addActionListener(deleteListener);
 
         backBttn.addActionListener(new ActionListener() {
             @Override
@@ -36,6 +39,10 @@ public class AdminView {
                 controller.back();
             }
         });
+    }
+
+    public void deleteUser() {
+        deleteMsg.setText(UserTable.deleteUser(RelationshipController.getConnection(), usernameField.getText(), controller.getActiveUser().getUsername()));
     }
 
     public static JFrame init(RelationshipController c) {
