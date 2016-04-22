@@ -158,9 +158,10 @@ public class RelationshipController {
 
     public void logout(){
         activeUser = null;
-        visitedPages.peek().dispose();
+        visitedPages.forEach(JFrame::dispose);
         visitedPages.clear();
         addPageToVistedPages(LoginView.init(this));
+        System.out.println(visitedPages);
     }
 
 
