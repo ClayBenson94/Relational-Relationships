@@ -1,9 +1,13 @@
 package ui;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import objects.RelationshipController;
 import tables.UserTable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -71,13 +75,11 @@ public class AdminView {
         return frame;
     }
 
-
     private void updateStatLabels(){
         visitsValueLbl.setText(Integer.toString(controller.getVisitCount((String) timeCombo.getSelectedItem())));
         likesValueLbl.setText(Integer.toString(controller.getLikeCount((String) timeCombo.getSelectedItem())));
         matchesValueLbl.setText(Integer.toString(controller.getMatchCount((String) timeCombo.getSelectedItem())));
     }
-
 }
 
 

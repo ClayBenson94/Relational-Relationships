@@ -49,7 +49,7 @@ public class LikesView {
                 LikedListObject likedListObject = (LikedListObject) likesList.getSelectedValue();
                 if (likedListObject != null) {
                     controller.createVisit(UserTable.getUserObject(RelationshipController.getConnection(),
-                            likedListObject.getName()),controller.getActiveUser());
+                            likedListObject.getName()), controller.getActiveUser());
                 }
 
             }
@@ -94,10 +94,9 @@ public class LikesView {
         frame.setContentPane(basePane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.addComponentListener (new ComponentAdapter() {
+        frame.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentShown ( ComponentEvent e )
-            {
+            public void componentShown(ComponentEvent e) {
                 likesView.getLikesAndMatches();
             }
         });

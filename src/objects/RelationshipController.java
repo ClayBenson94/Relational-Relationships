@@ -183,6 +183,11 @@ public class RelationshipController {
         addPageToVistedPages(page);
     }
 
+    public void openPreferencesPage() {
+        JFrame page = PreferencesView.init(this);
+        addPageToVistedPages(page);
+    }
+
     public void register(User user) {
         //TODO validation on fields
         UserTable.addUser(conn, user);
