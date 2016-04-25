@@ -15,15 +15,7 @@ import javax.swing.*;
 
 import helpers.SQLHelper;
 
-import tables.InterestCategoriesTable;
-import tables.InterestTable;
-import tables.LikesTable;
-import tables.LocationTable;
-import tables.RelationalRelationships;
-import tables.UserInterestsTable;
-import tables.UserPhotosTable;
-import tables.UserTable;
-import tables.VisitTable;
+import tables.*;
 
 import ui.*;
 
@@ -134,6 +126,18 @@ public class RelationshipController {
         visitingUser = visited;
         JFrame nextPage = VisitingUserView.init(this);
         addPageToVistedPages(nextPage);
+    }
+
+    public int getVisitCount(String timeDelta){
+        return RelationalRelationshipsStats.getVisitCount(conn,timeDelta);
+    }
+
+    public int getLikeCount(String timeDelta){
+        return RelationalRelationshipsStats.getLikeCount(conn,timeDelta);
+    }
+
+    public int getMatchCount(String timeDelta){
+        return RelationalRelationshipsStats.getMatchCount(conn,timeDelta);
     }
 
     //UI methods
