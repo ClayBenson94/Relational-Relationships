@@ -116,13 +116,36 @@ public class UserTable {
         return "User: " + username + " was not deleted";
     }
 
-    public static ArrayList<User> search(Connection conn, String zipCode, User excludeUser) {
+    public static ArrayList<User> search(Connection conn, String zipCode, User activeUser) {
         ArrayList<User> returnList = new ArrayList<>();
         if (!zipCode.equals("")) {
 
             User curUser;
 
-            String query = "SELECT * FROM user WHERE location = " + zipCode + " AND username NOT = \'" + excludeUser.getUsername() + "\';";
+            String sexualityString;
+            switch (activeUser.getSexuality()) {
+                case Heterosexual: sexualityString = " AND sexuality = 'Heterosexual'";
+                    break;
+                case Homosexual: sexualityString = " AND sexuality = 'Homosexual'";
+                    break;
+                default: sexualityString = " AND sexuality = 'BAD_SEXUALITY'";
+                    break;
+            }
+
+            String genderString = " AND gender = ";
+            switch (activeUser.getGender()) {
+                case Male: genderString +=
+                        activeUser.getSexuality()== RelationshipController.Sexuality.Heterosexual ? "'Female'" : "'Male'";
+                    break;
+                case Female: genderString +=
+                        activeUser.getSexuality()== RelationshipController.Sexuality.Heterosexual ? "'Male'" : "'Female'";
+                    break;
+                default: genderString = " AND gender = 'BAD_GENDER'";
+                    break;
+            }
+
+
+            String query = "SELECT * FROM user WHERE location = " + zipCode + " AND username NOT = \'" + activeUser.getUsername() + "\'" + sexualityString + genderString + ";";
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
             try {
                 while (resultSet.next()) {
