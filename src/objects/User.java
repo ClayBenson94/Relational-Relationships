@@ -141,6 +141,7 @@ public class User {
 
         userString = userString + username + "\n\n";
         userString = userString + "Gender: " + gender + "\n\n";
+        userString = userString + "Age: " + getAge() + "\n\n";
         userString = userString + "Sexuality: " + sexuality + "\n\n";
         userString = userString + "Looking for: " + userPreferences.getPreferredSexuality() + " ages " +
             userPreferences.getPreferredAgeMin() + " to " + userPreferences.getPreferredAgeMax() + "\n\n";
