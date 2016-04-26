@@ -3,6 +3,9 @@ package helpers;
 import objects.User;
 import objects.RelationshipController;
 import helpers.SQLHelper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.sql.Date;
@@ -37,20 +40,20 @@ public class UserGen{
     
 
     public UserGen(){
-        userGens = new ArrayList<UserGen>();
-        locations = new ArrayList<Integer>();
+        userGens = new ArrayList<>();
+        locations = new ArrayList<>();
         
         Connection conn = RelationshipController.getConnection();
-		try{
-		    String locationQuery = "SELECT zip_code FROM location";
-		    ResultSet resultSet = SQLHelper.executeQuery(conn, locationQuery)
+
+        String locationQuery = "SELECT zip_code FROM location";
+        ResultSet resultSet = SQLHelper.executeQuery(conn, locationQuery)
+        try{
 		    while(resultSet.next()){
 		        locations.add(resultSet.getInt("zip_code"));	
 		    }
-		}
-		catch(SQLException e){
-		    e.printStackTrace();    
-		}
+		} catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
   
     public void generateUsers(int numUsers){
@@ -60,28 +63,28 @@ public class UserGen{
         String bio;
         String email;
         Date dob;
-        String gender;
-	    String sexuality;
+        RelationshipController.Gender gender;
+        RelationshipController.Sexuality sexuality;
 	    int location;
 	    int preferredAgeMin;
 	    int preferredAgeMax;
-	    String preferredSexuality;  
+        RelationshipController.Sexuality preferredSexuality;
 	    
 	    Random rand = new Random();
 	    
 	    for(int i = 0; i < numUsers; i++){
 		    if(rand.nextInt(2) == 1){
-		        gender = "Male";
+		        gender = RelationshipController.Gender.Male;
 		        firstName = MALEFIRSTNAMES[rand.nextInt(MALEFIRSTNAMES.length)];
 	        }
 	   	    else{
-	            gender = "Female";
+                gender = RelationshipController.Gender.Female;
 			    firstName = FEMALEFIRSTNAMES[rand.nextInt(FEMALEFIRSTNAMES.length)];
 		    }
 		
-		    username = firstName.toLowerCase()+alphabet[rand.nextInt(ALPHABET.length)]+
-		           alphabet[rand.nextInt(ALPHABET.length)]+alphabet[rand.nextInt(ALPHABET.length)]+
-		           alphabet[rand.nextInt(ALPHABET.length)]+alphabet[rand.nextInt(ALPHABET.length)]+
+		    username = firstName.toLowerCase()+ ALPHABET[rand.nextInt(ALPHABET.length)]+
+                    ALPHABET[rand.nextInt(ALPHABET.length)]+ ALPHABET[rand.nextInt(ALPHABET.length)]+
+                    ALPHABET[rand.nextInt(ALPHABET.length)]+ ALPHABET[rand.nextInt(ALPHABET.length)]+
 		           rand.nextInt(10000);
 		           
 		    password = "";
@@ -96,17 +99,17 @@ public class UserGen{
 	        email = username + "@relationalrelationships.com"; 
 		
 		    if(rand.nextInt(2) == 1){
-		        sexuality = "Heterosexual";
+		        sexuality = RelationshipController.Sexuality.Heterosexual;
 		    }
 		    else{
-		        sexuality = "Homosexual";
+		        sexuality = RelationshipController.Sexuality.Homosexual;
 		    }
 		
 		    if(rand.nextInt(2) == 1){
-		        preferredSexuality = "Heterosexual";
+		        preferredSexuality = RelationshipController.Sexuality.Heterosexual;
 		    }
 		    else{
-		        preferredSexuality = "Homosexual";
+		        preferredSexuality = RelationshipController.Sexuality.Homosexual;
 		    }
 		
 	        preferredAgeMin = rand.nextInt(101);
@@ -123,22 +126,22 @@ public class UserGen{
 		    }
 	        dob = new Date(num);
 		
-		    userGens.add(new User(username,password,firstName,bio,email,gender,sexuality,location,
+		    userGens.add(new User(username,password,firstName,bio,email,dob,gender,sexuality,location,
 		        preferredAgeMin,preferredAgeMax,preferredSexuality,false));
 	    }
     }
     
     public void insertIntoUserDB(){
         Connection conn = RelationshipController.getConnection();
-        try{
-            StringBuilder sb = new StringBuilder();
 
-            sb.append("INSERT INTO user (username, password, name, bio, email, dob, gender, sexuality," +
-                  " location, preferred_age_min, preferred_age_max, preferred_sexuality) VALUES");
+        StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < userGens.size(); i++) {
-                UserGen user = userGens.get(i);
-                sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s')",
+        sb.append("INSERT INTO user (username, password, name, bio, email, dob, gender, sexuality," +
+                " location, preferred_age_min, preferred_age_max, preferred_sexuality) VALUES");
+
+        for (int i = 0; i < userGens.size(); i++) {
+            User user = userGens.get(i);
+            sb.append(String.format("('%s','%s','%s','%s','%s','%s','%s','%s',%d,%d,%d,'%s')",
                     user.getUsername(),
                     user.getPassword(),
                     user.getName(),
@@ -148,20 +151,17 @@ public class UserGen{
                     user.getGender(),
                     user.getSexuality(),
                     user.getLocation(),
-                    user.getUserPreferences.getPreferredAgeMin(),
-                    user.getUserPreferences.getPreferredAgeMax(),
-                    user.getUserPreferences.getPreferredSexuality()));
-                if (i != usersGens.size() - 1) {
-                    sb.append(",");
-                } else {
-                    sb.append(";");
-                }
+                    user.getUserPreferences().getPreferredAgeMin(),
+                    user.getUserPreferences().getPreferredAgeMax(),
+                    user.getUserPreferences().getPreferredSexuality()));
+            if (i != userGens.size() - 1) {
+                sb.append(",");
+            } else {
+                sb.append(";");
             }
-            SQLHelper.execute(conn, sb.toString());
         }
-        catch(SQLException e){
-            e.printStackTrace();    
-        }
+        SQLHelper.execute(conn, sb.toString());
+
     }
   
 } 
