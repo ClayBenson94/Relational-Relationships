@@ -2,15 +2,22 @@ package ui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import objects.RelationshipController;
-import objects.User;
-import objects.UserPreferences;
+import objects.*;
+import tables.UserPhotosTable;
 import tables.UserTable;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Clay on 4/24/2016.
@@ -25,6 +32,9 @@ public class PreferencesView {
     private JComboBox preferredSexuality;
     private JTextField preferredAgeMinTextField;
     private JTextField preferredAgeMaxTextField;
+    private JList interestList;
+    private JButton addInterestButton;
+    private JButton removeInterestButton;
     private RelationshipController controller;
 
     public PreferencesView(RelationshipController c) {
@@ -47,6 +57,28 @@ public class PreferencesView {
             }
         });
 
+        addInterestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        removeInterestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        interestList.setCellRenderer(new InterestListRenderer(controller));
+
+        ArrayList<Interest> results = controller.getUserInterests(controller.getActiveUser());
+        DefaultListModel m = new DefaultListModel();
+        for (int i = 0; i < results.size(); i++) {
+            m.addElement(new InterestListObject(results.get(i)));
+        }
+        interestList.setModel(m);
     }
 
     public static JFrame init(RelationshipController c) {
@@ -102,10 +134,10 @@ public class PreferencesView {
     private void $$$setupUI$$$() {
         createUIComponents();
         basePane = new JPanel();
-        basePane.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        basePane.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        basePane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        basePane.add(panel1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         backButton = new JButton();
         backButton.setText("Back");
         panel1.add(backButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -143,6 +175,27 @@ public class PreferencesView {
         panel2.add(preferredAgeMinTextField, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         preferredAgeMaxTextField = new JTextField();
         panel2.add(preferredAgeMaxTextField, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        final JPanel panel3 = new JPanel();
+        panel3.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        basePane.add(panel3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JPanel panel4 = new JPanel();
+        panel4.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel3.add(panel4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel4.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        interestList = new JList();
+        scrollPane1.setViewportView(interestList);
+        final JPanel panel5 = new JPanel();
+        panel5.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel3.add(panel5, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        addInterestButton = new JButton();
+        addInterestButton.setText("Add Interest");
+        panel5.add(addInterestButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        removeInterestButton = new JButton();
+        removeInterestButton.setText("Remove Interest");
+        panel5.add(removeInterestButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JSeparator separator1 = new JSeparator();
+        basePane.add(separator1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
     }
 
     /**
@@ -150,5 +203,47 @@ public class PreferencesView {
      */
     public JComponent $$$getRootComponent$$$() {
         return basePane;
+    }
+}
+
+class InterestListObject {
+    private Interest interest;
+
+    public InterestListObject(Interest i) {
+        interest = i;
+
+    }
+
+    public String getPrintableString() {
+        String name = interest.getName();
+        String cat  = interest.getCategory();
+        String des  = interest.getDescription();
+        return name + "(" + cat + ") - " + des;
+    }
+}
+
+
+class InterestListRenderer extends JLabel implements ListCellRenderer {
+    private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
+
+    public InterestListRenderer(RelationshipController controller) {
+        setOpaque(true);
+        setIconTextGap(12);
+    }
+
+    public Component getListCellRendererComponent(JList list, Object value,
+                                                  int index, boolean isSelected, boolean cellHasFocus) {
+        InterestListObject entry = (InterestListObject) value;
+        setText(entry.getPrintableString());
+
+        //setIcon(entry.getIcon());
+        if (isSelected) {
+            setBackground(HIGHLIGHT_COLOR);
+            setForeground(Color.white);
+        } else {
+            setBackground(Color.white);
+            setForeground(Color.black);
+        }
+        return this;
     }
 }
