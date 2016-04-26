@@ -4,15 +4,25 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import objects.RelationshipController;
-import objects.User;
 import tables.LikesTable;
-import tables.RelationalRelationships;
 import tables.UserPhotosTable;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.ListCellRenderer;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -41,21 +51,16 @@ public class VisitingUserView {
             public void actionPerformed(ActionEvent e) {
                 if (likeBttn.getText().equals("Like")) {
                     LikesTable.createLike(RelationshipController.getConnection(),
-                        controller.getActiveUser().getUsername(), controller.getVisitingUser().getUsername());
+                            controller.getActiveUser().getUsername(), controller.getVisitingUser().getUsername());
                     likeBttn.setText("Unlike");
                 } else {
                     LikesTable.deleteLike(RelationshipController.getConnection(),
-                        controller.getActiveUser().getUsername(), controller.getVisitingUser().getUsername());
+                            controller.getActiveUser().getUsername(), controller.getVisitingUser().getUsername());
                     likeBttn.setText("Like");
                 }
             }
         });
-        backBttn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c.back();
-            }
-        });
+        backBttn.addActionListener(controller.backListener(controller));
         ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), controller.getVisitingUser());
         DefaultListModel m = new DefaultListModel();
         if (images.size() == 0) {
@@ -69,18 +74,16 @@ public class VisitingUserView {
         userInfo.setText(controller.getVisitingUser().getUserString());
 
         if (LikesTable.doesUserLike(RelationshipController.getConnection(), controller.getActiveUser().getUsername(),
-            controller.getVisitingUser().getUsername())) {
+                controller.getVisitingUser().getUsername())) {
             likeBttn.setText("Unlike");
         }
     }
 
-    public static JFrame init(RelationshipController c, JFrame previousWindow) {
+    public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("VisitingUserView");
         frame.setContentPane(new VisitingUserView(c).basePane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setLocationRelativeTo(previousWindow);
-        frame.setVisible(true);
         return frame;
     }
 
@@ -143,7 +146,7 @@ class ResultListPhotoObject {
         double factor = (double) 100 / (double) myPicture.getHeight();
 
         Image newimg = myPicture.getScaledInstance((int) (myPicture.getWidth() * factor),
-            (int) (myPicture.getHeight() * factor), java.awt.Image.SCALE_SMOOTH);
+                (int) (myPicture.getHeight() * factor), java.awt.Image.SCALE_SMOOTH);
         //
         icon = new ImageIcon(newimg);
     }

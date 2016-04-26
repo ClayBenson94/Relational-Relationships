@@ -12,16 +12,16 @@ public class InterestCategoriesTable {
 
     public static void createInterestCategoriesTable(Connection conn) {
         String query = "CREATE TABLE interest_categories("
-            + "category_name VARCHAR(20),"
-            + "PRIMARY KEY (category_name),"
-            + ");";
+                + "category_name VARCHAR(20),"
+                + "PRIMARY KEY (category_name),"
+                + ");";
         SQLHelper.execute(conn, query);
     }
 
     public static boolean addInterestCategory(Connection conn, String category) {
         String query = "INSERT INTO interest_categories "
-            + "(category_name) VALUES (\'" + category
-            + "\');";
+                + "(category_name) VALUES (\'" + category
+                + "\');";
         return SQLHelper.execute(conn, query);
     }
 

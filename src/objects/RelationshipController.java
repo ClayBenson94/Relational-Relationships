@@ -1,17 +1,23 @@
 package objects;
 
-import java.sql.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
-
-
-import helpers.SQLHelper;
-import tables.*;
-
-import ui.*;
 
 import javax.swing.*;
 
+import helpers.SQLHelper;
+
+import tables.*;
+
+import ui.*;
 
 public class RelationshipController {
 
@@ -75,6 +81,10 @@ public class RelationshipController {
         return LikesTable.getLikesForUser(conn, user.getUsername());
     }
 
+    public ArrayList<Like> getMatches(User user) {
+        return LikesTable.getMatchesForUser(conn, user.getUsername());
+    }
+
     public void createLike(User sender, User receiver) {
         LikesTable.createLike(conn, sender.getUsername(), receiver.getUsername());
     }
@@ -107,47 +117,112 @@ public class RelationshipController {
         return UserInterestsTable.addInterestToUser(conn, user.getUsername(), interest);
     }
 
-    public void createVisit(User visitor, User visited) {
+    public ArrayList<Visit> getVisitsForUser(User currentUser) {
+        return VisitTable.getVisitsForUser(conn, currentUser);
+    }
+
+    public void createVisit(User visited, User visitor) {
         VisitTable.createVisit(conn, visited.getUsername(), visitor.getUsername());
         visitingUser = visited;
-        JFrame nextPage = VisitingUserView.init(this, visitedPages.peek());
-        visitedPages.peek().setVisible(false);
-        visitedPages.push(nextPage);
+        JFrame nextPage = VisitingUserView.init(this);
+        addPageToVistedPages(nextPage);
+    }
+
+    public int getVisitCount(String timeDelta){
+        return RelationalRelationshipsStats.getVisitCount(conn,timeDelta);
+    }
+
+    public int getLikeCount(String timeDelta){
+        return RelationalRelationshipsStats.getLikeCount(conn,timeDelta);
+    }
+
+    public int getMatchCount(String timeDelta){
+        return RelationalRelationshipsStats.getMatchCount(conn,timeDelta);
     }
 
     //UI methods
     public void startUI() {
-        visitedPages.push(LoginView.init(this, null));
+        addPageToVistedPages(LoginView.init(this));
     }
 
     public void login(String username, String password) {
-        //System.out.println("Open Login Page");
         boolean loginSuccess = UserTable.isValidLogin(conn, username, password);
 
         if (loginSuccess) {
             activeUser = UserTable.getUserObject(conn, username);
             //page transition
-            JFrame nextPage = SearchView.init(this, visitedPages.peek());
-            visitedPages.peek().setVisible(false);
-            visitedPages.push(nextPage);
+            JFrame nextPage = SearchView.init(this);
+            addPageToVistedPages(nextPage);
         } else {
             //error popup
-            String error = "Username/Password combination is incorrect.";
-            JFrame nextPage = ErrorView.init(this, visitedPages.peek(), error);
-            visitedPages.push(nextPage);
+            createErrorView("Username/Password combination is incorrect.");
         }
 
     }
 
-    public void register(String username, String password) {
-        //TODO register
-        //System.out.println("Open Register Page");
+    public void logout(){
+        activeUser = null;
+        visitedPages.forEach(JFrame::dispose);
+        visitedPages.clear();
+        addPageToVistedPages(LoginView.init(this));
+    }
+
+
+    public void openAdminPage() {
+        JFrame nextPage = AdminView.init(this);
+        addPageToVistedPages(nextPage);
+    }
+
+    public void openVisitPage() {
+        JFrame nextPage = VisitedView.init(this);
+        addPageToVistedPages(nextPage);
+    }
+
+    public void openLikedPage() {
+        JFrame page = LikesView.init(this);
+        addPageToVistedPages(page);
+    }
+
+    public void openPreferencesPage() {
+        JFrame page = PreferencesView.init(this);
+        addPageToVistedPages(page);
+    }
+
+    public void register(User user) {
+        //TODO validation on fields
+        UserTable.addUser(conn, user);
+        this.back();
+    }
+
+    public void addPageToVistedPages(JFrame nextPage) {
+        if (!visitedPages.isEmpty()) {
+            visitedPages.peek().setVisible(false);
+            nextPage.setLocationRelativeTo(visitedPages.peek());
+        } else {
+            nextPage.setLocationRelativeTo(null);
+        }
+        nextPage.setVisible(true);
+        visitedPages.push(nextPage);
+    }
+
+    public void createErrorView(String error) {
+        JFrame nextPage = ErrorView.init(this, visitedPages.peek(), error);
+        visitedPages.push(nextPage);
     }
 
     public void back() {
         visitedPages.peek().dispose();
         visitedPages.pop();
         visitedPages.peek().setVisible(true);
+    }
+
+    public ActionListener backListener(RelationshipController controller) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.back();
+            }
+        };
     }
 
     public ArrayList<User> search(String zipCode) {
@@ -158,10 +233,21 @@ public class RelationshipController {
     public static void main(String args[]) throws SQLException {
         RelationalRelationships relationalRelationships = new RelationalRelationships();
 
+        String username = "";
+        String password = "";
+        Boolean autoLogin = false;
         //Check Arguments
         relationalRelationships.createConnection();
-        for (String argument : args) {
-            if (argument.equals("-n")) relationalRelationships.createPopulatedTables();
+
+        for (int i=0; i < args.length; i++){
+            if (args[i].equals("-n")){
+                relationalRelationships.createPopulatedTables();
+            }
+            if (args[i].equals("-l")){
+                autoLogin = true;
+                username = args[i+1];
+                password = args[i+2];
+            }
         }
 
         conn = relationalRelationships.getConnection();
@@ -175,7 +261,13 @@ public class RelationshipController {
         }
         //UI
         RelationshipController controllerInstance = new RelationshipController();
-        controllerInstance.startUI();
+        if (autoLogin){
+            controllerInstance.login(username, password);
+        }
+        else{
+            controllerInstance.startUI();
+        }
+
         //TODO close connection correclty
         //relationalRelationships.closeConnection();
     }

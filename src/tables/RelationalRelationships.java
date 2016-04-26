@@ -28,8 +28,8 @@ public class RelationalRelationships {
 
             //creates the connection
             conn = DriverManager.getConnection(url,
-                user,
-                password);
+                    user,
+                    password);
         } catch (SQLException | ClassNotFoundException e) {
             //You should handle this better
             e.printStackTrace();

@@ -14,10 +14,10 @@ public class LocationTable {
 
     public static void createLocationTable(Connection conn) {
         String query = "CREATE TABLE location("
-            + "zip_code int(5) PRIMARY KEY ,"
-            + "city VARCHAR(16),"
-            + "state VARCHAR(2),"
-            + ");";
+                + "zip_code int(5) PRIMARY KEY ,"
+                + "city VARCHAR(16),"
+                + "state VARCHAR(2),"
+                + ");";
 
         SQLHelper.execute(conn, query);
     }
@@ -40,7 +40,7 @@ public class LocationTable {
         reader.openCSV("resources/csv/cities.csv");
         while (reader.readRow()) {
             locations.add(new Location(Integer.parseInt(reader.currentRow.get(0)), reader.currentRow.get(1),
-                reader.currentRow.get(2)));
+                    reader.currentRow.get(2)));
         }
         reader.closeCSV();
 
@@ -52,7 +52,7 @@ public class LocationTable {
         for (int i = 0; i < locations.size(); i++) {
             Location loc = locations.get(i);
             sb.append(String.format("(%d,'%s','%s')",
-                loc.getZipCode(), loc.getCity(), loc.getState()));
+                    loc.getZipCode(), loc.getCity(), loc.getState()));
             if (i != locations.size() - 1) {
                 sb.append(",");
             } else {
@@ -70,7 +70,7 @@ public class LocationTable {
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
             if (resultSet.next()) {
                 location = new Location(resultSet.getInt("zip_code"), resultSet.getString("state"),
-                    resultSet.getString("city"));
+                        resultSet.getString("city"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

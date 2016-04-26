@@ -14,13 +14,13 @@ public class VisitTable {
 
     public static void createVisitTable(Connection conn) {
         String query = "CREATE TABLE visit("
-            + "visited VARCHAR(20),"
-            + "visitor VARCHAR(20),"
-            + "timestamp BIGINT UNSIGNED,"
-            + "PRIMARY KEY (visited, visitor, timestamp),"
-            + "FOREIGN KEY (visited) REFERENCES user(username),"
-            + "FOREIGN KEY (visitor) REFERENCES user(username),"
-            + ");";
+                + "visited VARCHAR(20),"
+                + "visitor VARCHAR(20),"
+                + "timestamp BIGINT UNSIGNED,"
+                + "PRIMARY KEY (visited, visitor, timestamp),"
+                + "FOREIGN KEY (visited) REFERENCES user(username) ON DELETE CASCADE,"
+                + "FOREIGN KEY (visitor) REFERENCES user(username) ON DELETE CASCADE,"
+                + ");";
 
         SQLHelper.execute(conn, query);
     }
@@ -31,10 +31,10 @@ public class VisitTable {
         SQLHelper.execute(conn, query);
     }
 
-    public ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
-        ArrayList<Visit> userVisits = new ArrayList<Visit>();
+    public static ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
+        ArrayList<Visit> userVisits = new ArrayList<>();
 
-        String query = "SELECT * FROM visit WHERE visitor = \'" + user.getUsername() + "\';";
+        String query = "SELECT * FROM visit WHERE visited = \'" + user.getUsername() + "\';";
 
         ResultSet resultSet = SQLHelper.executeQuery(conn, query);
         try {
