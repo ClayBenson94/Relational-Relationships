@@ -165,7 +165,7 @@ public class UserGen {
         }
     }
 
-    public void generateUsers(int numUsers) {
+    public ArrayList<User> generateUsers(int numUsers) {
         String username;
         String password;
         String firstName;
@@ -229,7 +229,7 @@ public class UserGen {
 
             // Generate DOB between 1950 and 2008
             GregorianCalendar gc = new GregorianCalendar();
-            int year = randBetween(1950, 2008);
+            int year = randBetween(1950, 1998);
             gc.set(Calendar.YEAR, year);
             int dayOfYear = randBetween(1, gc.getActualMaximum(Calendar.DAY_OF_YEAR));
             gc.set(Calendar.DAY_OF_YEAR, dayOfYear);
@@ -240,6 +240,7 @@ public class UserGen {
         }
 
         insertIntoUserDB();
+        return userGens;
     }
 
     private void insertIntoUserDB() {
