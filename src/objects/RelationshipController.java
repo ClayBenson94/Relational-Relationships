@@ -13,6 +13,7 @@ import java.util.Stack;
 
 import javax.swing.*;
 
+import helpers.InterestGen;
 import helpers.SQLHelper;
 
 import helpers.UserGen;
@@ -271,7 +272,8 @@ public class RelationshipController {
         if (generateContent){
             UserGen userGen = new UserGen();
             ArrayList<User> generatedUsers = userGen.generateUsers(numToGenerate);
-
+            InterestGen interestGen = new InterestGen();
+            interestGen.generateUserInterests(generatedUsers);
         }
 
         //UI

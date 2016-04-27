@@ -5,17 +5,30 @@ import objects.RelationshipController;
 import objects.User;
 import tables.UserInterestsTable;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class InterestGen {
 
-    public void InterestGen(){
-        "3D printing", "Amateur radio", "Acting", "Baton twirling", "Board games", "Book restoration", "Cabaret", "Calligraphy", "Candle making", "Computer programming", "Home roasting coffee", "Cooking", "Coloring book", "Cosplaying", "Couponing", "Creative writing", "Crocheting", "Crossword puzzles", "Cryptography", "Dance", "Digital art", "Drama", "Drawing", "Do it yourself", "Electronics", "Embroidery", "Fashion", "Flower arranging", "Second-language acquisition", "Gambling", "Genealogy", "Glassblowing", "Gunsmithing", "Homebrewing", "Ice skating", "Jewelry making", "Jigsaw puzzles", "Juggling", "Knapping", "Knitting", "Kabaddi", "Knife making", "Kombucha", "Lace", "Lapidary club", "Leather crafting", "Lego", "Lockpicking", "Machining", "Macrame", "Metalworking", "Magic", "Model building", "Music", "Origami", "Painting", "Music", "Pets", "Performance art", "Pottery", "Puzzle", "Quilting", "Reading (process)", "Scrapbooking", "Sculpting", "Sewing", "Singing", "Sudoku", "Sketching ", "Drawing", "Soapmaking", "Stand-up comedy", "Table tennis", "Video gaming", "Movies", "Web surfing", "Whittling", "Wood carving", "Woodworking", "Worldbuilding", "Writing", "Yoga", "Yo-yoing"
-    }
-
     public void generateUserInterests(ArrayList<User> users){
         for (User u: users){
-            UserInterestsTable.addInterestToUser(RelationshipController.getConnection(),u.getUsername(), null);
+            for (int i= new Random().nextInt(10); i > 0; i--) {
+                String query = "insert into user_interests values(\'" + u.getUsername() +
+                        "\', (select interest_name from interests ORDER BY RAND() LIMIT 1));";
+                Statement stmt = null;
+                try {
+                    stmt = RelationshipController.getConnection().createStatement();
+                    stmt.executeUpdate(query);
+                } catch (SQLException e) {
+                    if (e.getSQLState().equals("23505")){
+                        // user already has that interest, do nothing
+                    } else {
+                    e.printStackTrace();
+                }
+                }
+            }
         }
     }
 }
