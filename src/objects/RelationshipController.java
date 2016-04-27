@@ -270,7 +270,8 @@ public class RelationshipController {
 
         if (generateContent){
             UserGen userGen = new UserGen();
-            userGen.generateUsers(numToGenerate);
+            ArrayList<User> generatedUsers = userGen.generateUsers(numToGenerate);
+
         }
 
         //UI
