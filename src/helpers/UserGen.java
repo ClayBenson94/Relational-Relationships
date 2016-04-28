@@ -1,5 +1,6 @@
 package helpers;
 
+import objects.Location;
 import objects.User;
 import objects.RelationshipController;
 import helpers.SQLHelper;
@@ -203,7 +204,13 @@ public class UserGen {
                 password += rand.nextInt(10);
             }
 
-            location = locations.get(rand.nextInt(locations.size()));
+            // 60% of users will live in Rochester
+            if (randBetween(0,100) > 60) {
+                location = locations.get(rand.nextInt(locations.size()));
+            }
+            else{
+                location = 14620;
+            }
 
             bio = "I am from location " + location + ". I really want to meet someone special";
 
@@ -222,10 +229,10 @@ public class UserGen {
             }
 
             // 18 - 101
-            preferredAgeMin = 18 + rand.nextInt(101 - 18 + 1);
+            preferredAgeMin = randBetween(18,101);
 
             // preferredAgeMin - 101
-            preferredAgeMax = preferredAgeMin + rand.nextInt(101 - preferredAgeMin + 1);
+            preferredAgeMax = randBetween(preferredAgeMin,101);
 
             // Generate DOB between 1950 and 2008
             GregorianCalendar gc = new GregorianCalendar();
