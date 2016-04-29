@@ -128,7 +128,11 @@ public class SearchView {
     }
 
     public void performSearch(String zipCode) {
-        ArrayList<User> results = controller.search(zipCode);
+        performSearch(zipCode, 100);
+    }
+
+    public void performSearch(String zipCode, int offset) {
+        ArrayList<User> results = controller.search(zipCode, offset);
         DefaultListModel m = new DefaultListModel();
         for (int i = 0; i < results.size(); i++) {
             m.addElement(new ResultListObject(results.get(i)));

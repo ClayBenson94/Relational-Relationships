@@ -226,8 +226,8 @@ public class RelationshipController {
         };
     }
 
-    public ArrayList<User> search(String zipCode) {
-        return UserTable.search(conn, zipCode, activeUser);
+    public ArrayList<User> search(String zipCode, int offset) {
+        return UserTable.search(conn, zipCode, offset, activeUser);
     }
 
 

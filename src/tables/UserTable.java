@@ -116,7 +116,7 @@ public class UserTable {
         return "User: " + username + " was not deleted";
     }
 
-    public static ArrayList<User> search(Connection conn, String zipCode, User activeUser) {
+    public static ArrayList<User> search(Connection conn, String zipCode, int offset, User activeUser) {
         ArrayList<User> returnList = new ArrayList<>();
         String username = activeUser.getUsername();
         if (!zipCode.equals("")) {
@@ -158,7 +158,8 @@ public class UserTable {
                 "LEFT JOIN ("+interestMatches+") B " +
                 "ON A.username = B.username " +
                 "WHERE A.location=" + zipCode + " AND A.username <> \'" + username + "\' " + sexualityString + genderString + " " +
-                "ORDER BY B.C DESC;";
+                "ORDER BY B.C DESC " +
+                "LIMIT 100 OFFSET " + offset + ";";
 
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
             try {
