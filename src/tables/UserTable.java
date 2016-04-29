@@ -118,6 +118,7 @@ public class UserTable {
 
     public static ArrayList<User> search(Connection conn, String zipCode, User activeUser) {
         ArrayList<User> returnList = new ArrayList<>();
+        String username = activeUser.getUsername();
         if (!zipCode.equals("")) {
 
             User curUser;
@@ -144,8 +145,21 @@ public class UserTable {
                     break;
             }
 
+            String allUsers = "SELECT username AS username " +
+                "FROM user AS A WHERE location=" + zipCode + " AND username <> '" + username + "' ";
 
-            String query = "SELECT * FROM user WHERE location = " + zipCode + " AND username NOT = \'" + activeUser.getUsername() + "\'" + sexualityString + genderString + ";";
+            String interestMatches = "SELECT username, count(username) C " +
+                "FROM user_interests " +
+                "WHERE interest IN (SELECT interest FROM user_interests WHERE username='" + username + "') " +
+                "AND username IN (" + allUsers + ") " +
+                "GROUP BY username";
+
+            String query = "SELECT A.*, B.C FROM user A " +
+                "LEFT JOIN ("+interestMatches+") B " +
+                "ON A.username = B.username " +
+                "WHERE A.location=" + zipCode + " AND A.username <> \'" + username + "\' " + sexualityString + genderString + " " +
+                "ORDER BY B.C DESC;";
+
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
             try {
                 while (resultSet.next()) {
