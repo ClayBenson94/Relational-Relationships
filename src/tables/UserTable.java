@@ -116,13 +116,50 @@ public class UserTable {
         return "User: " + username + " was not deleted";
     }
 
-    public static ArrayList<User> search(Connection conn, String zipCode, User excludeUser) {
+    public static ArrayList<User> search(Connection conn, String zipCode, User activeUser) {
         ArrayList<User> returnList = new ArrayList<>();
+        String username = activeUser.getUsername();
         if (!zipCode.equals("")) {
 
             User curUser;
 
-            String query = "SELECT * FROM user WHERE location = " + zipCode + " AND username NOT = \'" + excludeUser.getUsername() + "\';";
+            String sexualityString;
+            switch (activeUser.getSexuality()) {
+                case Heterosexual: sexualityString = " AND sexuality = 'Heterosexual'";
+                    break;
+                case Homosexual: sexualityString = " AND sexuality = 'Homosexual'";
+                    break;
+                default: sexualityString = " AND sexuality = 'BAD_SEXUALITY'";
+                    break;
+            }
+
+            String genderString = " AND gender = ";
+            switch (activeUser.getGender()) {
+                case Male: genderString +=
+                        activeUser.getSexuality()== RelationshipController.Sexuality.Heterosexual ? "'Female'" : "'Male'";
+                    break;
+                case Female: genderString +=
+                        activeUser.getSexuality()== RelationshipController.Sexuality.Heterosexual ? "'Male'" : "'Female'";
+                    break;
+                default: genderString = " AND gender = 'BAD_GENDER'";
+                    break;
+            }
+
+            String allUsers = "SELECT username AS username " +
+                "FROM user AS A WHERE location=" + zipCode + " AND username <> '" + username + "' ";
+
+            String interestMatches = "SELECT username, count(username) C " +
+                "FROM user_interests " +
+                "WHERE interest IN (SELECT interest FROM user_interests WHERE username='" + username + "') " +
+                "AND username IN (" + allUsers + ") " +
+                "GROUP BY username";
+
+            String query = "SELECT A.*, B.C FROM user A " +
+                "LEFT JOIN ("+interestMatches+") B " +
+                "ON A.username = B.username " +
+                "WHERE A.location=" + zipCode + " AND A.username <> \'" + username + "\' " + sexualityString + genderString + " " +
+                "ORDER BY B.C DESC;";
+
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
             try {
                 while (resultSet.next()) {
