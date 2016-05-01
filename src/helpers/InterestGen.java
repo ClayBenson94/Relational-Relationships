@@ -14,7 +14,7 @@ public class InterestGen {
 
     public void generateUserInterests(ArrayList<User> users){
         for (User u: users){
-            for (int i= new Random().nextInt(10); i > 0; i--) {
+            for (int i=randBetween(2,30); i > 0; i--) {
                 String query = "insert into user_interests values(\'" + u.getUsername() +
                         "\', (select interest_name from interests ORDER BY RAND() LIMIT 1));";
                 Statement stmt = null;
@@ -30,5 +30,9 @@ public class InterestGen {
                 }
             }
         }
+    }
+
+    private static int randBetween(int start, int end) {
+        return start + (int)Math.round(Math.random() * (end - start));
     }
 }
