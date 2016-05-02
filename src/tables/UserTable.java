@@ -7,14 +7,14 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import helpers.CSVHelper;
 import helpers.DateHelper;
 import helpers.SQLHelper;
 import objects.RelationshipController;
 import objects.User;
-import objects.UserPreferences;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
@@ -118,6 +118,7 @@ public class UserTable {
 
     public static ArrayList<User> search(Connection conn, String zipCode, User activeUser) {
         ArrayList<User> returnList = new ArrayList<>();
+        String username = activeUser.getUsername();
         if (!zipCode.equals("")) {
 
             User curUser;
@@ -144,28 +145,21 @@ public class UserTable {
                     break;
             }
 
+            String allUsers = "SELECT username AS username " +
+                "FROM user AS A WHERE location=" + zipCode + " AND username <> '" + username + "' ";
 
+            String interestMatches = "SELECT username, count(username) C " +
+                "FROM user_interests " +
+                "WHERE interest IN (SELECT interest FROM user_interests WHERE username='" + username + "') " +
+                "AND username IN (" + allUsers + ") " +
+                "GROUP BY username";
 
-            int ageMin, ageMax;
-            UserPreferences activePrefs = activeUser.getUserPreferences();
-            ageMin = activePrefs.getPreferredAgeMin();
-            ageMax = activePrefs.getPreferredAgeMax();
+            String query = "SELECT A.*, B.C FROM user A " +
+                "LEFT JOIN ("+interestMatches+") B " +
+                "ON A.username = B.username " +
+                "WHERE A.location=" + zipCode + " AND A.username <> \'" + username + "\' " + sexualityString + genderString + " " +
+                "ORDER BY B.C DESC;";
 
-            //Filter out ages
-            GregorianCalendar dobMax = new GregorianCalendar();
-            GregorianCalendar dobMin = new GregorianCalendar();
-            dobMax.add(Calendar.YEAR, -ageMax);
-            dobMin.add(Calendar.YEAR, -ageMin);
-
-            String queryDobMin, queryDobMax;
-            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
-            queryDobMax = timeFormat.format(dobMax.getTime());
-            queryDobMin = timeFormat.format(dobMin.getTime());
-
-            String ageString = " AND dob > \'" + queryDobMax + "\' AND dob < \'" + queryDobMin + "\'";
-
-
-            String query = "SELECT * FROM user WHERE location = " + zipCode + " AND username NOT = \'" + activeUser.getUsername() + "\'" + sexualityString + genderString + ageString + ";";
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
             try {
                 while (resultSet.next()) {
