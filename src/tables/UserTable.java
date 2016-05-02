@@ -158,7 +158,7 @@ public class UserTable {
                 "LEFT JOIN ("+interestMatches+") B " +
                 "ON A.username = B.username " +
                 "WHERE A.location=" + zipCode + " AND A.username <> \'" + username + "\' " + sexualityString + genderString + " " +
-                "ORDER BY B.C DESC " +
+                "ORDER BY B.C DESC, A.name " +
                 "LIMIT 100 OFFSET " + offset + ";";
 
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
