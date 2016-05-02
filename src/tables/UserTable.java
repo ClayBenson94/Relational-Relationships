@@ -7,14 +7,14 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.*;
 
 import helpers.CSVHelper;
 import helpers.DateHelper;
 import helpers.SQLHelper;
 import objects.RelationshipController;
 import objects.User;
+import objects.UserPreferences;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
@@ -145,7 +145,27 @@ public class UserTable {
             }
 
 
-            String query = "SELECT * FROM user WHERE location = " + zipCode + " AND username NOT = \'" + activeUser.getUsername() + "\'" + sexualityString + genderString + ";";
+
+            int ageMin, ageMax;
+            UserPreferences activePrefs = activeUser.getUserPreferences();
+            ageMin = activePrefs.getPreferredAgeMin();
+            ageMax = activePrefs.getPreferredAgeMax();
+
+            //Filter out ages
+            GregorianCalendar dobMax = new GregorianCalendar();
+            GregorianCalendar dobMin = new GregorianCalendar();
+            dobMax.add(Calendar.YEAR, -ageMax);
+            dobMin.add(Calendar.YEAR, -ageMin);
+
+            String queryDobMin, queryDobMax;
+            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
+            queryDobMax = timeFormat.format(dobMax.getTime());
+            queryDobMin = timeFormat.format(dobMin.getTime());
+
+            String ageString = " AND dob > \'" + queryDobMax + "\' AND dob < \'" + queryDobMin + "\'";
+
+
+            String query = "SELECT * FROM user WHERE location = " + zipCode + " AND username NOT = \'" + activeUser.getUsername() + "\'" + sexualityString + genderString + ageString + ";";
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
             try {
                 while (resultSet.next()) {
