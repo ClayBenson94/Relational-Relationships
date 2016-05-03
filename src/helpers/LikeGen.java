@@ -1,9 +1,9 @@
 package helpers;
 
-
+import helpers.SQLHelper;
 import objects.RelationshipController;
 import objects.User;
-import tables.UserInterestsTable;
+import tables.LikesTable;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,10 +13,18 @@ import java.util.Random;
 public class LikeGen {
 
     public void generateLikes(ArrayList<User> users){
-        for (User u: users){
-            for (int i=randBetween(2,30); i > 0; i--) {
-                String query = "insert into user_interests values(\'" + u.getUsername() +
-                        "\', (select interest_name from interests ORDER BY RAND() LIMIT 1));";
+        int receiverIndex = 0;
+        
+        for (int i = 0; i < users.size(); i++){
+            receiverIndex = RandomNumberHelper.randBetween(0,users.size());
+            while(receiverIndex != i){
+                receiverIndex = RandomNumberHelper.randBetween(0,users.size());
+            }
+            for (int j=RandomNumberHelper.randBetween(0,30); j > 0; j--) {
+                String query = "INSERT INTO likes VALUES (\'"
+                + users.get(i).getUsername() + "\',\'"
+                + users.get(receiverIndex).getUsername() +"\',\'" 
+                + System.currentTimeMillis() + "\');";
                 Statement stmt = null;
                 try {
                     stmt = RelationshipController.getConnection().createStatement();
@@ -32,7 +40,4 @@ public class LikeGen {
         }
     }
 
-    private static int randBetween(int start, int end) {
-        return start + (int)Math.round(Math.random() * (end - start));
-    }
 }
