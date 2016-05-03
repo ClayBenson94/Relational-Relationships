@@ -3,18 +3,19 @@ package objects;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 import javax.swing.*;
 
+import helpers.InterestGen;
 import helpers.SQLHelper;
 
+import helpers.UserGen;
+import helpers.VisitsGen;
 import tables.*;
 
 import ui.*;
@@ -225,8 +226,8 @@ public class RelationshipController {
         };
     }
 
-    public ArrayList<User> search(String zipCode) {
-        return UserTable.search(conn, zipCode, activeUser);
+    public ArrayList<User> search(String zipCode, int offset) {
+        return UserTable.search(conn, zipCode, offset, activeUser);
     }
 
 
@@ -236,6 +237,10 @@ public class RelationshipController {
         String username = "";
         String password = "";
         Boolean autoLogin = false;
+
+        int numUsersToGenerate = 0;
+        int numVisitsToGenerate = 0;
+        Boolean generateContent = false;
         //Check Arguments
         relationalRelationships.createConnection();
 
@@ -248,6 +253,11 @@ public class RelationshipController {
                 username = args[i+1];
                 password = args[i+2];
             }
+            if (args[i].equals("-g")){
+                generateContent = true;
+                numUsersToGenerate = Integer.parseInt(args[i+1]);
+                numVisitsToGenerate = Integer.parseInt(args[i+2]);
+            }
         }
 
         conn = relationalRelationships.getConnection();
@@ -259,6 +269,16 @@ public class RelationshipController {
                 relationalRelationships.createPopulatedTables();
             }
         }
+
+        if (generateContent){
+            UserGen userGen = new UserGen();
+            ArrayList<User> generatedUsers = userGen.generateUsers(numUsersToGenerate);
+            InterestGen interestGen = new InterestGen();
+            interestGen.generateUserInterests(generatedUsers);
+            VisitsGen visitsGen = new VisitsGen();
+            visitsGen.genereateVisits(numVisitsToGenerate);
+        }
+
         //UI
         RelationshipController controllerInstance = new RelationshipController();
         if (autoLogin){

@@ -119,7 +119,7 @@ public class UserTable {
         return "User: " + username + " was not deleted";
     }
 
-    public static ArrayList<User> search(Connection conn, String zipCode, User activeUser) {
+    public static ArrayList<User> search(Connection conn, String zipCode, int offset, User activeUser) {
         ArrayList<User> returnList = new ArrayList<>();
         String username = activeUser.getUsername();
         if (!zipCode.equals("")) {

@@ -41,8 +41,11 @@ public class SearchView {
     private JButton likesButton;
     private JButton adminButton;
     private JButton logoutButton;
+    private JButton nextSearchPageButton;
 
     private RelationshipController controller;
+    private static int currentOffset = 0;
+    private static final int OFFSET_COUNT = 100;
 
     public SearchView(RelationshipController c) {
         controller = c;
@@ -104,6 +107,14 @@ public class SearchView {
                 controller.logout();
             }
         });
+
+        nextSearchPageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentOffset += OFFSET_COUNT;
+                performSearch(getMyZip());
+            }
+        });
     }
 
     public static JFrame init(RelationshipController c) {
@@ -128,11 +139,12 @@ public class SearchView {
     }
 
     public void performSearch(String zipCode) {
-        ArrayList<User> results = controller.search(zipCode);
+        ArrayList<User> results = controller.search(zipCode, currentOffset);
         DefaultListModel m = new DefaultListModel();
         for (int i = 0; i < results.size(); i++) {
             m.addElement(new ResultListObject(results.get(i)));
         }
+
         resultsList.setModel(m);
     }
 
