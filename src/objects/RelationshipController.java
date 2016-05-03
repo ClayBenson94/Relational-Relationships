@@ -239,6 +239,7 @@ public class RelationshipController {
     public void back() {
         visitedPages.peek().dispose();
         visitedPages.pop();
+        visitedPages.peek().setVisible(false);
         visitedPages.peek().setVisible(true);
     }
 
