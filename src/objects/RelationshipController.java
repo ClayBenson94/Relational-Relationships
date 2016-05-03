@@ -3,12 +3,10 @@ package objects;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Stack;
 
 import javax.swing.*;
@@ -17,6 +15,7 @@ import helpers.InterestGen;
 import helpers.SQLHelper;
 
 import helpers.UserGen;
+import helpers.VisitsGen;
 import tables.*;
 
 import ui.*;
@@ -239,7 +238,8 @@ public class RelationshipController {
         String password = "";
         Boolean autoLogin = false;
 
-        Integer numToGenerate = 0;
+        int numUsersToGenerate = 0;
+        int numVisitsToGenerate = 0;
         Boolean generateContent = false;
         //Check Arguments
         relationalRelationships.createConnection();
@@ -255,7 +255,8 @@ public class RelationshipController {
             }
             if (args[i].equals("-g")){
                 generateContent = true;
-                numToGenerate = Integer.parseInt(args[i+1]);
+                numUsersToGenerate = Integer.parseInt(args[i+1]);
+                numVisitsToGenerate = Integer.parseInt(args[i+2]);
             }
         }
 
@@ -271,9 +272,11 @@ public class RelationshipController {
 
         if (generateContent){
             UserGen userGen = new UserGen();
-            ArrayList<User> generatedUsers = userGen.generateUsers(numToGenerate);
+            ArrayList<User> generatedUsers = userGen.generateUsers(numUsersToGenerate);
             InterestGen interestGen = new InterestGen();
             interestGen.generateUserInterests(generatedUsers);
+            VisitsGen visitsGen = new VisitsGen();
+            visitsGen.genereateVisits(numVisitsToGenerate);
         }
 
         //UI
