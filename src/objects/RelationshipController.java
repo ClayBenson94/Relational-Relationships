@@ -209,6 +209,11 @@ public class RelationshipController {
         visitedPages.push(nextPage);
     }
 
+    public void openPhotoSubmissionPage() {
+        JFrame nextPage = AddPhotoView.init(this, visitedPages.peek());
+        visitedPages.push(nextPage);
+    }
+
     public void register(User user) {
         //TODO validation on fields
         UserTable.addUser(conn, user);
