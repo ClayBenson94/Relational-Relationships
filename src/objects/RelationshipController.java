@@ -13,8 +13,10 @@ import java.util.Stack;
 
 import javax.swing.*;
 
+import helpers.InterestGen;
 import helpers.SQLHelper;
 
+import helpers.UserGen;
 import tables.*;
 
 import ui.*;
@@ -263,6 +265,9 @@ public class RelationshipController {
         String username = "";
         String password = "";
         Boolean autoLogin = false;
+
+        Integer numToGenerate = 0;
+        Boolean generateContent = false;
         //Check Arguments
         relationalRelationships.createConnection();
 
@@ -275,6 +280,10 @@ public class RelationshipController {
                 username = args[i+1];
                 password = args[i+2];
             }
+            if (args[i].equals("-g")){
+                generateContent = true;
+                numToGenerate = Integer.parseInt(args[i+1]);
+            }
         }
 
         conn = relationalRelationships.getConnection();
@@ -286,6 +295,14 @@ public class RelationshipController {
                 relationalRelationships.createPopulatedTables();
             }
         }
+
+        if (generateContent){
+            UserGen userGen = new UserGen();
+            ArrayList<User> generatedUsers = userGen.generateUsers(numToGenerate);
+            InterestGen interestGen = new InterestGen();
+            interestGen.generateUserInterests(generatedUsers);
+        }
+
         //UI
         RelationshipController controllerInstance = new RelationshipController();
         if (autoLogin){
