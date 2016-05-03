@@ -8,6 +8,7 @@ import tables.UserTable;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -351,10 +352,14 @@ class PreferencesPhotoRenderer extends JLabel implements ListCellRenderer {
         ResultListPhotoObject entry = (ResultListPhotoObject) value;
         setIcon(entry.getIcon());
 
+        Border border = BorderFactory.createLineBorder(HIGHLIGHT_COLOR, 3);
+
         if (isSelected) {
+            setBorder(border);
             setBackground(HIGHLIGHT_COLOR);
             setForeground(Color.white);
         } else {
+            setBorder(null);
             setBackground(Color.white);
             setForeground(Color.black);
         }
