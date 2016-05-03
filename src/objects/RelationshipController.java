@@ -111,6 +111,8 @@ public class RelationshipController {
         return UserInterestsTable.getUserInterests(conn, user.getUsername());
     }
 
+    public ArrayList<Interest> getInterests() { return InterestTable.getInterests(conn); }
+
     public void createInterest(Interest interest) {
         InterestTable.createInterest(conn, interest);
     }
@@ -207,6 +209,11 @@ public class RelationshipController {
     }
 
     public void openInterestSubmissionPage() {
+        JFrame nextPage = CreateInterestView.init(this, visitedPages.peek());
+        visitedPages.push(nextPage);
+    }
+
+    public void openInterestCreationPage() {
         JFrame nextPage = AddInterestView.init(this, visitedPages.peek());
         visitedPages.push(nextPage);
     }
