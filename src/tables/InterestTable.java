@@ -35,6 +35,26 @@ public class InterestTable {
         return SQLHelper.execute(conn, query);
     }
 
+    public static boolean createInterestWithCheck(Connection conn, Interest interest) {
+        String name, description, category;
+        name = interest.getName();
+        description = interest.getDescription();
+        category = interest.getCategory();
+
+        String query = "INSERT INTO interests "
+                + "(interest_name, interest_desc, category) "
+                + "SELECT \'" + name + "\', "
+                + "\'" + description + "\', "
+                + "\'" + category + "\' "
+                + "FROM dual WHERE NOT EXISTS "
+                +  "( SELECT 1 "
+                + "FROM interests "
+                + "WHERE interest_name = \'" + name + "\' "
+                + ");";
+
+        return SQLHelper.execute(conn, query);
+    }
+
     public static boolean populateFromCSV(Connection conn) {
         CSVHelper reader = new CSVHelper();
 

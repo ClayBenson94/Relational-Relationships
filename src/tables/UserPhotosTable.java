@@ -30,6 +30,19 @@ public class UserPhotosTable {
         return SQLHelper.execute(conn, query);
     }
 
+    public static boolean addPhotoToUserWithCheck(Connection conn, String username, String photoURL) {
+        String query = "INSERT INTO user_photos (username, photo_url) "
+                + "SELECT \'" + username
+                + "\', \'" + photoURL + "\' FROM dual WHERE NOT EXISTS "
+                + "( SELECT 1 "
+                + "FROM user_photos "
+                + "WHERE username = \'" + username + "\'"
+                + " AND photo_url = \'" + photoURL + "\'"
+                + ");";
+
+        return SQLHelper.execute(conn, query);
+    }
+
     public static void deleteUserPhoto(Connection conn, User user, String photoURL) {
         String query = "DELETE FROM user_photos "
                 + "WHERE username=\'" + user.getUsername() + "\' AND photo_url=\'" + photoURL + "\';";

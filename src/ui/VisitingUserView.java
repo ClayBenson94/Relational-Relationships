@@ -128,8 +128,10 @@ public class VisitingUserView {
 
 class ResultListPhotoObject {
     private ImageIcon icon;
+    private String url;
 
     public ResultListPhotoObject(String photo) {
+        url = photo;
         BufferedImage myPicture = null;
         try {
             if (photo.contains("logo.png")) {
@@ -154,6 +156,7 @@ class ResultListPhotoObject {
     public ImageIcon getIcon() {
         return icon;
     }
+    public String getUrl() { return url; }
 }
 
 class UserPhotoRenderer extends JLabel implements ListCellRenderer {

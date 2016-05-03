@@ -113,12 +113,24 @@ public class RelationshipController {
         InterestTable.createInterest(conn, interest);
     }
 
+    public void removeInterestFromUser(User user, Interest interest) {
+        UserInterestsTable.deleteUserInterest(conn, user, interest);
+    }
+
     public boolean addInterestToUser(User user, Interest interest) {
         return UserInterestsTable.addInterestToUser(conn, user.getUsername(), interest);
     }
 
-    public void submitInterest(Interest interest) {
+    public void submitInterest(User user, Interest interest) {
+        InterestCategoriesTable.addCategoryWithCheck(conn, interest.getCategory());
+        InterestTable.createInterestWithCheck(conn, interest);
+        UserInterestsTable.addInterestToUserWithCheck(conn, user.getUsername(), interest);
+        back();
+    }
 
+    public void submitPhoto(User user, String photo) {
+        UserPhotosTable.addPhotoToUserWithCheck(conn, user.getUsername(), photo);
+        back();
     }
 
     public ArrayList<Visit> getVisitsForUser(User currentUser) {
@@ -190,6 +202,11 @@ public class RelationshipController {
     public void openPreferencesPage() {
         JFrame page = PreferencesView.init(this);
         addPageToVistedPages(page);
+    }
+
+    public void openInterestSubmissionPage() {
+        JFrame nextPage = AddInterestView.init(this, visitedPages.peek());
+        visitedPages.push(nextPage);
     }
 
     public void register(User user) {
