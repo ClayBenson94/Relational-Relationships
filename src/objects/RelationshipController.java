@@ -117,6 +117,10 @@ public class RelationshipController {
         return UserInterestsTable.addInterestToUser(conn, user.getUsername(), interest);
     }
 
+    public void submitInterest(Interest interest) {
+
+    }
+
     public ArrayList<Visit> getVisitsForUser(User currentUser) {
         return VisitTable.getVisitsForUser(conn, currentUser);
     }
