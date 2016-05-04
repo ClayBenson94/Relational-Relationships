@@ -43,6 +43,28 @@ public class UserInterestsTable {
         return SQLHelper.execute(conn, query);
     }
 
+    public static boolean addInterestToUserWithCheck(Connection conn, String username, Interest interest) {
+        String interestName = interest.getName();
+        String query = "INSERT INTO user_interests (username, interest) "
+                + "SELECT \'" + username + "\', "
+                + "\'" + interestName + "\' "
+                + "FROM dual WHERE NOT EXISTS "
+                + "( SELECT 1 "
+                + "FROM user_interests "
+                + "WHERE interest = \'" + interestName + "\'"
+                + ");";
+
+        return SQLHelper.execute(conn, query);
+    }
+
+    public static void deleteUserInterest(Connection conn, User user, Interest interest) {
+        String name = interest.getName();
+        String query = "DELETE FROM user_interests "
+                + "WHERE username=\'" + user.getUsername() + "\' AND interest=\'" + name + "\';";
+
+        SQLHelper.execute(conn, query);
+    }
+
     public static ArrayList<Interest> getUserInterests(Connection conn, String username) {
         ArrayList<Interest> returnList = new ArrayList<>();
 

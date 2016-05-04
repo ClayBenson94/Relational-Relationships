@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import helpers.CSVHelper;
@@ -15,6 +17,7 @@ import helpers.DateHelper;
 import helpers.SQLHelper;
 import objects.RelationshipController;
 import objects.User;
+import objects.UserPreferences;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
@@ -145,6 +148,24 @@ public class UserTable {
                     break;
             }
 
+            //Filter out ages
+            int ageMin, ageMax;
+            UserPreferences activePrefs = activeUser.getUserPreferences();
+            ageMin = activePrefs.getPreferredAgeMin();
+            ageMax = activePrefs.getPreferredAgeMax();
+
+            GregorianCalendar dobMax = new GregorianCalendar();
+            GregorianCalendar dobMin = new GregorianCalendar();
+            dobMax.add(Calendar.YEAR, -ageMax);
+            dobMin.add(Calendar.YEAR, -ageMin);
+
+            String queryDobMin, queryDobMax;
+            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd");
+            queryDobMax = timeFormat.format(dobMax.getTime());
+            queryDobMin = timeFormat.format(dobMin.getTime());
+
+            String ageString = " AND dob > \'" + queryDobMax + "\' AND dob < \'" + queryDobMin + "\'";
+
             String allUsers = "SELECT username AS username " +
                 "FROM user AS A WHERE location=" + zipCode + " AND username <> '" + username + "' ";
 
@@ -157,9 +178,8 @@ public class UserTable {
             String query = "SELECT A.*, B.C FROM user A " +
                 "LEFT JOIN ("+interestMatches+") B " +
                 "ON A.username = B.username " +
-                "WHERE A.location=" + zipCode + " AND A.username <> \'" + username + "\' " + sexualityString + genderString + " " +
-                "ORDER BY B.C DESC, A.name " +
-                "LIMIT 100 OFFSET " + offset + ";";
+                "WHERE A.location=" + zipCode + " AND A.username <> \'" + username + "\' " + sexualityString + genderString + ageString + " " +
+                "ORDER BY B.C DESC;";
 
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
             try {

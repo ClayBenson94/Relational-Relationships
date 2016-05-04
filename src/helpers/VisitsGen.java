@@ -3,8 +3,7 @@ package helpers;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 import objects.RelationshipController;
 
@@ -31,10 +30,17 @@ public class VisitsGen {
         int usernameLength = usernames.size();
         ArrayList<String> visitsToInsert = new ArrayList<>();
 
+        Date referenceDate = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(referenceDate);
+        c.add(Calendar.MONTH, -3);
+        c.getTime();
+
         for (int i = 0; i < count; i++) {
             first = random.nextInt(usernameLength);
             second = random.nextInt(usernameLength);
-            long timestamp = System.currentTimeMillis();
+
+            long timestamp = RandomNumberHelper.randBetween(c.getTime().getTime(), System.currentTimeMillis());
             visitsToInsert.add("(\'" + usernames.get(first) + "\',\'" + usernames.get(second) + "\'," + timestamp + ")");
         }
         insertVisitQuery = String.format(insertVisitQuery, String.join(",", visitsToInsert));

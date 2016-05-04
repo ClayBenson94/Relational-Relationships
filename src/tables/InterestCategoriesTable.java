@@ -25,6 +25,17 @@ public class InterestCategoriesTable {
         return SQLHelper.execute(conn, query);
     }
 
+    public static boolean addCategoryWithCheck(Connection conn, String category) {
+        String query = "INSERT INTO interest_categories "
+                + "(category_name) SELECT \'" + category
+                + "\' FROM dual WHERE NOT EXISTS "
+                + "( SELECT 1 "
+                + "FROM interest_categories "
+                + "WHERE category_name = \'" + category + "\'"
+                + ");";
+        return SQLHelper.execute(conn, query);
+    }
+
     public static ArrayList<String> getInterestCategoryNames(Connection conn) {
         ArrayList<String> returnList = new ArrayList<String>();
         String categoryToAdd;
