@@ -146,6 +146,11 @@ public class SearchView {
         }
 
         resultsList.setModel(m);
+        if (m.size() <= OFFSET_COUNT) {
+            nextSearchPageButton.setVisible(false);
+        } else {
+            nextSearchPageButton.setVisible(true);
+        }
     }
 
     {
@@ -221,6 +226,11 @@ public class SearchView {
      */
     public JComponent $$$getRootComponent$$$() {
         return basePane;
+    }
+
+    private void createUIComponents() {
+        nextSearchPageButton = new JButton();
+        nextSearchPageButton.setVisible(false);
     }
 
     /**
