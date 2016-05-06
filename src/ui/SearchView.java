@@ -132,13 +132,7 @@ public class SearchView {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(400, 600);
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                String myZip = searchView.getMyZip();
-                searchView.performSearch(myZip);
-            }
-        });
+        searchView.performSearch(searchView.getMyZip());
         return frame;
     }
 
