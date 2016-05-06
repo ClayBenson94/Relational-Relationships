@@ -1,9 +1,7 @@
 package helpers;
 
-import objects.Location;
 import objects.User;
 import objects.RelationshipController;
-import helpers.SQLHelper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -279,6 +277,8 @@ public class UserGen {
                 sb.append(";");
             }
         }
-        SQLHelper.execute(conn, sb.toString());
+        if (userGens.size() > 0) {
+            SQLHelper.execute(conn, sb.toString());
+        }
     }
 }

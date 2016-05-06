@@ -34,7 +34,8 @@ public class VisitTable {
     public static ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
         ArrayList<Visit> userVisits = new ArrayList<>();
 
-        String query = "SELECT * FROM visit WHERE visited = \'" + user.getUsername() + "\' order by timestamp desc;";
+        String query = "SELECT * FROM visit WHERE visited = \'" + user.getUsername() + "\' " +
+            "ORDER BY timestamp DESC;";
 
         ResultSet resultSet = SQLHelper.executeQuery(conn, query);
         try {

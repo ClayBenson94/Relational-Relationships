@@ -22,6 +22,8 @@ import ui.*;
 
 public class RelationshipController {
 
+    public static final int OFFSET_COUNT = 100;
+
     private static Connection conn;
     private User activeUser;
     private User visitingUser;
