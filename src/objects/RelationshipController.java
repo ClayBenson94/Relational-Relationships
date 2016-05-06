@@ -1,6 +1,5 @@
 package objects;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.sql.Connection;
@@ -31,7 +30,7 @@ public class RelationshipController {
     private Stack<JFrame> visitedPages;
 
     public RelationshipController() {
-        visitedPages = new Stack<JFrame>();
+        visitedPages = new Stack<>();
     }
 
     public static Connection getConnection() {
@@ -253,13 +252,13 @@ public class RelationshipController {
         visitedPages.peek().setVisible(true);
     }
 
+    public void restartSearchView(RelationshipController controller) {
+        visitedPages.clear();
+        addPageToVistedPages(SearchView.init(controller));
+    }
+
     public ActionListener backListener(RelationshipController controller) {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.back();
-            }
-        };
+        return e -> controller.back();
     }
 
     public ArrayList<User> search(String zipCode, int offset) {
