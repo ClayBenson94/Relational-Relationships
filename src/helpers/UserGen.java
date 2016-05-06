@@ -1,9 +1,7 @@
 package helpers;
 
-import objects.Location;
 import objects.User;
 import objects.RelationshipController;
-import helpers.SQLHelper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -205,7 +203,7 @@ public class UserGen {
             }
 
             // 60% of users will live in Rochester
-            if (randBetween(0,100) > 60) {
+            if (RandomNumberHelper.randBetween(0,100) > 60) {
                 location = locations.get(rand.nextInt(locations.size()));
             }
             else{
@@ -229,16 +227,16 @@ public class UserGen {
             }
 
             // 18 - 101
-            preferredAgeMin = randBetween(18,101);
+            preferredAgeMin = RandomNumberHelper.randBetween(18,101);
 
             // preferredAgeMin - 101
-            preferredAgeMax = randBetween(preferredAgeMin,101);
+            preferredAgeMax = RandomNumberHelper.randBetween(preferredAgeMin,101);
 
             // Generate DOB between 1950 and 2008
             GregorianCalendar gc = new GregorianCalendar();
-            int year = randBetween(1950, 1998);
+            int year = RandomNumberHelper.randBetween(1950, 1998);
             gc.set(Calendar.YEAR, year);
-            int dayOfYear = randBetween(1, gc.getActualMaximum(Calendar.DAY_OF_YEAR));
+            int dayOfYear = RandomNumberHelper.randBetween(1, gc.getActualMaximum(Calendar.DAY_OF_YEAR));
             gc.set(Calendar.DAY_OF_YEAR, dayOfYear);
             dob = new Date(gc.getTime().getTime());
 
@@ -279,10 +277,8 @@ public class UserGen {
                 sb.append(";");
             }
         }
-        SQLHelper.execute(conn, sb.toString());
-    }
-
-    private static int randBetween(int start, int end) {
-        return start + (int)Math.round(Math.random() * (end - start));
+        if (userGens.size() > 0) {
+            SQLHelper.execute(conn, sb.toString());
+        }
     }
 }

@@ -2,6 +2,7 @@ package tables;
 
 import helpers.CSVHelper;
 import helpers.SQLHelper;
+import objects.RelationshipController;
 import objects.User;
 import objects.Visit;
 
@@ -31,10 +32,12 @@ public class VisitTable {
         SQLHelper.execute(conn, query);
     }
 
-    public static ArrayList<Visit> getVisitsForUser(Connection conn, User user) {
+    public static ArrayList<Visit> getVisitsForUser(Connection conn, User user, int offset) {
         ArrayList<Visit> userVisits = new ArrayList<>();
 
-        String query = "SELECT * FROM visit WHERE visited = \'" + user.getUsername() + "\';";
+        String query = "SELECT * FROM visit WHERE visited = \'" + user.getUsername() + "\' " +
+            "ORDER BY timestamp DESC " +
+            "LIMIT " + RelationshipController.OFFSET_COUNT + " OFFSET " + offset + ";";
 
         ResultSet resultSet = SQLHelper.executeQuery(conn, query);
         try {

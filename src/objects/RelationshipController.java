@@ -22,6 +22,8 @@ import ui.*;
 
 public class RelationshipController {
 
+    public static final int OFFSET_COUNT = 100;
+
     private static Connection conn;
     private User activeUser;
     private User visitingUser;
@@ -110,16 +112,34 @@ public class RelationshipController {
         return UserInterestsTable.getUserInterests(conn, user.getUsername());
     }
 
+    public ArrayList<Interest> getInterests() { return InterestTable.getInterests(conn); }
+
     public void createInterest(Interest interest) {
         InterestTable.createInterest(conn, interest);
+    }
+
+    public void removeInterestFromUser(User user, Interest interest) {
+        UserInterestsTable.deleteUserInterest(conn, user, interest);
     }
 
     public boolean addInterestToUser(User user, Interest interest) {
         return UserInterestsTable.addInterestToUser(conn, user.getUsername(), interest);
     }
 
-    public ArrayList<Visit> getVisitsForUser(User currentUser) {
-        return VisitTable.getVisitsForUser(conn, currentUser);
+    public void submitInterest(User user, Interest interest) {
+        InterestCategoriesTable.addCategoryWithCheck(conn, interest.getCategory());
+        InterestTable.createInterestWithCheck(conn, interest);
+        UserInterestsTable.addInterestToUserWithCheck(conn, user.getUsername(), interest);
+        back();
+    }
+
+    public void submitPhoto(User user, String photo) {
+        UserPhotosTable.addPhotoToUserWithCheck(conn, user.getUsername(), photo);
+        back();
+    }
+
+    public ArrayList<Visit> getVisitsForUser(User currentUser, int offset) {
+        return VisitTable.getVisitsForUser(conn, currentUser, offset);
     }
 
     public void createVisit(User visited, User visitor) {
@@ -189,6 +209,21 @@ public class RelationshipController {
         addPageToVistedPages(page);
     }
 
+    public void openInterestSubmissionPage() {
+        JFrame nextPage = CreateInterestView.init(this, visitedPages.peek());
+        visitedPages.push(nextPage);
+    }
+
+    public void openInterestCreationPage() {
+        JFrame nextPage = AddInterestView.init(this, visitedPages.peek());
+        visitedPages.push(nextPage);
+    }
+
+    public void openPhotoSubmissionPage() {
+        JFrame nextPage = AddPhotoView.init(this, visitedPages.peek());
+        visitedPages.push(nextPage);
+    }
+
     public void register(User user) {
         //TODO validation on fields
         UserTable.addUser(conn, user);
@@ -214,6 +249,7 @@ public class RelationshipController {
     public void back() {
         visitedPages.peek().dispose();
         visitedPages.pop();
+        visitedPages.peek().setVisible(false);
         visitedPages.peek().setVisible(true);
     }
 
