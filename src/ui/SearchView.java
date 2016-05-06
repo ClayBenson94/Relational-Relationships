@@ -18,13 +18,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.event.ActionEvent;
@@ -45,7 +42,9 @@ public class SearchView {
     private JButton prevSearchPageButton;
 
     private RelationshipController controller;
+
     private static int currentOffset = 0;
+    private static final ImageIcon IMAGE_ICON = new ImageIcon("resources/images/logo.png");
 
     public SearchView(RelationshipController c) {
         controller = c;
@@ -253,27 +252,24 @@ public class SearchView {
 
         public ResultListObject(User u) {
             user = u;
-            BufferedImage myPicture = null;
+            ImageIcon imageIcon = null;
             try {
                 ArrayList<String> images = UserPhotosTable.getUserPhotos(RelationshipController.getConnection(), user);
                 if (images.size() == 0) {
-                    myPicture = ImageIO.read(new File("resources/images/logo.png"));
+                    imageIcon = IMAGE_ICON;
                 } else {
-
                     URL url = new URL(images.get(0));
-                    myPicture = ImageIO.read(url);
+                    imageIcon = new ImageIcon(url);
                 }
-
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //resize
-            double factor = (double) 100 / (double) myPicture.getHeight();
 
-            Image newimg = myPicture.getScaledInstance((int) (myPicture.getWidth() * factor), (int) (myPicture.getHeight() * factor), Image.SCALE_SMOOTH);
-            //
-            icon = new ImageIcon(newimg);
+            if (imageIcon != null) {
+                Image newImg = imageIcon.getImage().getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH);
+                icon = new ImageIcon(newImg);
+            }
         }
 
         public ImageIcon getIcon() {
