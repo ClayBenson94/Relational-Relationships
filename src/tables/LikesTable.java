@@ -50,11 +50,10 @@ public class LikesTable {
      * @param username - The user to do the query for
      * @return An array list of usernames that like you
      */
-    public static ArrayList<Like> getLikesForUser(Connection conn, String username, int offset) {
+    public static ArrayList<Like> getLikesForUser(Connection conn, String username) {
         ArrayList<Like> likes = new ArrayList<Like>();
         try {
-            String query = "SELECT sender, timestamp FROM likes WHERE receiver=\'" + username + "\' " +
-                "LIMIT " + RelationshipController.OFFSET_COUNT + " OFFSET " + offset + ";";
+            String query = "SELECT sender, timestamp FROM likes WHERE receiver=\'" + username + "\' ;";
 
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
 
