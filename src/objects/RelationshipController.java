@@ -22,6 +22,8 @@ import ui.*;
 
 public class RelationshipController {
 
+    public static final int OFFSET_COUNT = 100;
+
     private static Connection conn;
     private User activeUser;
     private User visitingUser;
@@ -136,8 +138,8 @@ public class RelationshipController {
         back();
     }
 
-    public ArrayList<Visit> getVisitsForUser(User currentUser) {
-        return VisitTable.getVisitsForUser(conn, currentUser);
+    public ArrayList<Visit> getVisitsForUser(User currentUser, int offset) {
+        return VisitTable.getVisitsForUser(conn, currentUser, offset);
     }
 
     public void createVisit(User visited, User visitor) {
