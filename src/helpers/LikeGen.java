@@ -1,17 +1,12 @@
 package helpers;
 
-import helpers.SQLHelper;
 import objects.RelationshipController;
 import objects.User;
-import tables.LikesTable;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Calendar;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class LikeGen {
 
@@ -27,7 +22,7 @@ public class LikeGen {
         Calendar cal = Calendar.getInstance();
         cal.setTime(referenceDate);
         cal.add(Calendar.MONTH, -3);
-        c.getTime();
+        cal.getTime();
         
         for (int i = 0; i < numUsers; i++){
             for (int j=RandomNumberHelper.randBetween(0,30); j > 0; j--) {

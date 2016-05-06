@@ -3,12 +3,10 @@ package helpers;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< HEAD
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
-=======
-import java.util.*;
->>>>>>> master
+import java.util.Date;
 
 import objects.RelationshipController;
 
