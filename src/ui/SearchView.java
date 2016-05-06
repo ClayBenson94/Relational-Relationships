@@ -42,10 +42,10 @@ public class SearchView {
     private JButton adminButton;
     private JButton logoutButton;
     private JButton nextSearchPageButton;
+    private JButton prevSearchPageButton;
 
     private RelationshipController controller;
     private static int currentOffset = 0;
-    private static final int OFFSET_COUNT = 100;
 
     public SearchView(RelationshipController c) {
         controller = c;
@@ -111,9 +111,18 @@ public class SearchView {
         nextSearchPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentOffset += OFFSET_COUNT;
+                currentOffset += RelationshipController.OFFSET_COUNT;
+                prevSearchPageButton.setVisible(true);
                 performSearch(getMyZip());
             }
+        });
+
+        prevSearchPageButton.addActionListener(e -> {
+            currentOffset = Math.max(0, currentOffset -= RelationshipController.OFFSET_COUNT);
+            if (currentOffset == 0) {
+                prevSearchPageButton.setVisible(false);
+            }
+            performSearch(getMyZip());
         });
     }
 
@@ -146,7 +155,7 @@ public class SearchView {
         }
 
         resultsList.setModel(m);
-        if (m.size() <= OFFSET_COUNT) {
+        if (m.size() < RelationshipController.OFFSET_COUNT) {
             nextSearchPageButton.setVisible(false);
         } else {
             nextSearchPageButton.setVisible(true);
@@ -230,7 +239,9 @@ public class SearchView {
 
     private void createUIComponents() {
         nextSearchPageButton = new JButton();
+        prevSearchPageButton = new JButton();
         nextSearchPageButton.setVisible(false);
+        prevSearchPageButton.setVisible(false);
     }
 
     /**

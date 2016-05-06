@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import helpers.CSVHelper;
 import helpers.SQLHelper;
 import objects.Like;
+import objects.RelationshipController;
 import objects.User;
 
 public class LikesTable {
@@ -52,7 +53,8 @@ public class LikesTable {
     public static ArrayList<Like> getLikesForUser(Connection conn, String username) {
         ArrayList<Like> likes = new ArrayList<Like>();
         try {
-            String query = "SELECT sender, timestamp FROM likes WHERE receiver=\'" + username + "\';";
+            String query = "SELECT sender, timestamp FROM likes WHERE receiver=\'" + username + "\' ;";
+
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
 
             while (resultSet.next()) {
