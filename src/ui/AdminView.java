@@ -37,29 +37,14 @@ public class AdminView {
         timeCombo.setModel(new DefaultComboBoxModel<>(timeSelections));
         updateStatLabels();
 
-        ActionListener deleteListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteUser();
-            }
-        };
+        ActionListener deleteListener = e -> deleteUser();
 
         deleteBttn.addActionListener(deleteListener);
         usernameField.addActionListener(deleteListener);
 
-        backBttn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.back();
-            }
-        });
+        backBttn.addActionListener(e -> controller.restartSearchView(controller));
 
-        timeCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateStatLabels();
-            }
-        });
+        timeCombo.addActionListener(e -> updateStatLabels());
     }
 
     public void deleteUser() {

@@ -1,6 +1,5 @@
 package objects;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.sql.Connection;
@@ -22,6 +21,8 @@ import ui.*;
 
 public class RelationshipController {
 
+    public static final int OFFSET_COUNT = 100;
+
     private static Connection conn;
     private User activeUser;
     private User visitingUser;
@@ -29,7 +30,7 @@ public class RelationshipController {
     private Stack<JFrame> visitedPages;
 
     public RelationshipController() {
-        visitedPages = new Stack<JFrame>();
+        visitedPages = new Stack<>();
     }
 
     public static Connection getConnection() {
@@ -136,8 +137,8 @@ public class RelationshipController {
         back();
     }
 
-    public ArrayList<Visit> getVisitsForUser(User currentUser) {
-        return VisitTable.getVisitsForUser(conn, currentUser);
+    public ArrayList<Visit> getVisitsForUser(User currentUser, int offset) {
+        return VisitTable.getVisitsForUser(conn, currentUser, offset);
     }
 
     public void createVisit(User visited, User visitor) {
@@ -251,13 +252,13 @@ public class RelationshipController {
         visitedPages.peek().setVisible(true);
     }
 
+    public void restartSearchView(RelationshipController controller) {
+        visitedPages.clear();
+        addPageToVistedPages(SearchView.init(controller));
+    }
+
     public ActionListener backListener(RelationshipController controller) {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.back();
-            }
-        };
+        return e -> controller.back();
     }
 
     public ArrayList<User> search(String zipCode, int offset) {

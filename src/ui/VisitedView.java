@@ -29,10 +29,14 @@ public class VisitedView {
     private JButton backBttn;
     private JList visitedList;
     private JPanel basePane;
+    private JButton nextVisitPageButton;
+    private JButton prevVisitPageButton;
     private RelationshipController controller;
+    private int offset;
 
     public VisitedView(RelationshipController c) {
         controller = c;
+        offset = 0;
         backBttn.addActionListener(controller.backListener(controller));
         populateVisits(controller.getActiveUser());
         visitedList.setCellRenderer(new VisitListRenderer(controller));
@@ -48,6 +52,19 @@ public class VisitedView {
             }
         });
 
+        nextVisitPageButton.addActionListener(e -> {
+            offset += RelationshipController.OFFSET_COUNT;
+            prevVisitPageButton.setVisible(true);
+            populateVisits(controller.getActiveUser());
+        });
+
+        prevVisitPageButton.addActionListener(e -> {
+            offset = Math.max(0, offset -= 100);
+            if (offset == 0) {
+                prevVisitPageButton.setVisible(false);
+            }
+            populateVisits(controller.getActiveUser());
+        });
     }
 
     public static JFrame init(RelationshipController c) {
@@ -60,14 +77,17 @@ public class VisitedView {
     }
 
     public void populateVisits(User curUser) {
-        //TODO Implement getting visits instead of search (search is temporary)
-//        ArrayList<User> results = controller.search(zipCode);
-        ArrayList<Visit> results = controller.getVisitsForUser(curUser);
+        ArrayList<Visit> results = controller.getVisitsForUser(curUser, offset);
         DefaultListModel m = new DefaultListModel();
         for (int i = 0; i < results.size(); i++) {
             m.addElement(new VisitedListObject(results.get(i)));
         }
         visitedList.setModel(m);
+        if (m.size() < RelationshipController.OFFSET_COUNT) {
+            nextVisitPageButton.setVisible(false);
+        } else {
+            nextVisitPageButton.setVisible(true);
+        }
     }
 
     {
@@ -117,6 +137,13 @@ public class VisitedView {
      */
     public JComponent $$$getRootComponent$$$() {
         return basePane;
+    }
+
+    private void createUIComponents() {
+        prevVisitPageButton = new JButton();
+        nextVisitPageButton = new JButton();
+        prevVisitPageButton.setVisible(false);
+        nextVisitPageButton.setVisible(false);
     }
 
     /**
