@@ -8,8 +8,17 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.ArrayList;
 
+/**
+ * LikeGen objects generate likes between users. 
+ */ 
 public class LikeGen {
 
+    /**
+     * Generates likes for a list of users. Users who have been
+     * liked will like the other user back 50% of the time.
+     * 
+     * @param users  the list of users to create likes for
+     */ 
     public void generateLikes(ArrayList<User> users){
         String likeQuery = "INSERT INTO likes VALUES %s;";
         Connection conn = RelationshipController.getConnection();
