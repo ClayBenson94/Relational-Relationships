@@ -105,6 +105,7 @@ public class VisitingUserView {
         basePane = new JPanel();
         basePane.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
         userInfo = new JTextArea();
+        userInfo.setEditable(false);
         basePane.add(userInfo, new GridConstraints(1, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         likeBttn = new JButton();
         likeBttn.setText("Like");
