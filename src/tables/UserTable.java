@@ -23,6 +23,8 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 public class UserTable {
 
+    public static ArrayList<User> csvUsers;
+
     public static void createUserTable(Connection conn) {
         String query = "CREATE TABLE user("
                 + "username VARCHAR(20),"
@@ -262,6 +264,8 @@ public class UserTable {
             }
             reader.closeCSV();
 
+            csvUsers = users;
+
             StringBuilder sb = new StringBuilder();
 
             sb.append("INSERT INTO user (username, password, name, bio, email, dob, gender, sexuality," +
@@ -311,6 +315,27 @@ public class UserTable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static ArrayList<User> getAllUserObjects(Connection conn) {
+        String query = "SELECT * FROM user;";
+        ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                users.add(new User(resultSet.getString("username"), resultSet.getString("password"), resultSet.getString("name"),
+                        resultSet.getString("bio"), resultSet.getString("email"), resultSet.getDate("dob"),
+                        RelationshipController.getGender(resultSet.getString("gender")),
+                        RelationshipController.getSexuality(resultSet.getString("sexuality")),
+                        resultSet.getInt("location"), resultSet.getInt("preferred_age_min"),
+                        resultSet.getInt("preferred_age_max"),
+                        RelationshipController.getSexuality(resultSet.getString("preferred_sexuality")),
+                        resultSet.getBoolean("is_admin")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
 }

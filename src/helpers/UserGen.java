@@ -5,6 +5,8 @@ import objects.RelationshipController;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -226,12 +228,6 @@ public class UserGen {
                 preferredSexuality = RelationshipController.Sexuality.Homosexual;
             }
 
-            // 18 - 101
-            preferredAgeMin = RandomNumberHelper.randBetween(18,101);
-
-            // preferredAgeMin - 101
-            preferredAgeMax = RandomNumberHelper.randBetween(preferredAgeMin,101);
-
             // Generate DOB between 1950 and 2008
             GregorianCalendar gc = new GregorianCalendar();
             int year = RandomNumberHelper.randBetween(1950, 1998);
@@ -239,6 +235,14 @@ public class UserGen {
             int dayOfYear = RandomNumberHelper.randBetween(1, gc.getActualMaximum(Calendar.DAY_OF_YEAR));
             gc.set(Calendar.DAY_OF_YEAR, dayOfYear);
             dob = new Date(gc.getTime().getTime());
+
+            Integer age = Period.between(dob.toLocalDate(), LocalDate.now()).getYears();
+
+            // Age - 10 to age + 10 with a min of 18
+            preferredAgeMin = Math.max(18, RandomNumberHelper.randBetween(age - 10, age + 10));
+
+            // preferredAgeMin to age + 10
+            preferredAgeMax = RandomNumberHelper.randBetween(preferredAgeMin,age + 10);
 
             userGens.add(new User(username, password, firstName + " " + lastName, bio, email, dob, gender, sexuality, location,
                     preferredAgeMin, preferredAgeMax, preferredSexuality, false));
