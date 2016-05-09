@@ -4,10 +4,14 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import objects.RelationshipController;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
 public class AddPhotoView {
     private JPanel basePane;
@@ -23,9 +27,17 @@ public class AddPhotoView {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String url = urlField.getText();
-                //TODO input sanitation
-                controller.submitPhoto(controller.getActiveUser(), url);
+                String urlString = urlField.getText();
+                try {
+                    URL url = new URL(urlString);
+                    BufferedImage imageIcon = ImageIO.read(url);
+                    imageIcon.getHeight();
+                } catch (Exception e1) {
+                    String errorString = "<html><body>Invalid photo url.<br><br></body></html>";
+                    controller.createErrorView(errorString);
+                    return;
+                }
+                controller.submitPhoto(controller.getActiveUser(), urlString);
             }
         });
         backButton.addActionListener(new ActionListener() {
