@@ -6,9 +6,9 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import objects.RelationshipController;
 import objects.User;
-import tables.LocationTable;
 import tables.UserPhotosTable;
 import tables.UserTable;
+import tables.LocationTable;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -42,16 +42,15 @@ public class SearchView {
     private JButton nextSearchPageButton;
     private JButton prevSearchPageButton;
 
-    private String validZip;
-
     private RelationshipController controller;
+    private String validZip;
 
     private static int currentOffset = 0;
     private static final ImageIcon IMAGE_ICON = new ImageIcon("resources/images/logo.png");
 
     public SearchView(RelationshipController c) {
         controller = c;
-        validZip = "";
+        validZip = null;
 
         $$$setupUI$$$();
         if (!controller.getActiveUser().getIsAdmin()) {
@@ -146,7 +145,7 @@ public class SearchView {
     }
 
     public void performSearch() {
-        String zipCode = zipcodeField.getText() == "" ? getMyZip() : zipcodeField.getText();
+        String zipCode = zipcodeField.getText().equals("") ? getMyZip() : zipcodeField.getText();
 
         if (zipCode != validZip) {
             try {
@@ -324,4 +323,3 @@ public class SearchView {
         }
     }
 }
-
