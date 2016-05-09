@@ -3,6 +3,7 @@ package ui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import objects.*;
+import tables.LocationTable;
 import tables.UserPhotosTable;
 import tables.UserTable;
 
@@ -60,7 +61,6 @@ public class PreferencesView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 applyChanges();
-                controller.back();
             }
         });
 
@@ -146,18 +146,70 @@ public class PreferencesView {
 
     private void applyChanges() {
         User userToUpdate = controller.getActiveUser();
+
+        //Input checks
+        String errorString = "<html><body>";
+        boolean foundError = false;
+
+
+
+        Integer zip;
+        try {
+            zip = Integer.parseInt(zipCodeTextField.getText());
+            if (!LocationTable.isValidZip(controller.getConnection(), zip)) {
+                errorString += "Invalid zipcode.<br><br>";
+                foundError = true;
+            }
+        } catch (NumberFormatException e1) {
+            //e1.printStackTrace();
+            zip = null;
+            errorString += "Invalid zipcode.<br><br>";
+            foundError = true;
+        }
+
+        Integer min;
+        try {
+            min = Integer.parseInt(preferredAgeMinTextField.getText());
+            if (min < 18) {
+                errorString += "Minimum age must be at least 18.<br><br>";
+                foundError = true;
+            }
+        } catch (NumberFormatException e1) {
+            //e1.printStackTrace();
+            min = -1;
+            errorString += "Invalid minimum age.<br><br>";
+            foundError = true;
+        }
+
+        Integer max;
+        try {
+            max = Integer.parseInt(preferredAgeMaxTextField.getText());
+            if (max < min) {
+                errorString += "Maximum age must be greater than minimum age.<br><br>";
+                foundError = true;
+            }
+        } catch (NumberFormatException e1) {
+            //e1.printStackTrace();
+            max = -1;
+            errorString += "Invalid maximum age.<br><br>";
+            foundError = true;
+        }
+
+        if (foundError) {
+            errorString += "</body></html>";
+            controller.createErrorView(errorString);
+            return;
+        }
+
         userToUpdate.setBio(biographyTextArea.getText());
         userToUpdate.setLocation(Integer.parseInt(zipCodeTextField.getText()));
-
-        int prefMin = Integer.parseInt(preferredAgeMinTextField.getText());
-        int prefMax = Integer.parseInt(preferredAgeMaxTextField.getText());
-
-        UserPreferences preferencesToUpdate = new UserPreferences(prefMin, prefMax, (RelationshipController.Sexuality) preferredSexuality.getSelectedItem());
+        UserPreferences preferencesToUpdate = new UserPreferences(min, max, (RelationshipController.Sexuality) preferredSexuality.getSelectedItem());
         userToUpdate.setUserPreferences(preferencesToUpdate);
 
         userToUpdate.setSexuality((RelationshipController.Sexuality) sexualityComboBox.getSelectedItem());
 
         UserTable.updateUser(controller.getConnection(), userToUpdate);
+        controller.back();
     }
 
     private void setFieldsFromUser() {
