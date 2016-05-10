@@ -62,6 +62,18 @@ public class LocationTable {
         SQLHelper.execute(conn, sb.toString());
     }
 
+    public static boolean isValidZip(Connection conn, Integer zipCode) {
+        String query = "SELECT 1 FROM location WHERE zip_code = " + zipCode + ";";
+
+        ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+        try {
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static Location getInformationViaZip(Connection conn, Integer zipCode) {
         Location location = null;
         try {

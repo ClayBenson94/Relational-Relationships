@@ -63,7 +63,7 @@ public class UserTable {
                 + "," + user.getUserPreferences().getPreferredAgeMin()
                 + "," + user.getUserPreferences().getPreferredAgeMax()
                 + ",\'" + user.getUserPreferences().getPreferredSexuality()
-                + ",is_admin =\'" + user.getIsAdmin() + "\');";
+                + "\',\'" + user.getIsAdmin() + "\');";
 
         return SQLHelper.execute(conn, query);
     }
@@ -295,6 +295,20 @@ public class UserTable {
             }
             SQLHelper.execute(conn, sb.toString());
         }
+
+    public static boolean isAvailableUsername(Connection conn, String username) {
+        String query = "SELECT 1 FROM user WHERE username = \'" + username + "\';";
+        ResultSet resultSet = SQLHelper.executeQuery(conn, query);
+
+        try {
+            if (resultSet.next()) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 
     public static User getUserObject(Connection conn, String username) {
         String query = "SELECT * FROM user WHERE username = \'" + username + "\';";

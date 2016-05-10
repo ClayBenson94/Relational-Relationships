@@ -24,8 +24,14 @@ import objects.RelationshipController.Gender;
 import objects.RelationshipController.Sexuality;
 import objects.User;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.time.*;
+
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import tables.LocationTable;
+import tables.UserTable;
 
 public class RegisterView {
     private JTextField usernameTextField;
@@ -45,6 +51,9 @@ public class RegisterView {
     private JTextArea biographyTextArea;
     private RelationshipController controller;
 
+    private static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public RegisterView(RelationshipController controller, String username, String password) {
@@ -73,24 +82,133 @@ public class RegisterView {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    controller.register(new User(
-                            usernameTextField.getText(),
-                            new String(passwordTextField.getPassword()),
-                            nameTextField.getText(),
-                            "",
-                            email.getText(),
-                            new Date(dateFormat.parse(dateOfBirth.getText()).getTime()),
-                            (Gender) genderComboBox.getSelectedItem(),
-                            (Sexuality) sexualityComboBox.getSelectedItem(),
-                            Integer.parseInt(zipCodeTextField.getText()),
-                            Integer.parseInt(preferredAgeMinTextField.getText()),
-                            Integer.parseInt(preferredAgeMaxTextField.getText()),
-                            (Sexuality) preferredSexuality.getSelectedItem(),
-                            false));
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
+
+                //Input checks
+                String errorString = "<html><body>";
+                boolean foundError = false;
+
+                String username = usernameTextField.getText();
+                if (!UserTable.isAvailableUsername(controller.getConnection(), username)) {
+                    errorString += "Username " + username + " is already taken. Please choose another.<br><br>";
+                    foundError = true;
                 }
+                if (username.length() > 20) {
+                    errorString += "Username must be 20 characters or less.<br><br>";
+                    foundError = true;
+                }
+                if (username.length() == 0) {
+                    errorString += "Username cannot be empty.<br><br>";
+                    foundError = true;
+                }
+
+                String password = new String(passwordTextField.getPassword());
+                if (password.length() > 32) {
+                    errorString += "Password must be 32 characters or less.<br><br>";
+                    foundError = true;
+                }
+                if (password.length() == 0) {
+                    errorString += "Password cannot be empty.<br><br>";
+                    foundError = true;
+                }
+
+                String name = nameTextField.getText();
+                if (name.length() > 255) {
+                    errorString += "Wow, that's a long name.<br><br>";
+                    foundError = true;
+                }
+
+                String emailString = email.getText();
+                Pattern p = Pattern.compile(EMAIL_PATTERN);
+                Matcher m = p.matcher(emailString);
+                if (!m.matches()) {
+                    errorString += "Invalid email address.<br><br>";
+                    foundError = true;
+                }
+                if (emailString.length() > 255) {
+                    errorString += "Wow, that's a long email.<br><br>";
+                    foundError = true;
+                }
+
+                Date dob;
+                try {
+                    dob = new Date(dateFormat.parse(dateOfBirth.getText()).getTime());
+                    LocalDate tDate = dob.toLocalDate();
+                    LocalDate today = LocalDate.now();
+                    long years = Period.between(tDate, today).getYears();
+                    if (years < 18) {
+                        errorString += "You must be over 18 to register.<br><br>";
+                        foundError = true;
+                    }
+
+                } catch (ParseException e1) {
+                    //e1.printStackTrace();
+                    dob = null;
+                    errorString += "Invalid date. Use yyyy-MM-dd.<br><br>";
+                    foundError = true;
+                }
+
+                Integer zip;
+                try {
+                    zip = Integer.parseInt(zipCodeTextField.getText());
+                    if (!LocationTable.isValidZip(controller.getConnection(), zip)) {
+                        errorString += "Invalid zipcode.<br><br>";
+                        foundError = true;
+                    }
+                } catch (NumberFormatException e1) {
+                    //e1.printStackTrace();
+                    zip = null;
+                    errorString += "Invalid zipcode.<br><br>";
+                    foundError = true;
+                }
+
+                Integer min;
+                try {
+                    min = Integer.parseInt(preferredAgeMinTextField.getText());
+                    if (min < 18) {
+                        errorString += "Minimum age must be at least 18.<br><br>";
+                        foundError = true;
+                    }
+                } catch (NumberFormatException e1) {
+                    //e1.printStackTrace();
+                    min = -1;
+                    errorString += "Invalid minimum age.<br><br>";
+                    foundError = true;
+                }
+
+                Integer max;
+                try {
+                    max = Integer.parseInt(preferredAgeMaxTextField.getText());
+                    if (max < min) {
+                        errorString += "Maximum age must be greater than minimum age.<br><br>";
+                        foundError = true;
+                    }
+                } catch (NumberFormatException e1) {
+                    //e1.printStackTrace();
+                    max = -1;
+                    errorString += "Invalid maximum age.<br><br>";
+                    foundError = true;
+                }
+
+                if (foundError) {
+                    errorString += "</body></html>";
+                    controller.createErrorView(errorString);
+                    return;
+                }
+
+                controller.register(new User(
+                        username,
+                        password,
+                        name,
+                        biographyTextArea.getText(),
+                        emailString,
+                        dob,
+                        (Gender) genderComboBox.getSelectedItem(),
+                        (Sexuality) sexualityComboBox.getSelectedItem(),
+                        zip,
+                        min,
+                        max,
+                        (Sexuality) preferredSexuality.getSelectedItem(),
+                        false));
             }
         };
     }

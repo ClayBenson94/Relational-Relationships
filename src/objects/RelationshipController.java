@@ -221,7 +221,6 @@ public class RelationshipController {
     }
 
     public void register(User user) {
-        //TODO validation on fields
         UserTable.addUser(conn, user);
         this.back();
     }

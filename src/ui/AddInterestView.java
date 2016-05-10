@@ -36,6 +36,30 @@ public class AddInterestView {
                 String name = nameField.getText().toLowerCase();
                 String desc = descArea.getText().toLowerCase();
 
+                String errorString = "<html><body>";
+                boolean foundError = false;
+
+                if (category.length() > 20 || category.length() == 0) {
+                    errorString += "Interest category must be 1-20 characters.<br><br>";
+                    foundError = true;
+                }
+
+                if (name.length() > 20 || name.length() == 0) {
+                    errorString += "Interest name must be 1-20 characters.<br><br>";
+                    foundError = true;
+                }
+
+                if (desc.length() > 200 || desc.length() == 0) {
+                    errorString += "Interest description must be 1-200 characters.<br><br>";
+                    foundError = true;
+                }
+
+                if (foundError) {
+                    errorString += "</body></html>";
+                    controller.createErrorView(errorString);
+                    return;
+                }
+
                 category = category.substring(0, 1).toUpperCase() + category.substring(1);
                 name = name.substring(0, 1).toUpperCase() + name.substring(1);
                 desc = desc.substring(0, 1).toUpperCase() + desc.substring(1);
