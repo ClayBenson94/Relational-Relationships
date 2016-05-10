@@ -67,9 +67,7 @@ public class LocationTable {
 
         ResultSet resultSet = SQLHelper.executeQuery(conn, query);
         try {
-            if (resultSet.next()) {
-                return true;
-            }
+            return resultSet.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
