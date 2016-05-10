@@ -8,11 +8,16 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 /**
- * Created by Clay on 4/5/2016.
+ * A Class made to help other class's with anything date related
  */
 public class DateHelper {
-    //This will hold the method to help convert between datestrings(in CSV and DB) and SQLDate objects (used when constructing User objects)
 
+    /**
+     * This method converts between datestrings(in CSV and DB) and SQLDate objects (used when constructing User objects)
+     * @param dateFormat - The format the date string is in
+     * @param dateString - A string representing the date
+     * @return an SQL Date
+     */
     public static Date dateStringToSQLDate(String dateFormat, String dateString) {
         DateFormat format = new SimpleDateFormat(dateFormat, Locale.US);
         java.util.Date date = null;
@@ -28,6 +33,10 @@ public class DateHelper {
         return sqlDate;
     }
 
+    /**
+     * Get a random timestamp between 2016-03-01 (when the website went live we are saying) and now
+     * @return A Long timestamp
+     */
     public static Long getRandomTimeStamp(){
         Long beginTime = Timestamp.valueOf("2016-03-01 00:00:00").getTime();
         Long endTime = System.currentTimeMillis();

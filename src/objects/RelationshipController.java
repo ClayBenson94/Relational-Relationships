@@ -150,11 +150,11 @@ public class RelationshipController {
     }
 
     public int getLikeCount(String timeDelta){
-        return RelationalRelationshipsStats.getLikeCount(conn,timeDelta);
+        return RelationalRelationshipsStats.getLikeCount(conn, timeDelta);
     }
 
     public int getMatchCount(String timeDelta){
-        return RelationalRelationshipsStats.getMatchCount(conn,timeDelta);
+        return RelationalRelationshipsStats.getMatchCount(conn, timeDelta);
     }
 
     //UI methods
@@ -314,7 +314,7 @@ public class RelationshipController {
             InterestGen interestGen = new InterestGen();
             interestGen.generateUserInterests(users);
             VisitsGen visitsGen = new VisitsGen();
-            visitsGen.genereateVisits(numVisitsToGenerate);
+            visitsGen.generateVisits(numVisitsToGenerate);
             LikeGen likeGen = new LikeGen();
             likeGen.generateLikes(users);
         }

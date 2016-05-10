@@ -7,13 +7,17 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Created by Clay on 4/4/2016.
+ * A Class built to parse CSV's
  */
 public class CSVHelper {
 
     private Scanner scanner;
     public ArrayList<String> currentRow;
 
+    /**
+     * Open the given csv filepath
+     * @param filePath - the filepath to a csv
+     */
     public void openCSV(String filePath) {
         try {
             scanner = new Scanner(new File(filePath));
@@ -23,6 +27,10 @@ public class CSVHelper {
 
     }
 
+    /**
+     * Read the contents of a csv row into an ArrayList and return it
+     * @return An ArrayList containing the contents of the current csv row
+     */
     public boolean readRow() {
         ArrayList<String> returnList = new ArrayList<>();
         String[] splitList;
@@ -36,8 +44,10 @@ public class CSVHelper {
         return success;
     }
 
+    /**
+     * Close the open csv file
+     */
     public void closeCSV() {
         scanner.close();
     }
-
 }

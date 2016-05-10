@@ -4,15 +4,20 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Random;
-import java.util.Date;
 
 import objects.RelationshipController;
 
+/**
+ * A class for generating visits (one user going to another users page)
+ */
 public class VisitsGen {
 
-    public void genereateVisits(int count) {
+    /**
+     * Generate Visits for the db
+     * @param count - the number of visits to generate
+     */
+    public void generateVisits(int count) {
         String selectUserQuery = "SELECT username FROM user";
         String insertVisitQuery = "INSERT INTO visit(visited, visitor, timestamp) VALUES %s;";
         Connection conn = RelationshipController.getConnection();
