@@ -1,7 +1,10 @@
 package helpers;
 
+import objects.Like;
 import objects.RelationshipController;
 import objects.User;
+import tables.LikesTable;
+import tables.UserTable;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -31,7 +34,13 @@ public class LikeGen {
 
         for (int i = 0; i < numUsers; i++){
 
-            for (int j=RandomNumberHelper.randBetween(0,30); j > 0; j--) {
+            int alreadyLikesCount = 0;
+
+            if (likeMap.get(i) != null) {
+                alreadyLikesCount = likeMap.get(i).size();
+            }
+
+            for (int j=RandomNumberHelper.randBetween(0,Math.min(numUsers - 1 - alreadyLikesCount,30)); j > 0; j--) {
                 
                 receiverIndex = RandomNumberHelper.randBetween(0,numUsers-1);
 
@@ -46,7 +55,7 @@ public class LikeGen {
                 if (likeMap.get(i) != null) {
 
                     // Keep the user from liking the same user again
-                    while (likeMap.get(i).contains(receiverIndex)) {
+                    while (likeMap.get(i).contains(receiverIndex) || receiverIndex == i) {
                         receiverIndex = RandomNumberHelper.randBetween(0, numUsers - 1);
                     }
 
