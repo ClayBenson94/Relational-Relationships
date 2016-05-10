@@ -8,9 +8,20 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
-
+/**
+ * Supports retrieval of statistics in the system including number of
+ * visits, likes and matches during a given time interval
+ */ 
 public class RelationalRelationshipsStats {
     
+    /**
+     * Returns the total visit count of visits occurring in the system
+     * given a time delta.
+     * 
+     * @param conn the connection to the database
+     * @param timeDelta the time range to check for
+     * @return the number of the visits that occurred in the given range
+     */ 
     public static int getVisitCount(Connection conn, String timeDelta){
 
         Calendar cal = Calendar.getInstance();
@@ -49,6 +60,14 @@ public class RelationalRelationshipsStats {
     return 0;
     }
 
+    /**
+     * Returns the total like count of likes occurring in the system
+     * given a time delta.
+     * 
+     * @param conn the connection to the database
+     * @param timeDelta the time range to check for
+     * @return the number of the likes that occurred in the given range
+     */
     public static int getLikeCount(Connection conn, String timeDelta){
 
         Calendar cal = Calendar.getInstance();
@@ -87,6 +106,14 @@ public class RelationalRelationshipsStats {
         return 0;
     }
 
+    /**
+     * Returns the total match count of matches occurring in the system
+     * given a time delta.
+     * 
+     * @param conn the connection to the database
+     * @param timeDelta the time range to check for
+     * @return the number of the matches that occurred in the given range
+     */
     public static int getMatchCount(Connection conn, String timeDelta){
 
         Calendar cal = Calendar.getInstance();
