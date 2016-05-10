@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import objects.Like;
 import java.util.Date;
 
+/**
+ * Likes view displays user likes and matches.
+ */
 public class LikesView {
     private JButton backButton;
     private JList likesList;
@@ -33,6 +36,10 @@ public class LikesView {
 
     private RelationshipController controller;
 
+    /**
+     * Creates the likes view
+     * @param c the relationship controller
+     */
     public LikesView(RelationshipController c) {
         controller = c;
 
@@ -68,6 +75,9 @@ public class LikesView {
         });
     }
 
+    /**
+     * sets the lists with the users likes and matches
+     */
     protected void getLikesAndMatches() {
         likesList.setCellRenderer(new LikedListRenderer(controller));
         matchesList.setCellRenderer(new MatchListRenderer(controller));
@@ -87,6 +97,11 @@ public class LikesView {
         likesList.setModel(m);
     }
 
+    /**
+     * Static method to create an instance of the likes view
+     * @param c the relationship controller
+     * @return the likes view JFrame
+     */
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("LikesView");
         LikesView likesView = new LikesView(c);
@@ -175,10 +190,17 @@ public class LikesView {
         return basePane;
     }
 
+    /**
+     * Object to display a like in a list
+     */
     static class LikedListObject {
         private ImageIcon icon;
         private Like like;
 
+        /**
+         * creates a liked list object from a like
+         * @param l the like
+         */
         public LikedListObject(Like l) {
             like = l;
             BufferedImage myPicture = null;
@@ -213,6 +235,10 @@ public class LikesView {
             return like.getUsername();
         }
 
+        /**
+         * get formatted string
+         * @return the string
+         */
         public String getPrintableString() {
             Long time = like.getTimestamp();
             Date date = new Date(time);
@@ -220,15 +246,30 @@ public class LikesView {
         }
     }
 
-
+    /**
+     * The liked list object renderer
+     */
     static class LikedListRenderer extends JLabel implements ListCellRenderer {
         private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
 
+        /**
+         * creates a renderer for likes list
+         * @param controller the relationship controller
+         */
         public LikedListRenderer(RelationshipController controller) {
             setOpaque(true);
             setIconTextGap(12);
         }
 
+        /**
+         * formats and returns the renderer for a given list object
+         * @param list the list
+         * @param value the object to be rendered
+         * @param index objects index in the list
+         * @param isSelected boolean representing whether the object is selected
+         * @param cellHasFocus boolean representing whether the cell has focus
+         * @return the formatted renderer
+         */
         public Component getListCellRendererComponent(JList list, Object value,
                                                       int index, boolean isSelected, boolean cellHasFocus) {
             LikedListObject entry = (LikedListObject) value;
@@ -246,14 +287,30 @@ public class LikesView {
         }
     }
 
+    /**
+     * Renderer for match list
+     */
     static class MatchListRenderer extends JLabel implements ListCellRenderer {
         private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
 
+        /**
+         * creates the match list renderer
+         * @param controller the relationship controller
+         */
         public MatchListRenderer(RelationshipController controller) {
             setOpaque(true);
             setIconTextGap(12);
         }
 
+        /**
+         * formats and returns the renderer for a given list object
+         * @param list the list
+         * @param value the object to be rendered
+         * @param index objects index in the list
+         * @param isSelected boolean representing whether the object is selected
+         * @param cellHasFocus boolean representing whether the cell has focus
+         * @return the formatted renderer
+         */
         public Component getListCellRendererComponent(JList list, Object value,
                                                       int index, boolean isSelected, boolean cellHasFocus) {
             LikedListObject entry = (LikedListObject) value;

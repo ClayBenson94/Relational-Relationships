@@ -8,8 +8,17 @@ import java.util.ArrayList;
 import helpers.CSVHelper;
 import helpers.SQLHelper;
 
+/**
+ * Allows creation of InterestCategories table and 
+ * adding new interest categories.
+ */
 public class InterestCategoriesTable {
-
+    
+    /**
+     * Creates the InterestCategories table.
+     * 
+     * @param conn the connection to the database
+     */ 
     public static void createInterestCategoriesTable(Connection conn) {
         String query = "CREATE TABLE interest_categories("
                 + "category_name VARCHAR(20),"
@@ -18,6 +27,13 @@ public class InterestCategoriesTable {
         SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Adds an interest category to the interest_categories table.
+     * 
+     * @param conn the connection to the database
+     * @param category the category to add to the table
+     * @return true or false
+     */ 
     public static boolean addInterestCategory(Connection conn, String category) {
         String query = "INSERT INTO interest_categories "
                 + "(category_name) VALUES (\'" + category
@@ -25,6 +41,14 @@ public class InterestCategoriesTable {
         return SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Adds an interest category to the interest_categories table
+     * with check of current categories in the table.
+     * 
+     * @param conn the connection to the database
+     * @param category the category to add to the table
+     * @return true or false
+     */ 
     public static boolean addCategoryWithCheck(Connection conn, String category) {
         String query = "INSERT INTO interest_categories "
                 + "(category_name) SELECT \'" + category
@@ -36,6 +60,13 @@ public class InterestCategoriesTable {
         return SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Returns a list of interest category names from the
+     * interest_categories table.
+     * 
+     * @param conn the connection to the database
+     * @return arraylist of interest_category strings 
+     */ 
     public static ArrayList<String> getInterestCategoryNames(Connection conn) {
         ArrayList<String> returnList = new ArrayList<String>();
         String categoryToAdd;
@@ -54,6 +85,12 @@ public class InterestCategoriesTable {
         return returnList;
     }
 
+    /**
+     * Populates the interest_categories table using
+     * the interestcategories.csv file in resources/csv/
+     * 
+     * @param conn the connection to the database
+     */ 
     public static boolean populateFromCSV(Connection conn) {
 
         CSVHelper reader = new CSVHelper();

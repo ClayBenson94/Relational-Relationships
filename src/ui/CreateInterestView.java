@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by rob on 5/3/16.
+ * Create interest view allows users to add interests to their profile
  */
 public class CreateInterestView {
     private JComboBox interestList;
@@ -22,6 +22,10 @@ public class CreateInterestView {
 
     private RelationshipController controller;
 
+    /**
+     * Creates the add interest view
+     * @param c the relationship controller
+     */
     public CreateInterestView(RelationshipController c) {
         controller = c;
 
@@ -51,6 +55,12 @@ public class CreateInterestView {
         });
     }
 
+    /**
+     * Static method to create an instance of the create interest view
+     * @param c the relationship controller
+     * @param previousWindow the previous window for positioning
+     * @return the create interest JFrame
+     */
     public static JFrame init(RelationshipController c, JFrame previousWindow) {
         JFrame frame = new JFrame("CreateInterestView");
         frame.setContentPane(new CreateInterestView(c).basePane);

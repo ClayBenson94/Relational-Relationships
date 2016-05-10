@@ -9,8 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Allows creation of interests table and adding interests.
+ */ 
 public class InterestTable {
 
+    /**
+     * Creates the interests table.
+     * 
+     * @param conn the connection to the database
+     */ 
     public static void createInterestTable(Connection conn) {
         String query = "CREATE TABLE interests("
                 + "interest_name VARCHAR(20),"
@@ -23,6 +31,13 @@ public class InterestTable {
         SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Adds an interest to the interest table.
+     * 
+     * @param conn the connection to the database
+     * @param interest the interest to add to the table
+     * @return true or false
+     */ 
     public static boolean createInterest(Connection conn, Interest interest) {
         String name, description, category;
         name = interest.getName();
@@ -38,6 +53,13 @@ public class InterestTable {
         return SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Adds an interest to the interest table.
+     * 
+     * @param conn the connection to the database
+     * @param interest the interest to add to the table
+     * @return true or false
+     */ 
     public static boolean createInterestWithCheck(Connection conn, Interest interest) {
         String name, description, category;
         name = interest.getName();
@@ -58,6 +80,12 @@ public class InterestTable {
         return SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Gets the list of interests from the interests table.
+     * 
+     * @param conn the connection to the database
+     * @return arraylist of interest strings
+     */ 
     public static ArrayList<Interest> getInterests(Connection conn) {
         ArrayList<Interest> returnList = new ArrayList<>();
 
@@ -78,6 +106,13 @@ public class InterestTable {
         return returnList;
     }
 
+    /**
+     * Populate the interest table using the
+     * interests.csv file from resources/csv/ 
+     * 
+     * @param conn the connection to the database
+     * @return true or false
+     */ 
     public static boolean populateFromCSV(Connection conn) {
         CSVHelper reader = new CSVHelper();
 

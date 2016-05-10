@@ -31,7 +31,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+/**
+ * The visiting user view. Users can view another user found via search
+ */
 public class VisitingUserView {
     private JList userPhotos;
     private JTextArea userInfo;
@@ -42,6 +44,10 @@ public class VisitingUserView {
 
     private RelationshipController controller;
 
+    /**
+     * Constructs a visiting user view
+     * @param c the relationship controller
+     */
     public VisitingUserView(RelationshipController c) {
         controller = c;
 
@@ -79,6 +85,11 @@ public class VisitingUserView {
         }
     }
 
+    /**
+     * Static method to create an instance of the visiting user view
+     * @param c the relationship contoller
+     * @return the visiting user view JFrame
+     */
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("VisitingUserView");
         frame.setContentPane(new VisitingUserView(c).basePane);
@@ -127,10 +138,17 @@ public class VisitingUserView {
     }
 }
 
+/**
+ * Result list photo object to display a user photo
+ */
 class ResultListPhotoObject {
     private ImageIcon icon;
     private String url;
 
+    /**
+     * creates a photo list object
+     * @param photo the photo url
+     */
     public ResultListPhotoObject(String photo) {
         url = photo;
         BufferedImage myPicture = null;
@@ -160,8 +178,20 @@ class ResultListPhotoObject {
     public String getUrl() { return url; }
 }
 
+/**
+ * Creates a renderer for user photos
+ */
 class UserPhotoRenderer extends JLabel implements ListCellRenderer {
 
+    /**
+     * formats and returns the renderer for a given list object
+     * @param list the list
+     * @param value the object to be rendered
+     * @param index objects index in the list
+     * @param isSelected boolean representing whether the object is selected
+     * @param cellHasFocus boolean representing whether the cell has focus
+     * @return the formatted renderer
+     */
     public Component getListCellRendererComponent(JList list, Object value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
         ResultListPhotoObject entry = (ResultListPhotoObject) value;

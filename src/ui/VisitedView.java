@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Clay on 4/12/2016.
+ * Visited view shows the users that have visited the active user
  */
 public class VisitedView {
     private JButton backBttn;
@@ -34,6 +34,10 @@ public class VisitedView {
     private RelationshipController controller;
     private int offset;
 
+    /**
+     * Creates a visited view
+     * @param c the relationship controller
+     */
     public VisitedView(RelationshipController c) {
         controller = c;
         offset = 0;
@@ -68,6 +72,11 @@ public class VisitedView {
         });
     }
 
+    /**
+     * Static method to create a visited view
+     * @param c the relationship controller
+     * @return the visited view JFrame
+     */
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("VisitedView");
         frame.setContentPane(new VisitedView(c).basePane);
@@ -77,6 +86,10 @@ public class VisitedView {
         return frame;
     }
 
+    /**
+     * Populates visited list using current user
+     * @param curUser the current user
+     */
     public void populateVisits(User curUser) {
         ArrayList<Visit> results = controller.getVisitsForUser(curUser, offset);
         DefaultListModel m = new DefaultListModel();
@@ -91,6 +104,9 @@ public class VisitedView {
         }
     }
 
+    /**
+     * Creates the previous and next buttons
+     */
     private void createUIComponents() {
         prevVisitPageButton = new JButton();
         nextVisitPageButton = new JButton();
@@ -147,12 +163,16 @@ public class VisitedView {
     }
 
     /**
-     * Created by Clay on 4/12/2016.
+     * List object to display a visit
      */
     static class VisitedListObject {
         private ImageIcon icon;
         private Visit visit;
 
+        /**
+         * Creates visit list object using a given visit
+         * @param v the visit
+         */
         public VisitedListObject(Visit v) {
             visit = v;
             BufferedImage myPicture = null;
@@ -187,6 +207,10 @@ public class VisitedView {
             return visit.getUsername();
         }
 
+        /**
+         * gets formatted string to display in list
+         * @return the printable string
+         */
         public String getPrintableString() {
             long timestamp = visit.getTimestamp();
             Date myDate = new Date(timestamp);
@@ -196,16 +220,29 @@ public class VisitedView {
     }
 
     /**
-     * Created by Clay on 4/12/2016.
+     * Visit list renderer to render visit list objects
      */
     static class VisitListRenderer extends JLabel implements ListCellRenderer {
         private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
 
+        /**
+         * Creates a visit list renderer
+         * @param controller the relationship controller
+         */
         public VisitListRenderer(RelationshipController controller) {
             setOpaque(true);
             setIconTextGap(12);
         }
 
+        /**
+         * formats and returns the renderer for a given list object
+         * @param list the list
+         * @param value the object to be rendered
+         * @param index objects index in the list
+         * @param isSelected boolean representing whether the object is selected
+         * @param cellHasFocus boolean representing whether the cell has focus
+         * @return the formatted renderer
+         */
         public Component getListCellRendererComponent(JList list, Object value,
                                                       int index, boolean isSelected, boolean cellHasFocus) {
             VisitedListObject entry = (VisitedListObject) value;
