@@ -10,11 +10,8 @@ import java.util.Stack;
 
 import javax.swing.*;
 
-import helpers.InterestGen;
-import helpers.SQLHelper;
+import helpers.*;
 
-import helpers.UserGen;
-import helpers.VisitsGen;
 import tables.*;
 
 import ui.*;
@@ -307,11 +304,20 @@ public class RelationshipController {
 
         if (generateContent){
             UserGen userGen = new UserGen();
-            ArrayList<User> generatedUsers = userGen.generateUsers(numUsersToGenerate);
+            ArrayList<User> users = new ArrayList<User>();
+
+            // Add in the users that were created from CSV parsing
+            users.addAll(UserTable.getAllUserObjects(conn));
+
+            // Generate new users and add them to users array
+            users.addAll(userGen.generateUsers(numUsersToGenerate));
+
             InterestGen interestGen = new InterestGen();
-            interestGen.generateUserInterests(generatedUsers);
+            interestGen.generateUserInterests(users);
             VisitsGen visitsGen = new VisitsGen();
             visitsGen.genereateVisits(numVisitsToGenerate);
+            LikeGen likeGen = new LikeGen();
+            likeGen.generateLikes(users);
         }
 
         //UI

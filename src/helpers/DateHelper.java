@@ -1,6 +1,7 @@
 package helpers;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,4 +27,12 @@ public class DateHelper {
         }
         return sqlDate;
     }
+
+    public static Long getRandomTimeStamp(){
+        Long beginTime = Timestamp.valueOf("2016-03-01 00:00:00").getTime();
+        Long endTime = System.currentTimeMillis();
+        long diff = endTime - beginTime + 1;
+        return beginTime + (long) (Math.random() * diff);
+    }
+
 }
