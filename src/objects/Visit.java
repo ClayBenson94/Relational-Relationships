@@ -9,6 +9,11 @@ public class Visit {
     private String username;
     private Long timestamp;
 
+    /**
+     * Create a visit object
+     * @param username - The username that performed the visit
+     * @param timestamp - When the visit occured
+     */
     public Visit(String username, Long timestamp) {
         this.username = username;
         this.timestamp = timestamp;

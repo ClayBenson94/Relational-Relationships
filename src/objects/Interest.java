@@ -1,7 +1,7 @@
 package objects;
 
 /**
- * Created by nickj_000 on 3/16/2016.
+ * A class to represent an interest
  */
 public class Interest {
 
@@ -9,12 +9,25 @@ public class Interest {
     private String Description;
     private String Category;
 
+    /**
+     * Construct an interest
+     *
+     * @param name - The name of the interest
+     * @param description - The description of the interest
+     * @param category - The category of the interest
+     */
     public Interest(String name, String description, String category) {
         this.name = name;
         Description = description;
         Category = category;
     }
 
+    /**
+     * Overridden method to see if 2 interest objects are equal
+     *
+     * @param o - The other interest object to check for equality
+     * @return Whether or not the 2 objects are equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,6 +41,10 @@ public class Interest {
 
     }
 
+    /**
+     * Returns the hashcode of the given interest object
+     * @return The hashcode of the interest object
+     */
     @Override
     public int hashCode() {
         int result = name.hashCode();
