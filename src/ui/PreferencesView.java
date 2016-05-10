@@ -185,7 +185,7 @@ public class PreferencesView {
         try {
             max = Integer.parseInt(preferredAgeMaxTextField.getText());
             if (max < min) {
-                errorString += "Maximum age must be greater than minimum age.<br><br>";
+                errorString += "Maximum age must be greater than or equal to minimum age.<br><br>";
                 foundError = true;
             }
         } catch (NumberFormatException e1) {
