@@ -15,8 +15,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -28,7 +26,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Search view allows users to search for other users based on preferences
+ */
 public class SearchView {
     private JList resultsList;
     private JButton searchButton;
@@ -48,6 +48,10 @@ public class SearchView {
     private static int currentOffset = 0;
     private static final ImageIcon IMAGE_ICON = new ImageIcon("resources/images/logo.png");
 
+    /**
+     * Creates a search view
+     * @param c the relationship controller
+     */
     public SearchView(RelationshipController c) {
         controller = c;
         validZip = null;
@@ -129,6 +133,11 @@ public class SearchView {
         });
     }
 
+    /**
+     * Static method to create an instance of the search view
+     * @param c the relationship controller
+     * @return the search view JFrame
+     */
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("SearchView");
         SearchView searchView = new SearchView(c);
@@ -140,10 +149,17 @@ public class SearchView {
         return frame;
     }
 
+    /**
+     * gets the user location as a string
+     * @return the user zip string
+     */
     private String getMyZip() {
         return Integer.toString(controller.getActiveUser().getLocation());
     }
 
+    /**
+     * performs a search using the zipcode in the zipcode field or the default zipcode
+     */
     public void performSearch() {
         String zipCode = zipcodeField.getText().equals("") ? getMyZip() : zipcodeField.getText();
 
@@ -177,6 +193,9 @@ public class SearchView {
         }
     }
 
+    /**
+     * creates the previous and next buttons
+     */
     private void createUIComponents() {
         nextSearchPageButton = new JButton();
         prevSearchPageButton = new JButton();
@@ -258,12 +277,16 @@ public class SearchView {
     }
 
     /**
-     * Created by Clay on 4/12/2016.
+     * List object to display a user in the result list
      */
     static class ResultListObject {
         private ImageIcon icon;
         private User user;
 
+        /**
+         * Creates a list object from a given user
+         * @param u the user
+         */
         public ResultListObject(User u) {
             user = u;
             ImageIcon imageIcon = null;
@@ -296,16 +319,29 @@ public class SearchView {
     }
 
     /**
-     * Created by Clay on 4/12/2016.
+     * User list renderer renders users in the search result list
      */
     static class UserListRenderer extends JLabel implements ListCellRenderer {
         private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
 
+        /**
+         * creates the user list renderer
+         * @param controller the relationship controller
+         */
         public UserListRenderer(RelationshipController controller) {
             setOpaque(true);
             setIconTextGap(12);
         }
 
+        /**
+         * formats and returns the renderer for a given list object
+         * @param list the list
+         * @param value the object to be rendered
+         * @param index objects index in the list
+         * @param isSelected boolean representing whether the object is selected
+         * @param cellHasFocus boolean representing whether the cell has focus
+         * @return the formatted renderer
+         */
         public Component getListCellRendererComponent(JList list, Object value,
                                                       int index, boolean isSelected, boolean cellHasFocus) {
             ResultListObject entry = (ResultListObject) value;

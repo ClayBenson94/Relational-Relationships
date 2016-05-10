@@ -7,7 +7,6 @@ import tables.LocationTable;
 import tables.UserPhotosTable;
 import tables.UserTable;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -15,16 +14,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
- * Created by Clay on 4/24/2016.
+ * The user preferences view. Users can change preferences,
+ * add and remove interests, and add and remove photos
  */
 public class PreferencesView {
     private JPanel basePane;
@@ -45,6 +39,10 @@ public class PreferencesView {
     private JButton createInterestButton;
     private RelationshipController controller;
 
+    /**
+     * Creates the view, adds button listeners, and populates fields
+     * @param c the relationship controller
+     */
     public PreferencesView(RelationshipController c) {
         controller = c;
         $$$setupUI$$$();
@@ -109,6 +107,9 @@ public class PreferencesView {
 
     }
 
+    /**
+     * Refreshes the contents of the interest and photo lists
+     */
     public void refreshLists() {
         interestList.setCellRenderer(new InterestListRenderer(controller));
 
@@ -128,6 +129,11 @@ public class PreferencesView {
         photoList.setModel(n);
     }
 
+    /**
+     * Static method to create an instance of the preferences view
+     * @param c the relationship controller
+     * @return the view JFrame
+     */
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("PreferencesView");
         PreferencesView p = new PreferencesView(c);
@@ -144,6 +150,9 @@ public class PreferencesView {
         return frame;
     }
 
+    /**
+     * Updates the current user with information from the fields on the preferences page
+     */
     private void applyChanges() {
         User userToUpdate = controller.getActiveUser();
 
@@ -161,7 +170,6 @@ public class PreferencesView {
                 foundError = true;
             }
         } catch (NumberFormatException e1) {
-            //e1.printStackTrace();
             zip = null;
             errorString += "Invalid zipcode.<br><br>";
             foundError = true;
@@ -175,7 +183,6 @@ public class PreferencesView {
                 foundError = true;
             }
         } catch (NumberFormatException e1) {
-            //e1.printStackTrace();
             min = -1;
             errorString += "Invalid minimum age.<br><br>";
             foundError = true;
@@ -189,7 +196,6 @@ public class PreferencesView {
                 foundError = true;
             }
         } catch (NumberFormatException e1) {
-            //e1.printStackTrace();
             max = -1;
             errorString += "Invalid maximum age.<br><br>";
             foundError = true;
@@ -212,6 +218,10 @@ public class PreferencesView {
         controller.back();
     }
 
+    /**
+     * Sets the fields in the preference page with the information from
+     * the current user
+     */
     private void setFieldsFromUser() {
         User myUser = controller.getActiveUser();
         UserPreferences myPreferences = myUser.getUserPreferences();
@@ -225,6 +235,9 @@ public class PreferencesView {
         sexualityComboBox.setSelectedItem(myUser.getSexuality());
     }
 
+    /**
+     * Creates dropdown boxes for sexuality and preferred sexuality
+     */
     private void createUIComponents() {
         sexualityComboBox = new JComboBox(RelationshipController.Sexuality.values());
         preferredSexuality = new JComboBox(RelationshipController.Sexuality.values());
@@ -345,14 +358,25 @@ public class PreferencesView {
     }
 }
 
+/**
+ * Object that holds an interest for display in a list
+ */
 class InterestListObject {
     private Interest interest;
 
+    /**
+     * Creates a list object from an interest
+     * @param i the interest
+     */
     public InterestListObject(Interest i) {
         interest = i;
 
     }
 
+    /**
+     * Gets a formatted string to display in the list
+     * @return the formatted string
+     */
     public String getPrintableString() {
         String name = interest.getName();
         String cat  = interest.getCategory();
@@ -365,21 +389,35 @@ class InterestListObject {
     }
 }
 
-
+/**
+ * Custom renderer for interest list objects
+ */
 class InterestListRenderer extends JLabel implements ListCellRenderer {
     private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
 
+    /**
+     * creates a interest list renderer
+     * @param controller the relationship controller
+     */
     public InterestListRenderer(RelationshipController controller) {
         setOpaque(true);
         setIconTextGap(12);
     }
 
+    /**
+     * formats and returns the renderer for a given list object
+     * @param list the list
+     * @param value the object to be rendered
+     * @param index objects index in the list
+     * @param isSelected boolean representing whether the object is selected
+     * @param cellHasFocus boolean representing whether the cell has focus
+     * @return the formatted renderer
+     */
     public Component getListCellRendererComponent(JList list, Object value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
         InterestListObject entry = (InterestListObject) value;
         setText(entry.getPrintableString());
 
-        //setIcon(entry.getIcon());
         if (isSelected) {
             setBackground(HIGHLIGHT_COLOR);
             setForeground(Color.white);
@@ -391,14 +429,29 @@ class InterestListRenderer extends JLabel implements ListCellRenderer {
     }
 }
 
+/**
+ * Creates renderer for photo list objects. Only shows photo.
+ */
 class PreferencesPhotoRenderer extends JLabel implements ListCellRenderer {
 
     private static final Color HIGHLIGHT_COLOR = new Color(88, 130, 255);
 
+    /**
+     * Constructs a photo renderer
+     */
     public PreferencesPhotoRenderer() {
         setOpaque(true);
     }
 
+    /**
+     * formats and returns the renderer for a given list object
+     * @param list the list
+     * @param value the object to be rendered
+     * @param index objects index in the list
+     * @param isSelected boolean representing whether the object is selected
+     * @param cellHasFocus boolean representing whether the cell has focus
+     * @return the formatted renderer
+     */
     public Component getListCellRendererComponent(JList list, Object value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
         ResultListPhotoObject entry = (ResultListPhotoObject) value;
