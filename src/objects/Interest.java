@@ -15,6 +15,27 @@ public class Interest {
         Category = category;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Interest interest = (Interest) o;
+
+        if (!name.equals(interest.name)) return false;
+        if (!Description.equals(interest.Description)) return false;
+        return Category.equals(interest.Category);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + Description.hashCode();
+        result = 31 * result + Category.hashCode();
+        return result;
+    }
+
     public String getName() {
         return name;
     }
