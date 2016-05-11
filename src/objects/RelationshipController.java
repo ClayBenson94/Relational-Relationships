@@ -35,7 +35,7 @@ public class RelationshipController {
     }
 
     public enum Sexuality {
-        Heterosexual, Homosexual, Something
+        Heterosexual, Homosexual
     }
 
     public static Sexuality getSexuality(String sexualityStr) {
@@ -44,11 +44,11 @@ public class RelationshipController {
                 return sexuality;
             }
         }
-        return Sexuality.Something;
+        return Sexuality.Heterosexual;
     }
 
     public enum Gender {
-        Male, Female, Something
+        Male, Female
     }
 
     public static Gender getGender(String genderStr) {
@@ -57,7 +57,7 @@ public class RelationshipController {
                 return gender;
             }
         }
-        return Gender.Something;
+        return Gender.Female;
     }
 
     public User getActiveUser() {

@@ -113,22 +113,4 @@ public class LikesTable {
         }
         return false;
     }
-
-    public static boolean populateFromCSV(Connection conn) {
-
-        CSVHelper reader = new CSVHelper();
-        String sender, receiver;
-
-        reader.openCSV("resources/csv/likes.csv");
-        while (reader.readRow()) {
-            sender = reader.currentRow.get(0);
-            receiver = reader.currentRow.get(1);
-
-            createLike(conn, sender, receiver);
-        }
-        reader.closeCSV();
-
-        return true;
-    }
-
 }
