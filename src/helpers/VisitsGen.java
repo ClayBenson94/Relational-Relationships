@@ -19,7 +19,7 @@ public class VisitsGen {
      */
     public void generateVisits(int count) {
         String selectUserQuery = "SELECT username FROM user";
-        String insertVisitQuery = "INSERT INTO visit(visited, visitor, timestamp) VALUES %s;";
+        String insertVisitQuery = "MERGE INTO visit(visited, visitor, timestamp) VALUES %s;";
         Connection conn = RelationshipController.getConnection();
         ResultSet resultSet = SQLHelper.executeQuery(conn, selectUserQuery);
         ArrayList<String> usernames = new ArrayList<>();

@@ -22,8 +22,8 @@ public class LikeGen {
      * @param users  the list of users to create likes for
      */ 
     public void generateLikes(ArrayList<User> users){
-        String insertVisitQuery = "INSERT INTO visit(visited, visitor, timestamp) VALUES %s;";
-        String likeQuery = "INSERT INTO likes VALUES %s;";
+        String insertVisitQuery = "MERGE INTO visit(visited, visitor, timestamp) VALUES %s;";
+        String likeQuery = "MERGE INTO likes VALUES %s;";
         Connection conn = RelationshipController.getConnection();
         ArrayList<String> likesToInsert = new ArrayList<>();
         ArrayList<String> visitsToInsert = new ArrayList<>();
@@ -32,7 +32,6 @@ public class LikeGen {
         long timestamp;
 
        for (User user: users){
-
             ArrayList<User> potentialLikes = UserTable.search(conn,Integer.toString(user.getLocation()),0,user);
             ArrayList<User> alreadyLikes = LikesTable.getWhoUserLikes(conn,user.getUsername());
 
