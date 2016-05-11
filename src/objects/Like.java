@@ -28,4 +28,20 @@ public class Like {
         return timestamp;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Like like = (Like) o;
+
+        return sender.equals(like.sender) && timestamp.equals(like.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = sender.hashCode();
+        result = 31 * result + timestamp.hashCode();
+        return result;
+    }
 }
