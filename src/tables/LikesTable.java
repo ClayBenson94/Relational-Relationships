@@ -72,17 +72,17 @@ public class LikesTable {
      *
      * @param conn
      * @param username - The user to do the query for
-     * @return An array list usernames
+     * @return An array list of users
      */
-    public static ArrayList<String> getWhoUserLikes(Connection conn, String username) {
-        ArrayList<String> likes = new ArrayList<>();
+    public static ArrayList<User> getWhoUserLikes(Connection conn, String username) {
+        ArrayList<User> likes = new ArrayList<>();
         try {
             String query = "SELECT receiver FROM likes WHERE sender=\'" + username + "\' ;";
 
             ResultSet resultSet = SQLHelper.executeQuery(conn, query);
 
             while (resultSet.next()) {
-                likes.add(resultSet.getString("receiver"));
+                likes.add(UserTable.getUserObject(conn,resultSet.getString("receiver")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
