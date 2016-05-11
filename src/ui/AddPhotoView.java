@@ -10,9 +10,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
 
+/**
+ * view to let users add photos to their profile
+ */
 public class AddPhotoView {
     private JPanel basePane;
     private JTextField urlField;
@@ -21,6 +23,10 @@ public class AddPhotoView {
 
     private RelationshipController controller;
 
+    /**
+     * Constructs the add photo view
+     * @param c the relationship controller
+     */
     public AddPhotoView(RelationshipController c) {
         controller = c;
 
@@ -48,6 +54,12 @@ public class AddPhotoView {
         });
     }
 
+    /**
+     * Static method to create an instance of the add photo view
+     * @param c the relationship controller
+     * @param previousWindow the previous window for positioning
+     * @return the add photo JFrame
+     */
     public static JFrame init(RelationshipController c, JFrame previousWindow) {
         JFrame frame = new JFrame("AddPhotoView");
         frame.setContentPane(new AddPhotoView(c).basePane);

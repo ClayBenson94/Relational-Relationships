@@ -8,10 +8,11 @@ import tables.UserTable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * View to allow admins to view statistics and delete users
+ */
 public class AdminView {
     private JLabel deleteUserLbl;
     private JTextField usernameField;
@@ -30,6 +31,10 @@ public class AdminView {
     private RelationshipController controller;
 
 
+    /**
+     * Constructs the admin view
+     * @param c the relationship controller
+     */
     public AdminView(RelationshipController c) {
         controller = c;
 
@@ -47,10 +52,18 @@ public class AdminView {
         timeCombo.addActionListener(e -> updateStatLabels());
     }
 
+    /**
+     * deletes a user from the database
+     */
     public void deleteUser() {
         deleteMsg.setText(UserTable.deleteUser(RelationshipController.getConnection(), usernameField.getText(), controller.getActiveUser().getUsername()));
     }
 
+    /**
+     * Static method to create an instance of the admin view
+     * @param c the relationship controller
+     * @return the admin view JFrame
+     */
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("AdminView");
         frame.setContentPane(new AdminView(c).basePane);
@@ -60,6 +73,9 @@ public class AdminView {
         return frame;
     }
 
+    /**
+     * updates statistic labels
+     */
     private void updateStatLabels() {
         visitsValueLbl.setText(Integer.toString(controller.getVisitCount((String) timeCombo.getSelectedItem())));
         likesValueLbl.setText(Integer.toString(controller.getLikeCount((String) timeCombo.getSelectedItem())));

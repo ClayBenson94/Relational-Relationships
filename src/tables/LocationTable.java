@@ -9,9 +9,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+/**
+ * Allows for creation of location table and adding locations.
+ */ 
 public class LocationTable {
 
+    /**
+     * Creates the location table.
+     * 
+     * @param conn the connection to the database
+     */ 
     public static void createLocationTable(Connection conn) {
         String query = "CREATE TABLE location("
                 + "zip_code int(5) PRIMARY KEY ,"
@@ -22,6 +29,14 @@ public class LocationTable {
         SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Adds a location to the location table.
+     * 
+     * @param conn the connection to the database
+     * @param zipCode the zip code of the location
+     * @param city the city to add
+     * @param state the state to add
+     */ 
     public static void createLocation(Connection conn, int zipCode, String city, String state) {
         String query = "INSERT INTO location VALUES (\'" + zipCode + "\',\'" + city + "\',\'" + state + "\');";
         SQLHelper.execute(conn, query);
@@ -62,6 +77,13 @@ public class LocationTable {
         SQLHelper.execute(conn, sb.toString());
     }
 
+    /**
+     * Checks if a provided zip code exists in the table.
+     *
+     * @param conn: database connection to work with
+     * @param zipCode the zipcode to check for
+     * @return true or false
+     */
     public static boolean isValidZip(Connection conn, Integer zipCode) {
         String query = "SELECT 1 FROM location WHERE zip_code = " + zipCode + ";";
 
@@ -74,6 +96,13 @@ public class LocationTable {
         return false;
     }
 
+    /**
+     * Returns a location object from the table using a provided zip code.
+     *
+     * @param conn: database connection to work with
+     * @param zipCode the zipcode to check for
+     * @return the location object
+     */
     public static Location getInformationViaZip(Connection conn, Integer zipCode) {
         Location location = null;
         try {

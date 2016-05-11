@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * the add interest view. allows user to add a new interest to the database
+ */
 public class AddInterestView {
     private JButton addButton;
     private JButton backButton;
@@ -20,6 +23,10 @@ public class AddInterestView {
 
     private RelationshipController controller;
 
+    /**
+     * Constructs an add interest view
+     * @param c the relationship controller
+     */
     public AddInterestView(RelationshipController c) {
         controller = c;
 
@@ -70,6 +77,12 @@ public class AddInterestView {
         });
     }
 
+    /**
+     * Static method to create an instance of the add interest view
+     * @param c the relationship controller
+     * @param previousWindow the previous window for setting location
+     * @return the add interest view JFrame
+     */
     public static JFrame init(RelationshipController c, JFrame previousWindow) {
         JFrame frame = new JFrame("AddInterestView");
         frame.setContentPane(new AddInterestView(c).basePane);

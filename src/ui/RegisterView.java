@@ -33,6 +33,9 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import tables.LocationTable;
 import tables.UserTable;
 
+/**
+ * Register view allows user to create a new user
+ */
 public class RegisterView {
     private JTextField usernameTextField;
     private JPasswordField passwordTextField;
@@ -56,6 +59,12 @@ public class RegisterView {
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    /**
+     * Creates the register view
+     * @param controller the relationship controller
+     * @param username username string passed from login view
+     * @param password password string passed from login view
+     */
     public RegisterView(RelationshipController controller, String username, String password) {
         this.controller = controller;
         $$$setupUI$$$();
@@ -70,6 +79,13 @@ public class RegisterView {
         registerButton.addActionListener(registerListener());
     }
 
+    /**
+     * Static method to create a register view
+     * @param controller the relationship controller
+     * @param username username string passed from login view
+     * @param password password string passed from login view
+     * @return the register view JFrame
+     */
     public static JFrame init(RelationshipController controller, String username, String password) {
         JFrame frame = new JFrame("RegisterView");
         frame.setContentPane(new RegisterView(controller, username, password).basePane);
@@ -78,6 +94,10 @@ public class RegisterView {
         return frame;
     }
 
+    /**
+     * Performs input checks and registers user
+     * @return the action listener
+     */
     private ActionListener registerListener() {
         return new ActionListener() {
             @Override
@@ -213,6 +233,9 @@ public class RegisterView {
         };
     }
 
+    /**
+     * Fill dropdowns with gender and sexuality enum values
+     */
     private void createUIComponents() {
         genderComboBox = new JComboBox(Gender.values());
         sexualityComboBox = new JComboBox(Sexuality.values());
