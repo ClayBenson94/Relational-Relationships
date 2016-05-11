@@ -22,7 +22,9 @@ import java.io.IOException;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
-
+/**
+ * Login view allows user to login to the application or move to register view
+ */
 public class LoginView {
     private JButton registerButton;
     private JButton loginButton;
@@ -32,6 +34,10 @@ public class LoginView {
     private JLabel logo;
     private RelationshipController controller;
 
+    /**
+     * Create the login view
+     * @param c the relationship controller
+     */
     public LoginView(RelationshipController c) {
         controller = c;
         $$$setupUI$$$();
@@ -60,6 +66,11 @@ public class LoginView {
 
     }
 
+    /**
+     * Static method to create a login view
+     * @param c the relationship controller
+     * @return the login view JFrame
+     */
     public static JFrame init(RelationshipController c) {
         JFrame frame = new JFrame("LoginView");
         frame.setContentPane(new LoginView(c).basePane);
@@ -69,6 +80,9 @@ public class LoginView {
     }
 
 
+    /**
+     * Creates the application logo image
+     */
     private void createUIComponents() {
         // TODO: place custom component creation code here
         BufferedImage myPicture = null;

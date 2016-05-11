@@ -10,7 +10,7 @@ import tables.UserInterestsTable;
 import tables.UserTable;
 
 /**
- * @author Clay Benson cmb3602@g.rit.edu
+ * A class to hold all of the information on a user in memory
  */
 public class User {
 
@@ -26,6 +26,22 @@ public class User {
     private UserPreferences userPreferences;
     private Boolean isAdmin;
 
+    /**
+     * Construct a User object
+     * @param username - The username of the user
+     * @param password - The user's password (plaintext)
+     * @param name - The full name of the user
+     * @param bio - The biography of the user
+     * @param email - The user's email address
+     * @param dob - The date of birth of the user - must be more than 18 years old
+     * @param gender - The gender of the user
+     * @param sexuality - The sexuality of the user
+     * @param location - The location of the user
+     * @param preferredAgeMin - The minimum age that the user wishes to see when searching for other users
+     * @param preferredAgeMax - The maximum age that the user wishes to see when searching for other users
+     * @param preferredSexuality - The preferred sexuality that another user wishes to see when searching for users
+     * @param isAdmin - A flag proclaiming if the user is an administrator or not
+     */
     public User(String username, String password, String name, String bio, String email, Date dob,
                 RelationshipController.Gender gender, RelationshipController.Sexuality sexuality, int location, Integer preferredAgeMin, Integer preferredAgeMax,
                 RelationshipController.Sexuality preferredSexuality, Boolean isAdmin) {
@@ -148,6 +164,9 @@ public class User {
         return Period.between(dob.toLocalDate(), LocalDate.now()).getYears();
     }
 
+    /**
+     * Updates the current user object in the database. The user being update must already exist in the database
+     */
     public void updateUser() {
         UserTable.updateUser(RelationshipController.getConnection(), this);
     }

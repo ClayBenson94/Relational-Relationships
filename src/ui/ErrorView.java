@@ -11,7 +11,9 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
-
+/**
+ * Generic error view that displays a string
+ */
 public class ErrorView {
     private JPanel basePane;
     private JButton OKButton;
@@ -19,6 +21,11 @@ public class ErrorView {
 
     private RelationshipController controller;
 
+    /**
+     * Constructs an error view with the given message
+     * @param c the relationship controller
+     * @param errorMessage the message to display
+     */
     public ErrorView(RelationshipController c, String errorMessage) {
         controller = c;
         if (errorMessage != null)
@@ -32,6 +39,13 @@ public class ErrorView {
         });
     }
 
+    /**
+     * Static method to create an instance of the error view
+     * @param c the relationship controller
+     * @param previousWindow the previous window for positioning
+     * @param errorMessage the error message
+     * @return the error view JFrame
+     */
     public static JFrame init(RelationshipController c, JFrame previousWindow, String errorMessage) {
         JFrame frame = new JFrame("ErrorView");
         frame.setContentPane(new ErrorView(c, errorMessage).basePane);

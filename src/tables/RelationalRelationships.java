@@ -92,7 +92,6 @@ public class RelationalRelationships {
 
         //Create the likes table and populate it with data
         LikesTable.createLikesTable(conn);
-        LikesTable.populateFromCSV(conn);
 
         //Create the user interest table and populate it with data
         UserInterestsTable.createUserInterestTable(conn);

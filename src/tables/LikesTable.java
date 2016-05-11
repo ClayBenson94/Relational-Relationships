@@ -5,14 +5,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import helpers.CSVHelper;
 import helpers.SQLHelper;
 import objects.Like;
-import objects.RelationshipController;
-import objects.User;
 
+/**
+ * Allows creation of likes table and adding new likes to the table.
+ */ 
 public class LikesTable {
 
+    /**
+     * Creates the likes table.
+     * 
+     * @param conn the connection to the database
+     */ 
     public static void createLikesTable(Connection conn) {
         String query = "CREATE TABLE likes("
                 + "sender VARCHAR(20),"
@@ -26,6 +31,13 @@ public class LikesTable {
         SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Adds a like to the likes table.
+     * 
+     * @param conn the connection to the database
+     * @param sender the username liking reciever
+     * @param receiver the username being liked by sender
+     */
     public static void createLike(Connection conn, String sender, String receiver) {
         String query = "INSERT INTO likes VALUES (\'"
                 + sender + "\',\'"
@@ -35,6 +47,13 @@ public class LikesTable {
         SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Deletes a like from the likes table.
+     * 
+     * @param conn the connection to the database
+     * @param sender the person who sent the like
+     * @param receiver the person who received the like
+     */
     public static void deleteLike(Connection conn, String sender, String receiver) {
         String query = "delete from likes where sender= \'"
                 + sender + "\' and receiver=\'"
@@ -93,7 +112,7 @@ public class LikesTable {
     /**
      * Get matches
      *
-     * @param conn
+     * @param conn the connection to the database
      * @param username - The user to do the query for
      * @return An array list of usernames that match
      */
@@ -116,11 +135,12 @@ public class LikesTable {
     }
 
     /**
-     * Has user liked given user
+     * Checks if a user has liked a given user.
      *
-     * @param conn
+     * @param conn the connection to the database
      * @param username - The user to do the query for
-     * @return An array list of usernames that like you
+     * @param otherUser the user who was liked
+     * @return true or false
      */
     public static Boolean doesUserLike(Connection conn, String username, String otherUser) {
         try {
@@ -136,22 +156,4 @@ public class LikesTable {
         }
         return false;
     }
-
-    public static boolean populateFromCSV(Connection conn) {
-
-        CSVHelper reader = new CSVHelper();
-        String sender, receiver;
-
-        reader.openCSV("resources/csv/likes.csv");
-        while (reader.readRow()) {
-            sender = reader.currentRow.get(0);
-            receiver = reader.currentRow.get(1);
-
-            createLike(conn, sender, receiver);
-        }
-        reader.closeCSV();
-
-        return true;
-    }
-
 }
