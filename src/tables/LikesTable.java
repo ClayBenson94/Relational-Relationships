@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import helpers.SQLHelper;
 import objects.Like;
+import objects.User;
 
 /**
  * Allows creation of likes table and adding new likes to the table.
