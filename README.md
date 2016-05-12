@@ -11,7 +11,7 @@
 * If you wish to generate more or less content, use the command line flags listed in the command line flags section
 
 ## Command Line Flags:
-  java -classpath "out:lib/h2-1.4.191.jar:lib/forms_rt.jar" objects.RelationshipController
+**EXAMPLE:**  java -classpath "out:lib/h2-1.4.191.jar:lib/forms_rt.jar" objects.RelationshipController
 
 * -n generates a fresh database (will overwrite any existing data)
 * -l username password will automatically login to the system with the given username and password
