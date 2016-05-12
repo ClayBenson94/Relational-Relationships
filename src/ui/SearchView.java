@@ -46,7 +46,7 @@ public class SearchView {
     private String validZip;
 
     private static int currentOffset = 0;
-    private static final ImageIcon IMAGE_ICON = new ImageIcon("resources/images/logo.png");
+    private static final ImageIcon IMAGE_ICON = new ImageIcon("resources/images/no_profile.gif");
 
     /**
      * Creates a search view
