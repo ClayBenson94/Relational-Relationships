@@ -41,6 +41,7 @@ public class PreferencesView {
 
     /**
      * Creates the view, adds button listeners, and populates fields
+     *
      * @param c the relationship controller
      */
     public PreferencesView(RelationshipController c) {
@@ -131,6 +132,7 @@ public class PreferencesView {
 
     /**
      * Static method to create an instance of the preferences view
+     *
      * @param c the relationship controller
      * @return the view JFrame
      */
@@ -159,7 +161,6 @@ public class PreferencesView {
         //Input checks
         String errorString = "<html><body>";
         boolean foundError = false;
-
 
 
         Integer zip;
@@ -253,10 +254,10 @@ public class PreferencesView {
     private void $$$setupUI$$$() {
         createUIComponents();
         basePane = new JPanel();
-        basePane.setLayout(new GridLayoutManager(4, 1, new Insets(0, 0, 0, 0), -1, -1));
+        basePane.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        basePane.add(panel1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        basePane.add(panel1, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         backButton = new JButton();
         backButton.setText("Back");
         panel1.add(backButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -348,6 +349,9 @@ public class PreferencesView {
         final JLabel label8 = new JLabel();
         label8.setText("Edit Photos");
         panel10.add(label8, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label9 = new JLabel();
+        label9.setText("Note: Changing preferences will not take effect until a new search is performed.");
+        basePane.add(label9, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
