@@ -19,8 +19,15 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.StringJoiner;
 
+/**
+ * Allows for the creation of the UserInterests table and adding user interests.
+ */ 
 public class UserInterestsTable {
 
+    /**
+     * Creates the UserInterest table.
+     * @param conn the connection to the database
+     */ 
     public static void createUserInterestTable(Connection conn) {
         String query = "CREATE TABLE user_interests("
                 + "username VARCHAR(20),"
@@ -33,6 +40,14 @@ public class UserInterestsTable {
         SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Adds an interest to a user.
+     * 
+     * @param conn the connection to the database
+     * @param username the username receiving the interest
+     * @param interest the interest to give the user
+     * @return true or false
+     */
     public static boolean addInterestToUser(Connection conn, String username, Interest interest) {
         String interestName = interest.getName();
         String query = "INSERT INTO user_interests "
@@ -43,6 +58,14 @@ public class UserInterestsTable {
         return SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Adds an interest to a user.
+     * 
+     * @param conn the connection to the database
+     * @param username the username receiving the interest
+     * @param interest the interest to give the user
+     * @return true or false
+     */
     public static boolean addInterestToUserWithCheck(Connection conn, String username, Interest interest) {
         String interestName = interest.getName();
         String query = "INSERT INTO user_interests (username, interest) "
@@ -57,6 +80,13 @@ public class UserInterestsTable {
         return SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Deletes a UserInterest.
+     * 
+     * @param conn the connection to the database
+     * @param username the username with the interest
+     * @param interest the interest the user has
+     */
     public static void deleteUserInterest(Connection conn, User user, Interest interest) {
         String name = interest.getName();
         String query = "DELETE FROM user_interests "
@@ -65,6 +95,13 @@ public class UserInterestsTable {
         SQLHelper.execute(conn, query);
     }
 
+    /**
+     * Returns a list of user interests for a given user.
+     * 
+     * @param conn the connection to the database
+     * @param username the username to return interests for
+     * @return arraylist of Interests for the user
+     */
     public static ArrayList<Interest> getUserInterests(Connection conn, String username) {
         ArrayList<Interest> returnList = new ArrayList<>();
 
@@ -85,7 +122,13 @@ public class UserInterestsTable {
         }
         return returnList;
     }
-
+  
+    /**
+     * Populates the user_interests table with data from
+     * the userinterests.csv file in resources/csv/
+     * 
+     * @param conn the connection to the database
+     */
     public static void populateFromCSV(Connection conn) {
         Set<String> userInterests = new HashSet<>();
         CSVHelper reader = new CSVHelper();
